@@ -131,6 +131,9 @@ export const api = {
             recommended_wvtr: "18 g/m²/day",
             explanation: "Optimum gas equilibrium prevents anaerobic fermentation while suppressing respiration.",
             cost_index: 4.2,
+            cost_estimate_local: 35.0,
+            supplier_channel_note: "Widely available from local flexible packaging converters.",
+            source_reference: "Industry Datasheets",
             sustainability_score: 72
           }
         ]

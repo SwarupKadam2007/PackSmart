@@ -24,6 +24,12 @@ def run_recommendation_engine(db: Session, payload: RecommendationInput, user_id
     comm_name = commodity_query.name if commodity_query else (payload.commodity_name or "Fresh Produce")
     comm_cat = commodity_query.category.lower() if commodity_query else payload.commodity_name.lower()
 
+    # Graceful fallback for missing parameters using DB defaults or category estimates
+    final_moisture = payload.moisture_content if payload.moisture_content is not None else (commodity_query.default_moisture_content if commodity_query else 50.0)
+    final_oil_fat = payload.oil_fat_content if payload.oil_fat_content is not None else (commodity_query.default_oil_fat_content if commodity_query else 5.0)
+    final_ph = payload.ph_level if payload.ph_level is not None else (commodity_query.default_ph if commodity_query else 6.0)
+    final_respiration = payload.respiration_rate if payload.respiration_rate is not None else (commodity_query.default_respiration_rate if commodity_query and commodity_query.default_respiration_rate else 15.0)
+
     is_fresh = "produce" in comm_cat or "fresh" in comm_cat or "fruit" in comm_cat or "vegetable" in comm_cat or payload.commodity_name == "freshProduce"
     is_dry = "dry" in comm_cat or "powder" in comm_cat or "grain" in comm_cat or payload.commodity_name == "dryGoods"
     is_snack = "snack" in comm_cat or "fried" in comm_cat or "chip" in comm_cat or payload.commodity_name == "snacks"
@@ -144,7 +150,10 @@ def run_recommendation_engine(db: Session, payload: RecommendationInput, user_id
             "map_required": map_required,
             "eco_alternative": eco_alt,
             "cost_index": mat.cost_index,
+            "cost_estimate_local": mat.cost_estimate_local,
+            "supplier_channel_note": mat.supplier_channel_note,
             "sustainability_score": s_score,
+            "source_reference": mat.source_reference,
             "explanation": f"Validated for {comm_name} with {target_otr_str} OTR barrier and {sealability}."
         })
 
@@ -158,10 +167,10 @@ def run_recommendation_engine(db: Session, payload: RecommendationInput, user_id
         user_id=user_id,
         commodity_id=commodity_query.commodity_id if commodity_query else None,
         commodity_name=comm_name,
-        input_moisture_content=85.0 if payload.moisture_content == "high" else (40.0 if payload.moisture_content == "medium" else 10.0),
-        input_oil_fat_content=30.0 if payload.oil_fat_content == "high" else 2.0,
-        input_ph=4.0 if payload.ph_level == "acidic" else 7.0,
-        input_respiration_rate=30.0 if payload.respiration_rate == "high" else 5.0,
+        input_moisture_content=final_moisture,
+        input_oil_fat_content=final_oil_fat,
+        input_ph=final_ph,
+        input_respiration_rate=final_respiration,
         desired_shelf_life_days=payload.desired_shelf_life or 14,
         storage_type=payload.storage_type or "chilled",
         storage_temperature=payload.storage_temp or 4.0,
@@ -181,7 +190,8 @@ def run_recommendation_engine(db: Session, payload: RecommendationInput, user_id
             recommended_thickness_microns=base_thickness,
             recommended_otr=target_otr_num,
             recommended_wvtr=target_wvtr_num,
-            explanation_text=item["explanation"]
+            explanation_text=item["explanation"],
+            source_reference=item["source_reference"]
         )
         db.add(rec_mat)
 

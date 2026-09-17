@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 from typing import List, Optional, Dict, Any
 from datetime import datetime
 
@@ -63,6 +63,10 @@ class MaterialBase(BaseModel):
     gas_permeability_notes: Optional[str] = None
     map_compatible: bool = True
     cost_index: float = 5.0
+    cost_estimate_local: Optional[float] = None
+    supplier_channel_note: Optional[str] = None
+    confidence_level: float = 0.90
+    source_reference: Optional[str] = None
     is_recyclable: bool = True
     is_biodegradable: bool = False
 
@@ -84,14 +88,14 @@ class MaterialResponse(MaterialBase):
 class RecommendationInput(BaseModel):
     commodity_id: Optional[str] = None
     commodity_name: Optional[str] = "freshProduce"
-    moisture_content: Optional[str] = "high"
-    oil_fat_content: Optional[str] = "low"
-    ph_level: Optional[str] = "neutral"
-    respiration_rate: Optional[str] = "high"
-    desired_shelf_life: Optional[int] = 14
+    moisture_content: Optional[float] = Field(None, ge=0.0, le=100.0, description="Moisture content percentage (0-100)")
+    oil_fat_content: Optional[float] = Field(None, ge=0.0, le=100.0, description="Oil/fat content percentage (0-100)")
+    ph_level: Optional[float] = Field(None, ge=0.0, le=14.0, description="pH level (0-14)")
+    respiration_rate: Optional[float] = Field(None, ge=0.0, description="Respiration rate in mL CO2/kg/hr")
+    desired_shelf_life: Optional[int] = Field(14, ge=1, description="Desired shelf life in days")
     storage_type: Optional[str] = "chilled"
-    storage_temp: Optional[float] = 4.0
-    relative_humidity: Optional[float] = 85.0
+    storage_temp: Optional[float] = Field(4.0, ge=-50.0, le=100.0, description="Storage temperature in Celsius")
+    relative_humidity: Optional[float] = Field(85.0, ge=0.0, le=100.0, description="Relative humidity percentage (0-100)")
     transport_conditions: Optional[str] = "smooth"
 
 class RankedMaterial(BaseModel):
@@ -107,7 +111,10 @@ class RankedMaterial(BaseModel):
     map_required: str
     eco_alternative: str
     explanation: str
+    source_reference: Optional[str] = None
     cost_index: float
+    cost_estimate_local: Optional[float] = None
+    supplier_channel_note: Optional[str] = None
     sustainability_score: float
 
 class RecommendationResponse(BaseModel):

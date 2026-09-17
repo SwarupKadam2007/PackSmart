@@ -33,10 +33,15 @@ from .seed import seed_database
 # Create all database tables on load
 Base.metadata.create_all(bind=engine)
 
+is_production = os.getenv("ENVIRONMENT") == "production"
+
 app = FastAPI(
     title="PackSmart Food Packaging Recommendation API",
     description="Scientific Food Packaging Selection, Shelf-Life Simulation, MAP Equilibrium, and LCA Sustainability Engine",
-    version="2.0.0"
+    version="2.0.0",
+    docs_url=None if is_production else "/docs",
+    redoc_url=None if is_production else "/redoc",
+    openapi_url=None if is_production else "/openapi.json"
 )
 
 # Enable CORS for frontend Vite development server & production

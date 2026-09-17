@@ -2,16 +2,21 @@ import React, { useState } from 'react';
 import { BrainCircuit, Droplets, Wind, Thermometer, Box, ArrowRight, ShieldCheck, Leaf } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ENGINE_TRANSLATIONS } from '../data/engineI18n';
+import { api } from '../api/client';
+import { Star } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
 
 export default function GetRecommendation({ lang }) {
   const t = ENGINE_TRANSLATIONS[lang] || ENGINE_TRANSLATIONS.en;
+  const [searchParams] = useSearchParams();
+  const defaultCommodity = searchParams.get('commodityType') || 'freshProduce';
   
   // Multi-step state
   const [step, setStep] = useState(1);
 
   // Input States
   const [inputs, setInputs] = useState({
-    commodityType: 'freshProduce',
+    commodityType: defaultCommodity,
     moistureContent: 'high',
     oilFatContent: 'low',
     pHLevel: 'neutral',
@@ -25,6 +30,7 @@ export default function GetRecommendation({ lang }) {
 
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [results, setResults] = useState(null);
+  const [rating, setRating] = useState(0);
 
   const handleInputChange = (field, value) => {
     setInputs(prev => ({ ...prev, [field]: value }));
@@ -38,58 +44,46 @@ export default function GetRecommendation({ lang }) {
     if (step > 1) setStep(step - 1);
   };
 
-  const runAnalysis = () => {
+  const runAnalysis = async () => {
     setIsAnalyzing(true);
     setStep(4);
     
-    setTimeout(() => {
-      let otr = "", wvtr = "", thickness = "", material = "", map = "", sealability = "", eco = "";
-      
-      switch (inputs.commodityType) {
-        case 'freshProduce':
-          otr = "10,000 - 15,000"; wvtr = "15 - 20"; thickness = "25 - 40";
-          material = t.logicResults.fp_mat; map = t.logicResults.fp_map;
-          sealability = t.logicResults.fp_seal; eco = t.logicResults.fp_eco;
-          break;
-        case 'dryGoods':
-          otr = "< 10"; wvtr = "< 5"; thickness = "50 - 70";
-          material = t.logicResults.dg_mat; map = t.logicResults.dg_map;
-          sealability = t.logicResults.dg_seal; eco = t.logicResults.dg_eco;
-          break;
-        case 'snacks':
-          otr = "< 1"; wvtr = "< 1"; thickness = "60 - 80";
-          material = t.logicResults.sn_mat; map = t.logicResults.sn_map;
-          sealability = t.logicResults.sn_seal; eco = t.logicResults.sn_eco;
-          break;
-        case 'meatPoultry':
-          otr = "< 5"; wvtr = "< 5"; thickness = "70 - 100";
-          material = t.logicResults.mp_mat; map = t.logicResults.mp_map;
-          sealability = t.logicResults.mp_seal; eco = t.logicResults.mp_eco;
-          break;
-        case 'dairy':
-          otr = "< 2"; wvtr = "< 2"; thickness = "60 - 90";
-          material = t.logicResults.da_mat; map = t.logicResults.da_map;
-          sealability = t.logicResults.da_seal; eco = t.logicResults.da_eco;
-          break;
-        default:
-          otr = "Standard"; wvtr = "Standard"; thickness = "50";
-          material = t.logicResults.def_mat; map = t.logicResults.def_map;
-          sealability = t.logicResults.def_seal; eco = t.logicResults.def_eco;
-      }
+    try {
+      // Map frontend string inputs to numeric payload expected by backend
+      const payload = {
+        commodity_name: inputs.commodityType,
+        storage_type: inputs.storageType,
+        transport_conditions: inputs.transportConditions,
+        desired_shelf_life: parseInt(inputs.desiredShelfLife) || 14,
+        moisture_content: inputs.moistureContent === 'high' ? 85.0 : inputs.moistureContent === 'medium' ? 50.0 : 15.0,
+        oil_fat_content: inputs.oilFatContent === 'high' ? 30.0 : 5.0,
+        ph_level: inputs.pHLevel === 'acidic' ? 4.0 : 7.0,
+        respiration_rate: inputs.respirationRate === 'high' ? 30.0 : 5.0,
+      };
 
-      if (inputs.storageType === 'frozen') {
-        material += t.logicResults.mod_frozen;
-        thickness = parseInt(thickness.split(' ')[0]) + 20 + " - " + (parseInt(thickness.split(' - ')[1] || 20) + 20);
-      }
+      const res = await api.generateRecommendation(payload);
       
-      if (inputs.transportConditions === 'rough') {
-        thickness = parseInt(thickness.split(' ')[0]) + 15 + " - " + (parseInt(thickness.split(' - ')[1] || 15) + 15);
-        sealability = t.logicResults.mod_rough;
-      }
-
-      setResults({ otr, wvtr, thickness, material, map, sealability, eco });
+      // Extract top material
+      const topMat = res.ranked_materials[0];
+      
+      setResults({
+        otr: res.target_otr,
+        wvtr: res.target_wvtr,
+        thickness: res.thickness,
+        material: res.primary_material,
+        map: res.map_required,
+        sealability: res.sealability,
+        eco: res.eco_alternative,
+        confidence_score: topMat?.confidence_score,
+        cost_estimate_local: topMat?.cost_estimate_local,
+        supplier_channel_note: topMat?.supplier_channel_note,
+        source_reference: topMat?.source_reference
+      });
+    } catch (error) {
+      console.error("Analysis failed:", error);
+    } finally {
       setIsAnalyzing(false);
-    }, 1500);
+    }
   };
 
   const getStepTitle = () => {
@@ -135,19 +129,26 @@ export default function GetRecommendation({ lang }) {
             {getStepTitle()}
           </h2>
 
-          {step === 1 && (
-            <div className="space-y-6 animate-in fade-in zoom-in duration-300">
-              {/* Background Educational Text */}
-              <div className="bg-indigo-950/40 border border-indigo-500/20 p-5 rounded-2xl">
-                <h3 className="text-sm font-bold text-indigo-300 font-mono flex items-center gap-2 border-b border-indigo-500/20 pb-2 mb-3">
-                   {t.backgroundTitle}
-                </h3>
-                <p className="text-sm text-slate-300 leading-relaxed whitespace-pre-wrap">
-                   {t.backgroundText}
-                </p>
-              </div>
+          <AnimatePresence mode="wait">
+            {step === 1 && (
+              <motion.div 
+                key="step1" 
+                initial={{ opacity: 0, x: -20 }} 
+                animate={{ opacity: 1, x: 0 }} 
+                exit={{ opacity: 0, x: 20 }} 
+                className="space-y-6"
+              >
+                {/* Background Educational Text */}
+                <div className="bg-indigo-950/40 border border-indigo-500/20 p-5 rounded-2xl">
+                  <h3 className="text-sm font-bold text-indigo-300 font-mono flex items-center gap-2 border-b border-indigo-500/20 pb-2 mb-3">
+                     {t.backgroundTitle}
+                  </h3>
+                  <p className="text-sm text-slate-300 leading-relaxed whitespace-pre-wrap">
+                     {t.backgroundText}
+                  </p>
+                </div>
 
-              <div>
+                <div>
                 <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-2">
                   <Box className="w-4 h-4 text-amber-400" /> {t.fields.commodityType}
                 </label>
@@ -163,11 +164,17 @@ export default function GetRecommendation({ lang }) {
                   <option value="dairy">{t.inputs.dairy}</option>
                 </select>
               </div>
-            </div>
+            </motion.div>
           )}
 
           {step === 2 && (
-            <div className="space-y-6 animate-in slide-in-from-right duration-300">
+            <motion.div 
+              key="step2" 
+              initial={{ opacity: 0, x: -20 }} 
+              animate={{ opacity: 1, x: 0 }} 
+              exit={{ opacity: 0, x: 20 }} 
+              className="space-y-6"
+            >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-2">
@@ -218,11 +225,17 @@ export default function GetRecommendation({ lang }) {
                   />
                 </div>
               </div>
-            </div>
+            </motion.div>
           )}
 
           {step === 3 && (
-            <div className="space-y-6 animate-in slide-in-from-right duration-300">
+            <motion.div 
+              key="step3" 
+              initial={{ opacity: 0, x: -20 }} 
+              animate={{ opacity: 1, x: 0 }} 
+              exit={{ opacity: 0, x: 20 }} 
+              className="space-y-6"
+            >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-2">
@@ -250,11 +263,16 @@ export default function GetRecommendation({ lang }) {
                   </select>
                 </div>
               </div>
-            </div>
+            </motion.div>
           )}
 
           {step === 4 && (
-            <div className="animate-in fade-in duration-500">
+            <motion.div 
+              key="step4" 
+              initial={{ opacity: 0, scale: 0.95 }} 
+              animate={{ opacity: 1, scale: 1 }} 
+              exit={{ opacity: 0, scale: 0.95 }}
+            >
               {isAnalyzing ? (
                 <div className="flex flex-col items-center justify-center h-64">
                   <div className="w-16 h-16 border-4 border-amber-400/20 border-t-amber-400 rounded-full animate-spin"></div>
@@ -305,10 +323,51 @@ export default function GetRecommendation({ lang }) {
                     </h4>
                     <p className="text-sm font-medium text-slate-200 mt-1">{results.eco}</p>
                   </div>
+
+                  {/* Metadata block for Realism Pass */}
+                  <div className="bg-slate-900/50 border border-white/5 p-5 rounded-2xl text-sm">
+                    <div className="flex justify-between items-center border-b border-white/5 pb-2 mb-2">
+                      <span className="text-slate-400">Confidence Level</span>
+                      <span className="text-amber-400 font-bold">{(results.confidence_score * 100).toFixed(1)}%</span>
+                    </div>
+                    <div className="flex justify-between items-center border-b border-white/5 pb-2 mb-2">
+                      <span className="text-slate-400">Local Cost Est.</span>
+                      <span className="text-emerald-400 font-mono">₹{results.cost_estimate_local || 'N/A'} / kg</span>
+                    </div>
+                    <div className="flex justify-between items-center border-b border-white/5 pb-2 mb-2">
+                      <span className="text-slate-400">Supplier Note</span>
+                      <span className="text-slate-200 text-right max-w-[60%]">{results.supplier_channel_note || 'N/A'}</span>
+                    </div>
+                    <div className="flex justify-between items-center pt-1">
+                      <span className="text-slate-400">Source Reference</span>
+                      <span className="text-blue-300 text-xs italic text-right max-w-[60%]">{results.source_reference || 'Estimated'}</span>
+                    </div>
+                  </div>
+
+                  {/* 1-5 Star User Feedback Rating Block */}
+                  <div className="mt-8 border-t border-white/10 pt-6 flex flex-col items-center">
+                    <p className="text-slate-400 text-sm font-medium mb-3">Rate this recommendation</p>
+                    <div className="flex gap-2">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <button
+                          key={star}
+                          onClick={() => setRating(star)}
+                          className={`p-1 transition-all ${
+                            rating >= star ? "text-amber-400" : "text-slate-600 hover:text-amber-400/50"
+                          }`}
+                        >
+                          <Star className={`w-8 h-8 ${rating >= star ? "fill-amber-400" : ""}`} />
+                        </button>
+                      ))}
+                    </div>
+                    {rating > 0 && <p className="text-amber-400 text-xs mt-2 font-medium">Thank you for your feedback!</p>}
+                  </div>
+
                 </div>
               ) : null}
-            </div>
+            </motion.div>
           )}
+          </AnimatePresence>
 
           {/* Navigation Controls */}
           <div className="mt-8 flex justify-between items-center border-t border-white/10 pt-6">

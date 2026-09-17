@@ -55,6 +55,10 @@ class PackagingMaterial(Base):
     gas_permeability_notes = Column(Text, nullable=True)
     map_compatible = Column(Boolean, default=True)
     cost_index = Column(Float, default=5.0) # relative scale 1-10
+    cost_estimate_local = Column(Float, nullable=True) # local currency cost estimate
+    supplier_channel_note = Column(Text, nullable=True)
+    confidence_level = Column(Float, default=0.90) # 0.0 to 1.0 (e.g. estimated vs verified)
+    source_reference = Column(Text, nullable=True) # DOI, ASTM standard, or 'Estimated'
     is_recyclable = Column(Boolean, default=True)
     is_biodegradable = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.utcnow)
@@ -113,6 +117,7 @@ class RecommendationMaterial(Base):
     recommended_otr = Column(Float, default=50.0)
     recommended_wvtr = Column(Float, default=5.0)
     explanation_text = Column(Text, nullable=True)
+    source_reference = Column(Text, nullable=True)
 
     recommendation = relationship("Recommendation", back_populates="ranked_materials")
     material = relationship("PackagingMaterial", back_populates="recommendation_links")
