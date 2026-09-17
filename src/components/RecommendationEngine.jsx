@@ -42,66 +42,66 @@ export default function RecommendationEngine({ isOpen, onClose, lang = 'en' }) {
           otr = "10,000 - 15,000";
           wvtr = "15 - 20";
           thickness = "25 - 40";
-          material = "Micro-perforated BOPP or Breathable LDPE";
-          map = "Highly Recommended (High CO2, Low O2)";
-          sealability = "Standard Heat Seal";
-          eco = "Compostable PLA (Polylactic Acid) films";
+          material = t.logicResults.fp_mat;
+          map = t.logicResults.fp_map;
+          sealability = t.logicResults.fp_seal;
+          eco = t.logicResults.fp_eco;
           break;
         case 'dryGoods':
           otr = "< 10";
           wvtr = "< 5";
           thickness = "50 - 70";
-          material = "PET / Met-PET / PE Laminate";
-          map = "Not Required";
-          sealability = "High Strength Hermetic Seal";
-          eco = "Mono-material PE structures (Recyclable)";
+          material = t.logicResults.dg_mat;
+          map = t.logicResults.dg_map;
+          sealability = t.logicResults.dg_seal;
+          eco = t.logicResults.dg_eco;
           break;
         case 'snacks':
           otr = "< 1";
           wvtr = "< 1";
           thickness = "60 - 80";
-          material = "BOPP / Aluminum Foil / CPP";
-          map = "Nitrogen Flushing Required";
-          sealability = "High Strength Hot Tack Seal";
-          eco = "High-barrier metallized mono-materials";
+          material = t.logicResults.sn_mat;
+          map = t.logicResults.sn_map;
+          sealability = t.logicResults.sn_seal;
+          eco = t.logicResults.sn_eco;
           break;
         case 'meatPoultry':
           otr = "< 5";
           wvtr = "< 5";
           thickness = "70 - 100";
-          material = "PA (Nylon) / EVOH / PE Laminate";
-          map = "Required (High O2 / CO2 blend)";
-          sealability = "Ultra-High Strength Vacuum Seal";
-          eco = "Bio-based PE / EVOH laminates";
+          material = t.logicResults.mp_mat;
+          map = t.logicResults.mp_map;
+          sealability = t.logicResults.mp_seal;
+          eco = t.logicResults.mp_eco;
           break;
         case 'dairy':
           otr = "< 2";
           wvtr = "< 2";
           thickness = "60 - 90";
-          material = "Opaque PET / Alu Foil / PE";
-          map = "Nitrogen / CO2 Flushing";
-          sealability = "Strong Hermetic Seal";
-          eco = "Recyclable Opaque Mono-PE";
+          material = t.logicResults.da_mat;
+          map = t.logicResults.da_map;
+          sealability = t.logicResults.da_seal;
+          eco = t.logicResults.da_eco;
           break;
         default:
           otr = "Standard";
           wvtr = "Standard";
           thickness = "50";
-          material = "Standard Multi-Layer";
-          map = "Optional";
-          sealability = "Standard";
-          eco = "Check local recycling guidelines";
+          material = t.logicResults.def_mat;
+          map = t.logicResults.def_map;
+          sealability = t.logicResults.def_seal;
+          eco = t.logicResults.def_eco;
       }
 
       // Adjustments based on extreme variables
       if (inputs.storageType === 'frozen') {
-        material += " (Cold-resistant grade PE/EVA)";
+        material += t.logicResults.mod_frozen;
         thickness = parseInt(thickness.split(' ')[0]) + 20 + " - " + (parseInt(thickness.split(' - ')[1]) + 20);
       }
       
       if (inputs.transportConditions === 'rough') {
         thickness = parseInt(thickness.split(' ')[0]) + 15 + " - " + (parseInt(thickness.split(' - ')[1]) + 15);
-        sealability = "Reinforced Quad-Seal";
+        sealability = t.logicResults.mod_rough;
       }
 
       setResults({ otr, wvtr, thickness, material, map, sealability, eco });
@@ -134,6 +134,17 @@ export default function RecommendationEngine({ isOpen, onClose, lang = 'en' }) {
           
           {/* LEFT: Inputs Form */}
           <div className="flex-1 overflow-y-auto p-4 sm:p-6 custom-scrollbar border-r border-white/5">
+            
+            {/* Background Educational Text */}
+            <div className="mb-6 bg-indigo-950/40 border border-indigo-500/20 p-4 sm:p-5 rounded-2xl">
+              <h3 className="text-sm font-bold text-indigo-300 font-mono flex items-center gap-2 border-b border-indigo-500/20 pb-2 mb-3">
+                 {t.backgroundTitle}
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed whitespace-pre-wrap">
+                 {t.backgroundText}
+              </p>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               
               {/* Category: Product Definition */}
