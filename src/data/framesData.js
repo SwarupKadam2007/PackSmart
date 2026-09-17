@@ -18,8 +18,8 @@ export const FRAME_METADATA = [
     tagline: "SAGARMATHA • RESPIRATION • THE MOISTURE BARRIER",
     desc: "Fresh produce loses up to 40% value due to transpiration & oxygen oxidation without targeted barrier control.",
     hotspots: [
-      { x: 35, y: 40, label: "Respiration Rate", value: "24 mL O₂/kg·h", detail: "High metabolic turnover requiring modified gas equilibrium." },
-      { x: 68, y: 55, label: "Moisture Loss", value: "1.8% / Day", detail: "Transpiration leads to cell turgor pressure collapse." }
+      { x: 58, y: 35, label: "Respiration Rate", value: "24 mL O₂/kg·h", detail: "High metabolic turnover requiring modified gas equilibrium." },
+      { x: 74, y: 55, label: "Moisture Loss", value: "1.8% / Day", detail: "Transpiration leads to cell turgor pressure collapse." }
     ]
   },
   {
@@ -29,8 +29,8 @@ export const FRAME_METADATA = [
     tagline: "CHOMOLUNGMA • GAS EQUILIBRIUM • MAP SOLVER",
     desc: "Balancing headspace oxygen levels prevents tissue anaerobic fermentation while suppressing microbial proliferation.",
     hotspots: [
-      { x: 48, y: 32, label: "Target O₂ Band", value: "3.5 - 5.0 %", detail: "Optimal equilibrium concentration for cellular preservation." },
-      { x: 75, y: 65, label: "CO₂ Tolerance", value: "12.0 % Max", detail: "Prevents CO2 injury and physiological browning." }
+      { x: 55, y: 32, label: "Target O₂ Band", value: "3.5 - 5.0 %", detail: "Optimal equilibrium concentration for cellular preservation." },
+      { x: 78, y: 62, label: "CO₂ Tolerance", value: "12.0 % Max", detail: "Prevents CO2 injury and physiological browning." }
     ]
   },
   {
@@ -40,8 +40,8 @@ export const FRAME_METADATA = [
     tagline: "THE THIRD POLE • MET-PET / AL FOIL / EVOH",
     desc: "Combining high-density barrier substrates engineered through micro-extrusion & vacuum metallization.",
     hotspots: [
-      { x: 42, y: 45, label: "Met-PET Outer Layer", value: "12 µm", detail: "Pin-hole free high oxygen reflection barrier." },
-      { x: 60, y: 70, label: "Cellulose Film Core", value: "25 µm", detail: "Bio-based renewable structure with moisture buffering." }
+      { x: 56, y: 42, label: "Met-PET Outer Layer", value: "12 µm", detail: "Pin-hole free high oxygen reflection barrier." },
+      { x: 75, y: 65, label: "Cellulose Film Core", value: "25 µm", detail: "Bio-based renewable structure with moisture buffering." }
     ]
   },
   {
@@ -51,8 +51,8 @@ export const FRAME_METADATA = [
     tagline: "FICKIAN DIFFUSION • THERMODYNAMICS",
     desc: "Numerical integration computes day-by-day gas permeation through variable ambient relative humidity & temperature.",
     hotspots: [
-      { x: 30, y: 50, label: "OTR Efficacy", value: "< 0.5 cm³/m²/day", detail: "Tested at 23°C, 0% RH per ASTM D3985 standards." },
-      { x: 70, y: 40, label: "WVTR Rating", value: "0.08 g/m²/day", detail: "Ultra-low moisture transfer rate for crispy texture protection." }
+      { x: 55, y: 38, label: "OTR Efficacy", value: "< 0.5 cm³/m²/day", detail: "Tested at 23°C, 0% RH per ASTM D3985 standards." },
+      { x: 75, y: 55, label: "WVTR Rating", value: "0.08 g/m²/day", detail: "Ultra-low moisture transfer rate for crispy texture protection." }
     ]
   },
   {
@@ -62,8 +62,8 @@ export const FRAME_METADATA = [
     tagline: "TEMPERATURE SHOCK • COLD CHAIN SIMULATION",
     desc: "Simulates sudden ambient temperature spikes (4°C to 30°C) to test condensation formation and seal integrity.",
     hotspots: [
-      { x: 50, y: 38, label: "Thermal Stability", value: "-20°C to +70°C", detail: "No glass transition embrittlement or seal delamination." },
-      { x: 80, y: 60, label: "Condensation Delta", value: "ΔT = 26°C", detail: "Anti-fog interior surfactant maintains crystal clarity." }
+      { x: 58, y: 36, label: "Thermal Stability", value: "-20°C to +70°C", detail: "No glass transition embrittlement or seal delamination." },
+      { x: 80, y: 58, label: "Condensation Delta", value: "ΔT = 26°C", detail: "Anti-fog interior surfactant maintains crystal clarity." }
     ]
   },
   {
@@ -73,8 +73,8 @@ export const FRAME_METADATA = [
     tagline: "TOPSIS SCORE • 0.7627 OPTIMAL RANK",
     desc: "Evaluates 500+ polymer matrix combinations against weighted vectors of barrier performance, cost, and recyclability.",
     hotspots: [
-      { x: 40, y: 55, label: "Top Rank Substrate", value: "Met-PET / Cellulose", detail: "Highest closeness coefficient to ideal positive solution." },
-      { x: 62, y: 35, label: "Recyclability Index", value: "Class A (92%)", detail: "Fully repulpable & mono-material circular economy compatible." }
+      { x: 56, y: 40, label: "Top Rank Substrate", value: "Met-PET / Cellulose", detail: "Highest closeness coefficient to ideal positive solution." },
+      { x: 76, y: 58, label: "Recyclability Index", value: "Class A (92%)", detail: "Fully repulpable & mono-material circular economy compatible." }
     ]
   },
   {
@@ -84,8 +84,8 @@ export const FRAME_METADATA = [
     tagline: "PRESERVATION ASCENT • 61 DAYS SHELF LIFE",
     desc: "Empirical Euler numerical integration confirms 4.3x shelf-life expansion with zero artificial chemical preservatives.",
     hotspots: [
-      { x: 38, y: 48, label: "Moisture Gain", value: "< 0.4% Total", detail: "Prevents caking, sogginess, and microbial mold spore germination." },
-      { x: 72, y: 52, label: "Lipid Oxidation", value: "0.02 meq/kg", detail: "Peroxide value remains well below spoilage threshold." }
+      { x: 56, y: 40, label: "Moisture Gain", value: "< 0.4% Total", detail: "Prevents caking, sogginess, and microbial mold spore germination." },
+      { x: 76, y: 56, label: "Lipid Oxidation", value: "0.02 meq/kg", detail: "Peroxide value remains well below spoilage threshold." }
     ]
   },
   {
@@ -95,8 +95,8 @@ export const FRAME_METADATA = [
     tagline: "BIO-POLYMER • ZERO PLASTIC FOOTPRINT",
     desc: "Transition seamless into EN 13432 certified industrial compostable films with identical gas barrier properties.",
     hotspots: [
-      { x: 45, y: 42, label: "Degradation Rate", value: "180 Days", detail: "Breaks down into water, CO₂ and biomass under industrial compost." },
-      { x: 66, y: 68, label: "Carbon Footprint", value: "-64% CO₂e", detail: "Low fossil fuel energy input during extrusion process." }
+      { x: 56, y: 38, label: "Degradation Rate", value: "180 Days", detail: "Breaks down into water, CO₂ and biomass under industrial compost." },
+      { x: 75, y: 64, label: "Carbon Footprint", value: "-64% CO₂e", detail: "Low fossil fuel energy input during extrusion process." }
     ]
   },
   {
@@ -106,7 +106,7 @@ export const FRAME_METADATA = [
     tagline: "THE ASCENT COMPLETE • LIVE SYSTEM READY",
     desc: "System ready for live barrier calculation, commodity lookup, and custom multi-layer laminate specification export.",
     hotspots: [
-      { x: 50, y: 50, label: "Engine Status", value: "100% Operational", detail: "85 Commodities & 27 Barrier Polymers fully indexed." }
+      { x: 62, y: 45, label: "Engine Status", value: "100% Operational", detail: "85 Commodities & 27 Barrier Polymers fully indexed." }
     ]
   }
 ];

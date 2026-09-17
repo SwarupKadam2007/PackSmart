@@ -7,47 +7,47 @@ export default function HeroOverlay({ currentFrameIndex, onOpenSim, onOpenLamina
   const frameInfo = t.frames[currentFrameIndex] || t.frames[0];
 
   return (
-    <div className="fixed inset-0 z-10 pointer-events-none flex flex-col justify-between px-8 py-20 md:px-16 lg:px-24">
-      {/* Center Hero Typography Container */}
-      <div className="mt-16 md:mt-24 max-w-4xl transition-all duration-700">
-        {/* Top Tagline Line */}
-        <div className="flex items-center gap-3 mb-3">
-          <span className="h-px w-8 bg-amber-400/60"></span>
-          <span className="text-[11px] font-mono tracking-[0.2em] text-amber-200 uppercase font-semibold drop-shadow-md">
+    <div className="fixed inset-0 z-10 pointer-events-none flex flex-col justify-between px-6 pt-24 pb-28 sm:px-12 md:px-16 lg:px-20 overflow-hidden">
+      {/* Center-Left Hero Typography Container */}
+      <div className="max-w-xl md:max-w-2xl lg:max-w-3xl transition-all duration-700">
+        {/* Top Tagline Line with safe bottom separation */}
+        <div className="flex items-center gap-2.5 mb-2.5">
+          <span className="h-0.5 w-6 bg-amber-400 shrink-0"></span>
+          <span className="text-[11px] sm:text-xs font-mono tracking-[0.15em] text-amber-300 uppercase font-semibold drop-shadow-md break-words">
             {t.tagline}
           </span>
         </div>
 
-        {/* Main Giant Title */}
-        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-serif font-extrabold text-white tracking-tight leading-tight md:leading-none title-glow drop-shadow-2xl break-words whitespace-normal max-w-full">
+        {/* Main Title with generous vertical line-height for Indian language matras */}
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-serif font-extrabold text-white tracking-tight leading-[1.25] pt-1 pb-1 title-glow drop-shadow-2xl break-words">
           {currentFrameIndex === 0 ? t.title : frameInfo.title}
         </h1>
 
         {/* Subtitle in elegant italic script */}
-        <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-script text-amber-300/90 italic tracking-wide mt-2 mb-8 drop-shadow-lg font-serif break-words whitespace-normal max-w-full leading-snug">
+        <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-serif text-amber-300/95 italic tracking-wide mt-2 mb-4 drop-shadow-lg break-words leading-snug">
           {currentFrameIndex === 0 ? t.subTitle : frameInfo.subtitle}
         </div>
 
         {/* Description summary */}
-        <p className="text-sm md:text-base text-slate-200/90 font-sans max-w-xl leading-relaxed mb-8 drop-shadow-md bg-slate-950/50 backdrop-blur-md p-4 rounded-xl border border-white/10">
+        <p className="text-xs sm:text-sm text-slate-200/95 font-sans leading-relaxed mb-6 drop-shadow-md bg-slate-950/70 backdrop-blur-md p-3.5 sm:p-4 rounded-2xl border border-white/10 max-w-lg">
           {currentFrameIndex === 0 ? t.desc : frameInfo.desc}
         </p>
 
         {/* Primary Call to Action Button */}
-        <div className="flex flex-wrap items-center gap-4 pointer-events-auto">
+        <div className="flex flex-wrap items-center gap-3.5 pointer-events-auto">
           <button
             onClick={onOpenSim}
-            className="px-7 py-3.5 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 hover:from-amber-300 hover:to-yellow-200 text-slate-950 font-sans font-bold text-xs tracking-widest uppercase flex items-center gap-3 shadow-2xl shadow-amber-400/30 hover:scale-105 active:scale-95 transition-all group"
+            className="px-6 py-3 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 hover:from-amber-300 hover:to-yellow-200 text-slate-950 font-sans font-bold text-xs tracking-wider uppercase flex items-center gap-2.5 shadow-xl shadow-amber-400/25 hover:scale-105 active:scale-95 transition-all group"
           >
-            <div className="w-6 h-6 rounded-full bg-slate-950 text-amber-400 flex items-center justify-center group-hover:bg-amber-400 group-hover:text-slate-950 transition-colors">
-              <Play className="w-3 h-3 fill-current ml-0.5" />
+            <div className="w-5 h-5 rounded-full bg-slate-950 text-amber-400 flex items-center justify-center group-hover:bg-amber-400 group-hover:text-slate-950 transition-colors">
+              <Play className="w-2.5 h-2.5 fill-current ml-0.5" />
             </div>
             <span>{t.ctaExperience}</span>
           </button>
 
           <button
             onClick={onOpenLaminate}
-            className="px-6 py-3.5 rounded-full bg-slate-900/60 backdrop-blur-md hover:bg-slate-800/80 border border-white/20 text-slate-200 font-sans font-semibold text-xs tracking-widest uppercase flex items-center gap-2 transition-all hover:border-amber-400/60"
+            className="px-5 py-3 rounded-full bg-slate-900/70 backdrop-blur-md hover:bg-slate-800/90 border border-white/20 text-slate-200 font-sans font-semibold text-xs tracking-wider uppercase flex items-center gap-2 transition-all hover:border-amber-400/60 shadow-lg"
           >
             <span>{t.ctaInspect}</span>
             <ArrowRight className="w-3.5 h-3.5 text-amber-400" />
@@ -55,14 +55,14 @@ export default function HeroOverlay({ currentFrameIndex, onOpenSim, onOpenLamina
         </div>
       </div>
 
-      {/* Bottom Scroll Prompt Indicator */}
-      <div className="flex items-center justify-between pointer-events-none">
-        <div className="flex items-center gap-2 text-xs font-mono text-slate-300/90 uppercase tracking-widest bg-slate-950/40 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/10">
-          <ChevronDown className="w-4 h-4 text-amber-400 animate-bounce" />
+      {/* Bottom Status Bar - Safely elevated above BottomDock */}
+      <div className="flex items-center justify-between pointer-events-none mb-1">
+        <div className="flex items-center gap-2 text-[11px] font-mono text-slate-300 uppercase tracking-widest bg-slate-950/60 backdrop-blur-md px-3 py-1 rounded-full border border-white/10 shadow-md">
+          <ChevronDown className="w-3.5 h-3.5 text-amber-400 animate-bounce" />
           <span>SCROLL FRAME ({currentFrameIndex + 1} / 9)</span>
         </div>
 
-        <div className="hidden md:flex items-center gap-4 text-[11px] font-mono text-slate-300/80 bg-slate-950/40 backdrop-blur-sm px-4 py-1.5 rounded-full border border-white/10">
+        <div className="hidden md:flex items-center gap-3 text-[10px] font-mono text-slate-300/90 bg-slate-950/60 backdrop-blur-md px-3.5 py-1 rounded-full border border-white/10 shadow-md">
           <span>LAT: 27.9881° N</span>
           <span>•</span>
           <span>OTR &lt; 0.5</span>

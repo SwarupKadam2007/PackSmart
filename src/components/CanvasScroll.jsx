@@ -12,12 +12,91 @@ export default function CanvasScroll({ onFrameChange, currentFrameIndex, isAutoF
   const currentFrameRef = useRef(0);
   const animFrameIdRef = useRef(null);
 
+  // Mouse cursor tracking for 3D parallax movement
+  const targetMouseXRef = useRef(0);
+  const targetMouseYRef = useRef(0);
+  const currentMouseXRef = useRef(0);
+  const currentMouseYRef = useRef(0);
+
   // Background floating dust particles for futuristic atmosphere
   const particlesRef = useRef([]);
 
+  // Mouse move listener: tracks cursor to dynamically tilt & shift background image
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      // Normalize cursor coordinate between -1.0 and 1.0 relative to window center
+      targetMouseXRef.current = (e.clientX / window.innerWidth - 0.5) * 2;
+      targetMouseYRef.current = (e.clientY / window.innerHeight - 0.5) * 2;
+    };
+
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  // Mouse drag & touch drag listener: allows user to scrub frames by dragging cursor
+  useEffect(() => {
+    let isDragging = false;
+    let startY = 0;
+    let startScroll = 0;
+
+    const handleMouseDown = (e) => {
+      // Don't drag if clicking on buttons, links, or open modals
+      if (e.target.closest('button, a, input, select, .pointer-events-auto')) return;
+      isDragging = true;
+      startY = e.clientY;
+      startScroll = window.scrollY;
+    };
+
+    const handleMouseMoveDrag = (e) => {
+      if (!isDragging) return;
+      const deltaY = (startY - e.clientY) * 2.2;
+      window.scrollTo({
+        top: startScroll + deltaY,
+        behavior: 'auto'
+      });
+    };
+
+    const handleMouseUp = () => {
+      isDragging = false;
+    };
+
+    window.addEventListener('mousedown', handleMouseDown);
+    window.addEventListener('mousemove', handleMouseMoveDrag);
+    window.addEventListener('mouseup', handleMouseUp);
+
+    // Touch support for mobile / tablets
+    const handleTouchStart = (e) => {
+      if (e.touches.length === 1) {
+        startY = e.touches[0].clientY;
+        startScroll = window.scrollY;
+      }
+    };
+
+    const handleTouchMove = (e) => {
+      if (e.touches.length === 1) {
+        const deltaY = (startY - e.touches[0].clientY) * 1.5;
+        window.scrollTo({
+          top: startScroll + deltaY,
+          behavior: 'auto'
+        });
+      }
+    };
+
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
+
+    return () => {
+      window.removeEventListener('mousedown', handleMouseDown);
+      window.removeEventListener('mousemove', handleMouseMoveDrag);
+      window.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+    };
+  }, []);
+
   // Initialize atmospheric floating particles
   useEffect(() => {
-    const particleCount = 40;
+    const particleCount = 45;
     const pts = [];
     for (let i = 0; i < particleCount; i++) {
       pts.push({
@@ -113,6 +192,12 @@ export default function CanvasScroll({ onFrameChange, currentFrameIndex, isAutoF
       const diff = targetFrameRef.current - currentFrameRef.current;
       currentFrameRef.current += diff * 0.08; // Smooth interpolation factor
 
+      // Smoothly interpolate mouse parallax coordinates
+      currentMouseXRef.current += (targetMouseXRef.current - currentMouseXRef.current) * 0.05;
+      currentMouseYRef.current += (targetMouseYRef.current - currentMouseYRef.current) * 0.05;
+      const mouseX = currentMouseXRef.current;
+      const mouseY = currentMouseYRef.current;
+
       const exactFrame = currentFrameRef.current;
       const baseIndex = Math.floor(exactFrame);
       const nextIndex = Math.min(baseIndex + 1, FRAME_IMAGES.length - 1);
@@ -139,8 +224,12 @@ export default function CanvasScroll({ onFrameChange, currentFrameIndex, isAutoF
       ctx.scale(dpr, dpr);
       ctx.clearRect(0, 0, width, height);
 
-      // Compute background zoom/parallax scale effect based on scroll position
-      const scrollZoom = 1 + 0.04 * Math.sin(exactFrame * 0.8);
+      // Compute background zoom/parallax scale effect based on scroll position + mouse cursor
+      const scrollZoom = (1 + 0.04 * Math.sin(exactFrame * 0.8)) * 1.08; // Extra 8% margin for seamless cursor pan
+
+      // Parallax translation based on cursor position
+      const parallaxOffsetX = mouseX * 35; // Pans 35px horizontally with cursor
+      const parallaxOffsetY = mouseY * 25; // Pans 25px vertically with cursor
 
       // Helper function to draw an image frame with scale & cover aspect ratio
       const drawFrameImage = (img, alpha = 1.0) => {
@@ -155,13 +244,13 @@ export default function CanvasScroll({ onFrameChange, currentFrameIndex, isAutoF
         if (canvasRatio > imgRatio) {
           drawW = width * scrollZoom;
           drawH = (width / imgRatio) * scrollZoom;
-          drawX = (width - drawW) / 2;
-          drawY = (height - drawH) / 2;
+          drawX = (width - drawW) / 2 + parallaxOffsetX;
+          drawY = (height - drawH) / 2 + parallaxOffsetY;
         } else {
           drawH = height * scrollZoom;
           drawW = (height * imgRatio) * scrollZoom;
-          drawX = (width - drawW) / 2;
-          drawY = (height - drawH) / 2;
+          drawX = (width - drawW) / 2 + parallaxOffsetX;
+          drawY = (height - drawH) / 2 + parallaxOffsetY;
         }
 
         ctx.drawImage(img, drawX, drawY, drawW, drawH);
@@ -187,7 +276,7 @@ export default function CanvasScroll({ onFrameChange, currentFrameIndex, isAutoF
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, width, height);
 
-      // Draw subtle futuristic floating particles
+      // Draw subtle futuristic floating particles reacting to cursor with inverse parallax depth
       particlesRef.current.forEach((pt) => {
         pt.x += pt.speedX;
         pt.y += pt.speedY;
@@ -197,8 +286,11 @@ export default function CanvasScroll({ onFrameChange, currentFrameIndex, isAutoF
         if (pt.y < 0) pt.y = height;
         if (pt.y > height) pt.y = 0;
 
+        const pX = pt.x - mouseX * 45;
+        const pY = pt.y - mouseY * 35;
+
         ctx.beginPath();
-        ctx.arc(pt.x, pt.y, pt.size, 0, Math.PI * 2);
+        ctx.arc(pX, pY, pt.size, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(250, 204, 21, ${pt.opacity})`;
         ctx.shadowBlur = 8;
         ctx.shadowColor = '#fde047';
