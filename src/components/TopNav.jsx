@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Volume2, VolumeX, Compass, Play, Sparkles, Sliders, Globe, ChevronDown } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { LANGUAGES, TRANSLATIONS } from '../data/i18n';
@@ -81,7 +82,12 @@ export default function TopNav({
   const currentLangObj = LANGUAGES.find(l => l.code === lang) || LANGUAGES[0];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-40 px-6 py-4 flex items-center justify-between pointer-events-none">
+    <motion.header 
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+      className="fixed top-0 left-0 right-0 z-40 px-6 py-4 flex items-center justify-between pointer-events-none"
+    >
       {/* Left Creator Branding */}
       <div className="flex items-center gap-3 pointer-events-auto bg-slate-900/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 text-xs text-slate-300 shadow-xl">
         <span className="font-serif font-semibold text-white tracking-wide">{t.title} · The Ascent</span>
@@ -110,8 +116,15 @@ export default function TopNav({
             <ChevronDown className="w-3 h-3 text-amber-400" />
           </button>
 
+          <AnimatePresence>
           {isLangOpen && (
-            <div className="absolute right-0 mt-2 w-44 bg-slate-900/95 backdrop-blur-xl border border-amber-400/40 rounded-2xl shadow-2xl py-2 z-50 animate-in fade-in zoom-in duration-150">
+            <motion.div 
+              initial={{ opacity: 0, y: -10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.95 }}
+              transition={{ duration: 0.15 }}
+              className="absolute right-0 mt-2 w-44 bg-slate-900/95 backdrop-blur-xl border border-amber-400/40 rounded-2xl shadow-2xl py-2 z-50"
+            >
               <div className="px-3 py-1 text-[10px] font-mono text-amber-400/80 uppercase border-b border-white/10 mb-1">
                 SELECT LANGUAGE / भाषा
               </div>
@@ -130,8 +143,9 @@ export default function TopNav({
                   {lang === l.code && <span className="text-amber-400 font-bold">✓</span>}
                 </button>
               ))}
-            </div>
+            </motion.div>
           )}
+          </AnimatePresence>
         </div>
 
         {/* FREE FLIGHT Mode Pill (Only on Home Page) */}
@@ -199,6 +213,6 @@ export default function TopNav({
           <Sliders className="w-4 h-4" />
         </Link>
       </div>
-    </header>
+    </motion.header>
   );
 }

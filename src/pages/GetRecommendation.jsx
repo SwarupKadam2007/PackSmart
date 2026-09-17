@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BrainCircuit, Droplets, Wind, Thermometer, Box, ArrowRight, ShieldCheck, Leaf } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ENGINE_TRANSLATIONS } from '../data/engineI18n';
 
 export default function GetRecommendation({ lang }) {
@@ -120,7 +121,12 @@ export default function GetRecommendation({ lang }) {
         </div>
       </div>
 
-      <div className="flex-1 bg-slate-900/60 backdrop-blur-2xl border border-white/10 rounded-3xl overflow-hidden flex flex-col md:flex-row shadow-2xl relative">
+      <motion.div 
+        initial={{ opacity: 0, y: 40 }} 
+        animate={{ opacity: 1, y: 0 }} 
+        transition={{ duration: 0.6, delay: 0.2 }} 
+        className="flex-1 bg-slate-900/60 backdrop-blur-2xl border border-white/10 rounded-3xl overflow-hidden flex flex-col md:flex-row shadow-2xl relative"
+      >
         
         {/* LEFT/TOP: Inputs Form */}
         <div className="flex-1 overflow-y-auto p-6 sm:p-8 custom-scrollbar border-r border-white/5 relative z-10">
@@ -340,7 +346,7 @@ export default function GetRecommendation({ lang }) {
           </div>
 
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
