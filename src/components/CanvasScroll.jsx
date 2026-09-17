@@ -225,11 +225,12 @@ export default function CanvasScroll({ onFrameChange, currentFrameIndex, isAutoF
       ctx.clearRect(0, 0, width, height);
 
       // Compute background zoom/parallax scale effect based on scroll position + mouse cursor
-      const scrollZoom = (1 + 0.04 * Math.sin(exactFrame * 0.8)) * 1.08; // Extra 8% margin for seamless cursor pan
+      // Increase scrollZoom to allow for more aggressive parallax panning without revealing edges
+      const scrollZoom = (1 + 0.04 * Math.sin(exactFrame * 0.8)) * 1.15; // Increased margin for stronger parallax
 
-      // Parallax translation based on cursor position
-      const parallaxOffsetX = mouseX * 35; // Pans 35px horizontally with cursor
-      const parallaxOffsetY = mouseY * 25; // Pans 25px vertically with cursor
+      // Parallax translation based on cursor position (stronger effect)
+      const parallaxOffsetX = mouseX * 120; // Pans 120px horizontally with cursor
+      const parallaxOffsetY = mouseY * 80;  // Pans 80px vertically with cursor
 
       // Helper function to draw an image frame with scale & cover aspect ratio
       const drawFrameImage = (img, alpha = 1.0) => {
@@ -286,8 +287,8 @@ export default function CanvasScroll({ onFrameChange, currentFrameIndex, isAutoF
         if (pt.y < 0) pt.y = height;
         if (pt.y > height) pt.y = 0;
 
-        const pX = pt.x - mouseX * 45;
-        const pY = pt.y - mouseY * 35;
+        const pX = pt.x - mouseX * 80;
+        const pY = pt.y - mouseY * 50;
 
         ctx.beginPath();
         ctx.arc(pX, pY, pt.size, 0, Math.PI * 2);

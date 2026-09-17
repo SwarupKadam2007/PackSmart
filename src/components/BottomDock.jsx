@@ -5,6 +5,7 @@ import InfoTooltip from './InfoTooltip';
 
 export default function BottomDock({ 
   onOpenSim, 
+  onOpenEngine,
   onOpenLaminate, 
   onOpenPersona, 
   selectedPersona,
@@ -101,7 +102,7 @@ export default function BottomDock({
 
         {/* Launch Engine Yellow Glowing Pill */}
         <button
-          onClick={onOpenSim}
+          onClick={onOpenEngine}
           className="ml-2 px-6 py-3 rounded-xl bg-amber-400 hover:bg-yellow-300 text-slate-950 font-sans font-bold text-xs tracking-wide flex items-center gap-2 transition-all shadow-[0_0_25px_rgba(250,204,21,0.4)] active:scale-95 hover:scale-105"
         >
           <span>{t.launchEngine}</span>

@@ -8,6 +8,7 @@ import RightDotNav from './components/RightDotNav';
 import ShelfLifeModal from './components/ShelfLifeModal';
 import LaminateVisualizerModal from './components/LaminateVisualizerModal';
 import PersonaSelectorModal from './components/PersonaSelectorModal';
+import RecommendationEngine from './components/RecommendationEngine';
 import { FRAME_METADATA } from './data/framesData';
 
 export default function App() {
@@ -20,6 +21,7 @@ export default function App() {
   const [isSimOpen, setIsSimOpen] = useState(false);
   const [isLaminateOpen, setIsLaminateOpen] = useState(false);
   const [isPersonaOpen, setIsPersonaOpen] = useState(false);
+  const [isEngineOpen, setIsEngineOpen] = useState(false);
 
   return (
     <div className="relative min-h-screen bg-[#030a17] text-white selection:bg-amber-500 selection:text-black">
@@ -35,6 +37,7 @@ export default function App() {
         isAutoFlight={isAutoFlight}
         setIsAutoFlight={setIsAutoFlight}
         onOpenSim={() => setIsSimOpen(true)}
+        onOpenEngine={() => setIsEngineOpen(true)}
         onOpenLaminate={() => setIsLaminateOpen(true)}
         lang={lang}
         setLang={setLang}
@@ -44,6 +47,7 @@ export default function App() {
       <HeroOverlay
         currentFrameIndex={currentFrameIndex}
         onOpenSim={() => setIsSimOpen(true)}
+        onOpenEngine={() => setIsEngineOpen(true)}
         onOpenLaminate={() => setIsLaminateOpen(true)}
         lang={lang}
       />
@@ -57,6 +61,7 @@ export default function App() {
       {/* Translucent Futuristic Bottom Dock (Matching User Reference Image) */}
       <BottomDock
         onOpenSim={() => setIsSimOpen(true)}
+        onOpenEngine={() => setIsEngineOpen(true)}
         onOpenLaminate={() => setIsLaminateOpen(true)}
         onOpenPersona={() => setIsPersonaOpen(true)}
         selectedPersona={selectedPersona}
@@ -81,6 +86,12 @@ export default function App() {
       <LaminateVisualizerModal 
         isOpen={isLaminateOpen} 
         onClose={() => setIsLaminateOpen(false)} 
+        lang={lang}
+      />
+
+      <RecommendationEngine 
+        isOpen={isEngineOpen} 
+        onClose={() => setIsEngineOpen(false)} 
         lang={lang}
       />
 

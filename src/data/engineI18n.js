@@ -1,0 +1,272 @@
+export const ENGINE_TRANSLATIONS = {
+  en: {
+    title: "Intelligent Packaging Recommendation Engine",
+    subtitle: "AI-Powered Decision Support Tool",
+    inputs: {
+      commodityType: "Commodity Type",
+      freshProduce: "Fresh Produce (Fruits/Vegetables)",
+      dryGoods: "Dry Goods & Grains",
+      meatPoultry: "Meat & Poultry",
+      dairy: "Dairy Products",
+      snacks: "Snacks & Fried Foods",
+
+      moistureContent: "Moisture Content",
+      oilFatContent: "Oil / Fat Content",
+      pHLevel: "pH Level",
+      respirationRate: "Respiration Rate (Fresh Produce)",
+      
+      low: "Low",
+      medium: "Medium",
+      high: "High",
+      acidic: "Acidic",
+      neutral: "Neutral",
+      alkaline: "Alkaline",
+
+      desiredShelfLife: "Desired Shelf Life (Days)",
+      storageTemp: "Storage Temperature (°C)",
+      relativeHumidity: "Relative Humidity (%)",
+      
+      storageType: "Storage Type",
+      ambient: "Ambient (Room Temp)",
+      chilled: "Chilled (Fridge)",
+      frozen: "Frozen",
+
+      transportConditions: "Transportation Conditions",
+      smooth: "Smooth",
+      rough: "Rough / Long Distance",
+    },
+    outputs: {
+      title: "Recommended Packaging Specifications",
+      material: "Recommended Material Structure",
+      otr: "Oxygen Transmission Rate (OTR)",
+      wvtr: "Water Vapor Transmission Rate (WVTR)",
+      thickness: "Recommended Film Thickness",
+      map: "MAP Suitability",
+      sealability: "Sealability Strength",
+      sustainability: "Eco-Friendly Alternatives",
+      generateBtn: "Analyze & Recommend",
+      calculating: "Analyzing Parameters...",
+    },
+    specs: {
+      otrUnit: "cc/m²/day",
+      wvtrUnit: "g/m²/day",
+      thicknessUnit: "µm (microns)",
+    }
+  },
+  mr: {
+    title: "इंटेलिजेंट पॅकेजिंग शिफारस इंजिन",
+    subtitle: "एआय आधारित निर्णय समर्थन साधन",
+    inputs: {
+      commodityType: "अन्नाचा प्रकार",
+      freshProduce: "ताजी फळे आणि भाज्या",
+      dryGoods: "सुकामेवा आणि धान्य",
+      meatPoultry: "मांस आणि कुक्कुटपालन",
+      dairy: "दुग्धजन्य पदार्थ",
+      snacks: "स्नॅक्स आणि तळलेले पदार्थ",
+
+      moistureContent: "पाण्याचे / दमटपणाचे प्रमाण",
+      oilFatContent: "तेल / चरबीचे प्रमाण",
+      pHLevel: "सामू (pH) पातळी",
+      respirationRate: "श्वसन दर (ताजे उत्पादन)",
+      
+      low: "कमी",
+      medium: "मध्यम",
+      high: "जास्त",
+      acidic: "आम्लधर्मी (Acidic)",
+      neutral: "तटस्थ (Neutral)",
+      alkaline: "अल्कधर्मी (Alkaline)",
+
+      desiredShelfLife: "अपेक्षित टिकण्याची क्षमता (दिवस)",
+      storageTemp: "साठवणूक तापमान (°C)",
+      relativeHumidity: "सापेक्ष आर्द्रता (%)",
+      
+      storageType: "साठवणूक प्रकार",
+      ambient: "सामान्य तापमान (Ambient)",
+      chilled: "थंड (Chilled)",
+      frozen: "गोठवलेले (Frozen)",
+
+      transportConditions: "वाहतूक परिस्थिती",
+      smooth: "सुरळीत",
+      rough: "खडबडीत / लांबचा पल्ला",
+    },
+    outputs: {
+      title: "शिफारस केलेले पॅकेजिंग तपशील",
+      material: "शिफारस केलेली प्लास्टिक रचना",
+      otr: "ऑक्सिजन ट्रान्समिशन रेट (OTR)",
+      wvtr: "वॉटर व्हेपर ट्रान्समिशन रेट (WVTR)",
+      thickness: "शिफारस केलेली फिल्मची जाडी",
+      map: "मॅप (MAP) योग्यता",
+      sealability: "सीलिंग शक्ती",
+      sustainability: "पर्यावरणपूरक पर्याय",
+      generateBtn: "विश्लेषण करा आणि शिफारस मिळवा",
+      calculating: "पॅरामीटर्सचे विश्लेषण करत आहे...",
+    },
+    specs: {
+      otrUnit: "cc/m²/दिवस",
+      wvtrUnit: "g/m²/दिवस",
+      thicknessUnit: "µm (मायक्रॉन)",
+    }
+  },
+  hi: {
+    title: "इंटेलिजेंट पैकेजिंग अनुशंसा इंजन",
+    subtitle: "एआई-आधारित निर्णय समर्थन उपकरण",
+    inputs: {
+      commodityType: "खाद्य सामग्री का प्रकार",
+      freshProduce: "ताजे फल और सब्जियां",
+      dryGoods: "अनाज और सूखे पदार्थ",
+      meatPoultry: "मांस और पोल्ट्री",
+      dairy: "डेयरी उत्पाद",
+      snacks: "नमकीन और तले हुए खाद्य पदार्थ",
+
+      moistureContent: "नमी की मात्रा",
+      oilFatContent: "तेल / वसा की मात्रा",
+      pHLevel: "पीएच (pH) स्तर",
+      respirationRate: "श्वसन दर (ताजा उपज)",
+      
+      low: "कम",
+      medium: "मध्यम",
+      high: "अधिक",
+      acidic: "अम्लीय (Acidic)",
+      neutral: "तटस्थ (Neutral)",
+      alkaline: "क्षारीय (Alkaline)",
+
+      desiredShelfLife: "अपेक्षित शेल्फ लाइफ (दिन)",
+      storageTemp: "भंडारण तापमान (°C)",
+      relativeHumidity: "सापेक्ष आर्द्रता (%)",
+      
+      storageType: "भंडारण का प्रकार",
+      ambient: "सामान्य तापमान (Ambient)",
+      chilled: "ठंडा (Chilled)",
+      frozen: "जमा हुआ (Frozen)",
+
+      transportConditions: "परिवहन की स्थिति",
+      smooth: "सामान्य",
+      rough: "खराब / लंबी दूरी",
+    },
+    outputs: {
+      title: "अनुशंसित पैकेजिंग विनिर्देश",
+      material: "अनुशंसित सामग्री संरचना",
+      otr: "ऑक्सीजन ट्रांसमिशन रेट (OTR)",
+      wvtr: "वाटर वेपर ट्रांसमिशन रेट (WVTR)",
+      thickness: "अनुशंसित फिल्म की मोटाई",
+      map: "मैप (MAP) उपयुक्तता",
+      sealability: "सीलिंग शक्ति",
+      sustainability: "पर्यावरण के अनुकूल विकल्प",
+      generateBtn: "विश्लेषण करें और अनुशंसा प्राप्त करें",
+      calculating: "मापदंडों का विश्लेषण कर रहा है...",
+    },
+    specs: {
+      otrUnit: "cc/m²/दिन",
+      wvtrUnit: "g/m²/दिन",
+      thicknessUnit: "µm (माइक्रोन)",
+    }
+  },
+  pa: {
+    title: "ਸਮਾਰਟ ਪੈਕੇਜਿੰਗ ਸਿਫਾਰਸ਼ ਇੰਜਣ",
+    subtitle: "AI ਅਧਾਰਤ ਫੈਸਲਾ ਸਮਰਥਨ ਟੂਲ",
+    inputs: {
+      commodityType: "ਭੋਜਨ ਦੀ ਕਿਸਮ",
+      freshProduce: "ਤਾਜ਼ੇ ਫਲ ਅਤੇ ਸਬਜ਼ੀਆਂ",
+      dryGoods: "ਅਨਾਜ ਅਤੇ ਸੁੱਕਾ ਮਾਲ",
+      meatPoultry: "ਮੀਟ ਅਤੇ ਪੋਲਟਰੀ",
+      dairy: "ਡੇਅਰੀ ਉਤਪਾਦ",
+      snacks: "ਸਨੈਕਸ ਅਤੇ ਤਲਿਆ ਹੋਇਆ ਭੋਜਨ",
+
+      moistureContent: "ਨਮੀ ਦੀ ਮਾਤਰਾ",
+      oilFatContent: "ਤੇਲ / ਚਰਬੀ ਦੀ ਮਾਤਰਾ",
+      pHLevel: "pH ਪੱਧਰ",
+      respirationRate: "ਸਾਹ ਲੈਣ ਦੀ ਦਰ",
+      
+      low: "ਘੱਟ",
+      medium: "ਦਰਮਿਆਨੀ",
+      high: "ਜ਼ਿਆਦਾ",
+      acidic: "ਤੇਜ਼ਾਬੀ (Acidic)",
+      neutral: "ਨਿਰਪੱਖ (Neutral)",
+      alkaline: "ਖਾਰੀ (Alkaline)",
+
+      desiredShelfLife: "ਲੋੜੀਂਦੀ ਸ਼ੈਲਫ ਲਾਈਫ (ਦਿਨ)",
+      storageTemp: "ਸਟੋਰੇਜ ਤਾਪਮਾਨ (°C)",
+      relativeHumidity: "ਨਮੀ ਦੀ ਪ੍ਰਤੀਸ਼ਤਤਾ (%)",
+      
+      storageType: "ਸਟੋਰੇਜ ਦੀ ਕਿਸਮ",
+      ambient: "ਆਮ ਤਾਪਮਾਨ (Ambient)",
+      chilled: "ਠੰਡਾ (Chilled)",
+      frozen: "ਜੰਮਿਆ ਹੋਇਆ (Frozen)",
+
+      transportConditions: "ਟ੍ਰਾਂਸਪੋਰਟ ਦੀ ਸਥਿਤੀ",
+      smooth: "ਵਧੀਆ",
+      rough: "ਖਰਾਬ / ਲੰਬੀ ਦੂਰੀ",
+    },
+    outputs: {
+      title: "ਸਿਫਾਰਸ਼ ਕੀਤੇ ਪੈਕੇਜਿੰਗ ਵੇਰਵੇ",
+      material: "ਸਿਫਾਰਸ਼ ਕੀਤੀ ਗਈ ਸਮੱਗਰੀ ਬਣਤਰ",
+      otr: "ਆਕਸੀਜਨ ਟ੍ਰਾਂਸਮਿਸ਼ਨ ਰੇਟ (OTR)",
+      wvtr: "ਪਾਣੀ ਦੀ ਭਾਫ਼ ਟ੍ਰਾਂਸਮਿਸ਼ਨ ਰੇਟ (WVTR)",
+      thickness: "ਸਿਫਾਰਸ਼ ਕੀਤੀ ਫਿਲਮ ਮੋਟਾਈ",
+      map: "MAP ਅਨੁਕੂਲਤਾ",
+      sealability: "ਸੀਲਿੰਗ ਤਾਕਤ",
+      sustainability: "ਵਾਤਾਵਰਣ-ਅਨੁਕੂਲ ਬਦਲ",
+      generateBtn: "ਵਿਸ਼ਲੇਸ਼ਣ ਕਰੋ ਅਤੇ ਸਿਫਾਰਸ਼ ਪ੍ਰਾਪਤ ਕਰੋ",
+      calculating: "ਪੈਰਾਮੀਟਰਾਂ ਦਾ ਵਿਸ਼ਲੇਸ਼ਣ ਕਰ ਰਿਹਾ ਹੈ...",
+    },
+    specs: {
+      otrUnit: "cc/m²/ਦਿਨ",
+      wvtrUnit: "g/m²/ਦਿਨ",
+      thicknessUnit: "µm (ਮਾਈਕ੍ਰੋਨ)",
+    }
+  },
+  gu: {
+    title: "ઇન્ટેલિજન્ટ પેકેજિંગ ભલામણ એન્જિન",
+    subtitle: "AI-આધારિત નિર્ણય સપોર્ટ ટૂલ",
+    inputs: {
+      commodityType: "ખાદ્ય સામગ્રીનો પ્રકાર",
+      freshProduce: "તાજા ફળો અને શાકભાજી",
+      dryGoods: "અનાજ અને સૂકો માલ",
+      meatPoultry: "માંસ અને પોલ્ટ્રી",
+      dairy: "ડેરી ઉત્પાદનો",
+      snacks: "નાસ્તો અને તળેલા ખોરાક",
+
+      moistureContent: "ભેજનું પ્રમાણ",
+      oilFatContent: "તેલ / ચરબીનું પ્રમાણ",
+      pHLevel: "pH સ્તર",
+      respirationRate: "શ્વસન દર",
+      
+      low: "ઓછું",
+      medium: "મધ્યમ",
+      high: "વધારે",
+      acidic: "એસિડિક (Acidic)",
+      neutral: "તટસ્થ (Neutral)",
+      alkaline: "આલ્કલાઇન (Alkaline)",
+
+      desiredShelfLife: "ઇચ્છિત શેલ્ફ લાઇફ (દિવસો)",
+      storageTemp: "સંગ્રહ તાપમાન (°C)",
+      relativeHumidity: "સાપેક્ષ ભેજ (%)",
+      
+      storageType: "સંગ્રહ પ્રકાર",
+      ambient: "સામાન્ય તાપમાન (Ambient)",
+      chilled: "ઠંડુ (Chilled)",
+      frozen: "સ્થિર (Frozen)",
+
+      transportConditions: "પરિવહન પરિસ્થિતિઓ",
+      smooth: "સરળ",
+      rough: "ખરાબ / લાંબુ અંતર",
+    },
+    outputs: {
+      title: "ભલામણ કરેલ પેકેજિંગ વિશિષ્ટતાઓ",
+      material: "ભલામણ કરેલ સામગ્રી માળખું",
+      otr: "ઓક્સિજન ટ્રાન્સમિશન રેટ (OTR)",
+      wvtr: "વોટર વેપર ટ્રાન્સમિશન રેટ (WVTR)",
+      thickness: "ભલામણ કરેલ ફિલ્મ જાડાઈ",
+      map: "મેપ (MAP) યોગ્યતા",
+      sealability: "સીલિંગ તાકાત",
+      sustainability: "ઇકો-ફ્રેન્ડલી વિકલ્પો",
+      generateBtn: "વિશ્લેષણ કરો અને ભલામણ મેળવો",
+      calculating: "માપદંડોનું વિશ્લેષણ કરી રહ્યું છે...",
+    },
+    specs: {
+      otrUnit: "cc/m²/દિવસ",
+      wvtrUnit: "g/m²/દિવસ",
+      thicknessUnit: "µm (માઇક્રોન)",
+    }
+  }
+};

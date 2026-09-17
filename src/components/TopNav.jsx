@@ -4,8 +4,9 @@ import { LANGUAGES, TRANSLATIONS } from '../data/i18n';
 
 export default function TopNav({ 
   isAutoFlight, 
-  setIsAutoFlight, 
-  onOpenSim, 
+  setIsAutoFlight,
+  onOpenSim,
+  onOpenEngine,
   onOpenLaminate, 
   lang, 
   setLang 
@@ -178,7 +179,7 @@ export default function TopNav({
 
         {/* EXPERIENCE Primary Action Button */}
         <button
-          onClick={onOpenSim}
+          onClick={onOpenEngine}
           className="px-5 py-2 rounded-full text-xs font-mono font-bold tracking-widest text-white bg-slate-800/80 hover:bg-slate-700/90 backdrop-blur-md border border-white/20 flex items-center gap-2 transition-all shadow-lg hover:shadow-amber-500/20 group"
         >
           <Play className="w-3 h-3 text-amber-400 fill-amber-400 group-hover:scale-110 transition-transform" />
