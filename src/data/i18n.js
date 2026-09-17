@@ -27,6 +27,15 @@ export const TRANSLATIONS = {
     scientistBadge: "SCIENTIST ANALYST MODE",
     adminBadge: "ADMIN SYSTEM MODE",
     
+    // Info tooltips
+    info: {
+      persona: "Choose 'Farmer' for simple advice or 'Scientist' for technical details.",
+      materials: "View the different plastic layers used to make the packaging bag.",
+      sim: "Calculate how many days the crop stays fresh inside the bag.",
+      physics: "Learn how the bag stops air and moisture from entering.",
+      topsis: "A smart rating system that picks the best and cheapest bag for you."
+    },
+    
     // Farmer friendly translations
     normalBag: "Normal Packaging",
     recommendedBag: "Recommended AI Packaging",
@@ -110,6 +119,15 @@ export const TRANSLATIONS = {
     scientistBadge: "शास्त्रज्ञ मोड",
     adminBadge: "ॲडमिन मोड",
     
+    // Info tooltips
+    info: {
+      persona: "'शेतकरी' सोप्या माहितीसाठी निवडा किंवा 'शास्त्रज्ञ' तांत्रिक माहितीसाठी.",
+      materials: "पॅकिंग पिशवी बनवण्यासाठी वापरलेले प्लॅस्टिकचे थर पहा.",
+      sim: "पिशवीत पीक किती दिवस ताजे राहते हे मोजा.",
+      physics: "पिशवी हवा आणि दमटपणा कसा थांबवते हे जाणून घ्या.",
+      topsis: "सर्वात चांगली आणि स्वस्त पिशवी निवडणारी स्मार्ट रेटिंग प्रणाली."
+    },
+    
     normalBag: "सामान्य पिशवी",
     recommendedBag: "खास AI पॅकेजिंग पिशवी",
     freshnessGain: "जास्तीचे मिळालेले ताजे दिवस",
@@ -191,6 +209,15 @@ export const TRANSLATIONS = {
     farmerBadge: "किसान मित्र मोड",
     scientistBadge: "वैज्ञानिक मोड",
     adminBadge: "एडमिन मोड",
+    
+    // Info tooltips
+    info: {
+      persona: "'किसान' आसान जानकारी के लिए चुनें या 'वैज्ञानिक' तकनीकी जानकारी के लिए।",
+      materials: "पैकिंग बैग बनाने के लिए इस्तेमाल की गई प्लास्टिक की परतें देखें।",
+      sim: "गणना करें कि बैग के अंदर फसल कितने दिनों तक ताजी रहती है।",
+      physics: "जानें कि बैग हवा और नमी को कैसे रोकता है।",
+      topsis: "एक स्मार्ट रेटिंग प्रणाली जो आपके लिए सबसे अच्छा और सस्ता बैग चुनती है।"
+    },
 
     normalBag: "सामान्य बैग",
     recommendedBag: "विशेष AI पैकेजिंग बैग",
@@ -273,6 +300,15 @@ export const TRANSLATIONS = {
     farmerBadge: "ਕਿਸਾਨ ਮਿੱਤਰ ਮੋਡ",
     scientistBadge: "ਵਿਗਿਆਨਕ ਮੋਡ",
     adminBadge: "ਐਡਮਿਨ ਮੋਡ",
+    
+    // Info tooltips
+    info: {
+      persona: "ਆਸਾਨ ਜਾਣਕਾਰੀ ਲਈ 'ਕਿਸਾਨ' ਚੁਣੋ ਜਾਂ ਤਕਨੀਕੀ ਜਾਣਕਾਰੀ ਲਈ 'ਵਿਗਿਆਨੀ' ਚੁਣੋ।",
+      materials: "ਪੈਕਿੰਗ ਬੈਗ ਬਣਾਉਣ ਲਈ ਵਰਤੀਆਂ ਜਾਣ ਵਾਲੀਆਂ ਪਲਾਸਟਿਕ ਦੀਆਂ ਪਰਤਾਂ ਵੇਖੋ।",
+      sim: "ਗਣਨਾ ਕਰੋ ਕਿ ਫਸਲ ਬੈਗ ਦੇ ਅੰਦਰ ਕਿੰਨੇ ਦਿਨ ਤਾਜ਼ੀ ਰਹਿੰਦੀ ਹੈ।",
+      physics: "ਜਾਣੋ ਕਿ ਬੈਗ ਹਵਾ ਅਤੇ ਨਮੀ ਨੂੰ ਕਿਵੇਂ ਰੋਕਦਾ ਹੈ।",
+      topsis: "ਇੱਕ ਸਮਾਰਟ ਰੇਟਿੰਗ ਸਿਸਟਮ ਜੋ ਤੁਹਾਡੇ ਲਈ ਸਭ ਤੋਂ ਵਧੀਆ ਅਤੇ ਸਸਤਾ ਬੈਗ ਚੁਣਦਾ ਹੈ।"
+    },
 
     normalBag: "ਆਮ ਬੋਰੀ/ਬੈਗ",
     recommendedBag: "ਖਾਸ AI ਪੈਕੇਜਿੰਗ ਬੈਗ",
@@ -353,8 +389,17 @@ export const TRANSLATIONS = {
     topsisScore: "શ્રેષ્ઠ રેટિંગ",
     launchEngine: "એન્જિન શરૂ કરો",
     farmerBadge: "ખેડૂત મિત્ર મોડ",
-    scientistBadge: "વૈજ્ઞાનિક મોਡ",
+    scientistBadge: "વૈજ્ઞાનિક મોડ",
     adminBadge: "એડમિન મોડ",
+
+    // Info tooltips
+    info: {
+      persona: "સરળ માહિતી માટે 'ખેડૂત' પસંદ કરો અથવા તકનીકી માહિતી માટે 'વૈજ્ઞાનિક' પસંદ કરો.",
+      materials: "પેકિંગ બેગ બનાવવા માટે વપરાતા પ્લાસ્ટિકના સ્તરો જુઓ.",
+      sim: "ગણતરી કરો કે બેગની અંદર પાક કેટલા દિવસ તાજો રહે છે.",
+      physics: "જાણો કે બેગ હવા અને ભેજને કેવી રીતે અટકાવે છે.",
+      topsis: "એક સ્માર્ટ રેટિંગ સિસ્ટમ જે તમારા માટે શ્રેષ્ઠ અને સસ્તી બેગ પસંદ કરે છે."
+    },
 
     normalBag: "સામાન્ય કોથળો",
     recommendedBag: "ખાસ AI પેકેજિંગ બેગ",

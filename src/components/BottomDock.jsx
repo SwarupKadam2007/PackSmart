@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Layers, Activity, Award, User, Clock, ChevronRight } from 'lucide-react';
 import { TRANSLATIONS } from '../data/i18n';
+import InfoTooltip from './InfoTooltip';
 
 export default function BottomDock({ 
   onOpenSim, 
@@ -37,8 +38,9 @@ export default function BottomDock({
               : 'text-slate-200 hover:text-amber-300 hover:bg-slate-900/60 border border-transparent'
           }`}
         >
-          <User className="w-4 h-4 text-amber-400" />
-          <span>{t.persona} ({selectedPersona})</span>
+          <User className="w-4 h-4 text-amber-400 shrink-0" />
+          <span className="whitespace-nowrap">{t.persona} ({selectedPersona})</span>
+          <InfoTooltip text={t.info?.persona} />
         </button>
 
         {/* Film Materials Tab */}
@@ -50,8 +52,9 @@ export default function BottomDock({
               : 'text-slate-200 hover:text-amber-300 hover:bg-slate-900/60 border border-transparent'
           }`}
         >
-          <Layers className="w-4 h-4 text-amber-400" />
-          <span>{t.filmMaterials}</span>
+          <Layers className="w-4 h-4 text-amber-400 shrink-0" />
+          <span className="whitespace-nowrap">{t.filmMaterials}</span>
+          <InfoTooltip text={t.info?.materials} />
         </button>
 
         {/* Shelf-Life Sim Tab */}
@@ -63,8 +66,9 @@ export default function BottomDock({
               : 'text-slate-200 hover:text-amber-300 hover:bg-slate-900/60 border border-transparent'
           }`}
         >
-          <Activity className="w-4 h-4 text-emerald-400" />
-          <span>{t.shelfLifeSim}</span>
+          <Activity className="w-4 h-4 text-emerald-400 shrink-0" />
+          <span className="whitespace-nowrap">{t.shelfLifeSim}</span>
+          <InfoTooltip text={t.info?.sim} />
         </button>
 
         {/* Barrier Physics Tab */}
@@ -76,8 +80,9 @@ export default function BottomDock({
               : 'text-slate-200 hover:text-amber-300 hover:bg-slate-900/60 border border-transparent'
           }`}
         >
-          <Clock className="w-4 h-4 text-amber-400" />
-          <span>{t.barrierPhysics}</span>
+          <Clock className="w-4 h-4 text-amber-400 shrink-0" />
+          <span className="whitespace-nowrap">{t.barrierPhysics}</span>
+          <InfoTooltip text={t.info?.physics} />
         </button>
 
         {/* TOPSIS Score Tab */}
@@ -89,8 +94,9 @@ export default function BottomDock({
               : 'text-slate-200 hover:text-amber-300 hover:bg-slate-900/60 border border-transparent'
           }`}
         >
-          <Award className="w-4 h-4 text-amber-400" />
-          <span>{t.topsisScore}</span>
+          <Award className="w-4 h-4 text-amber-400 shrink-0" />
+          <span className="whitespace-nowrap">{t.topsisScore}</span>
+          <InfoTooltip text={t.info?.topsis} />
         </button>
 
         {/* Launch Engine Yellow Glowing Pill */}

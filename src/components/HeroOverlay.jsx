@@ -19,12 +19,12 @@ export default function HeroOverlay({ currentFrameIndex, onOpenSim, onOpenLamina
         </div>
 
         {/* Main Giant Title */}
-        <h1 className="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-serif font-extrabold text-white tracking-tight leading-none title-glow drop-shadow-2xl">
-          {currentFrameIndex === 0 ? t.title : frameInfo.title.split(' ')[0]}
+        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-serif font-extrabold text-white tracking-tight leading-tight md:leading-none title-glow drop-shadow-2xl break-words whitespace-normal max-w-full">
+          {currentFrameIndex === 0 ? t.title : frameInfo.title}
         </h1>
 
         {/* Subtitle in elegant italic script */}
-        <div className="text-2xl sm:text-3xl md:text-5xl font-script text-amber-300/90 italic tracking-wide -mt-2 md:-mt-4 mb-8 drop-shadow-lg font-serif">
+        <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-script text-amber-300/90 italic tracking-wide mt-2 mb-8 drop-shadow-lg font-serif break-words whitespace-normal max-w-full leading-snug">
           {currentFrameIndex === 0 ? t.subTitle : frameInfo.subtitle}
         </div>
 

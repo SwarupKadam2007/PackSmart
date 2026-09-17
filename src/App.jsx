@@ -49,10 +49,10 @@ export default function App() {
       />
 
       {/* Pinned 3D-positioned Canvas Hotspots */}
-      <Hotspots currentFrameIndex={currentFrameIndex} />
+      <Hotspots currentFrameIndex={currentFrameIndex} lang={lang} />
 
       {/* Right Side Vertical Progress Dot Column */}
-      <RightDotNav currentFrameIndex={currentFrameIndex} />
+      <RightDotNav currentFrameIndex={currentFrameIndex} lang={lang} />
 
       {/* Translucent Futuristic Bottom Dock (Matching User Reference Image) */}
       <BottomDock
@@ -81,6 +81,7 @@ export default function App() {
       <LaminateVisualizerModal 
         isOpen={isLaminateOpen} 
         onClose={() => setIsLaminateOpen(false)} 
+        lang={lang}
       />
 
       <PersonaSelectorModal 
@@ -88,6 +89,7 @@ export default function App() {
         onClose={() => setIsPersonaOpen(false)} 
         selectedPersona={selectedPersona}
         setSelectedPersona={setSelectedPersona}
+        lang={lang}
       />
     </div>
   );
