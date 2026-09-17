@@ -1,35 +1,39 @@
 import React from 'react';
 import { X, UserCheck, Microscope, Shield, Check } from 'lucide-react';
+import { TRANSLATIONS } from '../data/i18n';
 
-const PERSONAS = [
-  {
-    id: 'Farmer',
-    title: 'Farmer / Quick Mode',
-    badge: 'FARMER_USER',
-    desc: 'Simplified crop selection without complex packaging jargon. Instant storage temperature & plain language advice.',
-    icon: UserCheck,
-    color: 'emerald'
-  },
-  {
-    id: 'Scientist',
-    title: 'Scientist / Analyst Mode',
-    badge: 'ANALYST',
-    desc: 'Full thermodynamic parameter control (OTR/WVTR, gas selectivity, TOPSIS matrix weights, Recharts mass curves).',
-    icon: Microscope,
-    color: 'amber'
-  },
-  {
-    id: 'Admin',
-    title: 'System Administrator',
-    badge: 'ADMIN',
-    desc: 'Manage 85+ commodity respiration models, 27 barrier polymer films, user RBAC permissions, and system seeds.',
-    icon: Shield,
-    color: 'sky'
-  }
-];
-
-export default function PersonaSelectorModal({ isOpen, onClose, selectedPersona, setSelectedPersona }) {
+export default function PersonaSelectorModal({ isOpen, onClose, selectedPersona, setSelectedPersona, lang = 'mr' }) {
   if (!isOpen) return null;
+
+  const t = TRANSLATIONS[lang] || TRANSLATIONS.en;
+  const pm = t.personaModal || TRANSLATIONS.en.personaModal;
+
+  const personas = [
+    {
+      id: 'Farmer',
+      title: pm.farmerTitle,
+      badge: 'FARMER_USER',
+      desc: pm.farmerDesc,
+      icon: UserCheck,
+      color: 'emerald'
+    },
+    {
+      id: 'Scientist',
+      title: pm.scientistTitle,
+      badge: 'ANALYST',
+      desc: pm.scientistDesc,
+      icon: Microscope,
+      color: 'amber'
+    },
+    {
+      id: 'Admin',
+      title: pm.adminTitle,
+      badge: 'ADMIN',
+      desc: pm.adminDesc,
+      icon: Shield,
+      color: 'sky'
+    }
+  ];
 
   return (
     <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
@@ -43,12 +47,12 @@ export default function PersonaSelectorModal({ isOpen, onClose, selectedPersona,
         </button>
 
         <div className="mb-6">
-          <span className="text-xs font-mono text-amber-400 uppercase tracking-widest">ROLE-BASED ACCESS CONTROL (RBAC)</span>
-          <h2 className="text-2xl font-serif font-bold text-white mt-1">Select Active Engine Persona Mode</h2>
+          <span className="text-xs font-mono text-amber-400 uppercase tracking-widest">{pm.badge}</span>
+          <h2 className="text-2xl font-serif font-bold text-white mt-1">{pm.title}</h2>
         </div>
 
         <div className="space-y-4 mb-6">
-          {PERSONAS.map((p) => {
+          {personas.map((p) => {
             const IconComponent = p.icon;
             const isSelected = selectedPersona === p.id;
 
@@ -87,7 +91,7 @@ export default function PersonaSelectorModal({ isOpen, onClose, selectedPersona,
             onClick={onClose}
             className="px-6 py-2.5 rounded-xl bg-amber-400 hover:bg-yellow-300 text-slate-950 font-bold text-xs"
           >
-            Confirm Persona Selection
+            {pm.confirmBtn}
           </button>
         </div>
       </div>

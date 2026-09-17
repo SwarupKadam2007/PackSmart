@@ -49,6 +49,37 @@ export const TRANSLATIONS = {
     keptFreshUntil: "Kept Fresh Until Day",
     savingMoney: "Prevents Crop Waste & Maximizes Profit",
     downloadSpec: "Download Simple Farmer Guide (PDF)",
+    close: "Close",
+    farmerModeBtn: "🌱 Farmer Simple Mode",
+    scientistModeBtn: "🔬 Technical Graph (Scientist)",
+    gaugeTitle: "Freshness Meter Comparison",
+    longerLife: "Longer Life",
+    riskOfRot: "High Risk of Rot",
+    hotspotTag: "Packaging Physics Point",
+    personaModal: {
+      badge: "CHOOSE YOUR MODE",
+      title: "Select How You Want to View PackSmart",
+      farmerTitle: "Farmer / Simple Mode",
+      farmerDesc: "Plain, simple words. Easy guidance on keeping fruits, grains, and vegetables fresh without technical jargon.",
+      scientistTitle: "Scientist / Expert Mode",
+      scientistDesc: "Technical packaging parameters (OTR, WVTR gas barrier curves and thermodynamic equations).",
+      adminTitle: "System Mode",
+      adminDesc: "Manage crop respiration databases and polymer film catalogs.",
+      confirmBtn: "Confirm Mode Selection"
+    },
+    materialsModal: {
+      badge: "PACKAGING BAG STRUCTURE",
+      title: "How Our 3-Layer Bag Protects Your Food",
+      subtitle: "Click a layer to understand its protective power in plain language",
+      score: "Quality Rating",
+      layer1Title: "Layer 1: Tough Outer Shield",
+      layer1Role: "Stops bag tearing, blocks harsh sunlight, dust, and rain during farm transport.",
+      layer2Title: "Layer 2: Air & Moisture Lock",
+      layer2Role: "Completely seals out humidity and bad air so food doesn't rot or catch fungus.",
+      layer3Title: "Layer 3: Food-Safe Pure Layer",
+      layer3Role: "100% clean, non-toxic food-grade layer touching your crop to preserve natural sweetness and taste.",
+      ecoBadge: "Environment Friendly & Recyclable"
+    },
     
     frames: [
       {
@@ -140,6 +171,37 @@ export const TRANSLATIONS = {
     keptFreshUntil: "या दिवसापर्यंत ताजे राहील",
     savingMoney: "पिकाचे नुकसान टाळा आणि जास्त भाव मिळवा",
     downloadSpec: "शेतकरी मार्गदर्शन पत्रिका डाउनलोड करा (PDF)",
+    close: "बंद करा",
+    farmerModeBtn: "🌱 शेतकरी सोपी पद्धत",
+    scientistModeBtn: "🔬 तांत्रिक आलेख (Scientist)",
+    gaugeTitle: "ताजेपणाचे प्रमाण तुलना मीटर",
+    longerLife: "जास्त टिकाऊ",
+    riskOfRot: "खराब होण्याचा धोका",
+    hotspotTag: "पॅकेजिंग तंत्रज्ञान बिंदू",
+    personaModal: {
+      badge: "तुमचा मोड निवडा",
+      title: "तुम्हाला माहिती कशी पाहायची आहे?",
+      farmerTitle: "शेतकरी मित्र (सोपी पद्धत)",
+      farmerDesc: "कोणतेही कठीण तांत्रिक शब्द नाहीत. फळे, भाज्या आणि धान्य जास्त दिवस ताजे कसे ठेवायचे याची सोपी माहिती.",
+      scientistTitle: "शास्त्रज्ञ / तज्ज्ञ मोड",
+      scientistDesc: "पॅकेजिंग तज्ज्ञांसाठी वैज्ञानिक आलेख, गॅस रोधक आकडेवारी आणि तपशीलवार माहिती.",
+      adminTitle: "प्रणाली व्यवस्थापक",
+      adminDesc: "८५+ पिकांचे मॉडेल्स आणि २७ प्लास्टिक फिल्म्स डेटाबेस व्यवस्थापन.",
+      confirmBtn: "मोड निश्चित करा"
+    },
+    materialsModal: {
+      badge: "पॅकिंग पिशवीची रचना",
+      title: "पिशवीचे ३ थर शेतमाल कसा वाचवतात?",
+      subtitle: "पिशवीचा प्रत्येक थर अन्न सुरक्षित कसे ठेवतो ते सोप्या भाषेत समजून घ्या",
+      score: "गुणवत्ता रेटिंग",
+      layer1Title: "थर १: बाहेरील मजबूत संरक्षक कवच",
+      layer1Role: "वाहतुकीदरम्यान पिशवी फाटण्यापासून, कडक उन, धूळ आणि पावसापासून शेतमाल सुरक्षित ठेवतो.",
+      layer2Title: "थर २: हवा व दमटपणा रोखणारा थर",
+      layer2Role: "बाहेरील दमट हवा आत जाऊ देत नाही, ज्यामुळे धान्याला बुरशी किंवा फळांना किड लागत नाही.",
+      layer3Title: "थर ३: अन्न-सुरक्षित शुद्ध आतील थर",
+      layer3Role: "१००% विषमुक्त, सुरक्षित प्लास्टिक जो शेतमालाला थेट स्पर्श करतो आणि नैसर्गिक चव टिकवून ठेवतो.",
+      ecoBadge: "निसर्गासाठी सुरक्षित व पुनर्वापरयोग्य"
+    },
 
     frames: [
       {
@@ -231,6 +293,37 @@ export const TRANSLATIONS = {
     keptFreshUntil: "इस दिन तक बिल्कुल ताज़ा रहेगा",
     savingMoney: "फसल की बर्बादी रोकें और अधिक मुनाफा कमाएं",
     downloadSpec: "किसान गाइड डाउनलोड करें (PDF)",
+    close: "बंद करें",
+    farmerModeBtn: "🌱 किसान आसान मोड",
+    scientistModeBtn: "🔬 तकनीकी ग्राफ (वैज्ञानिक)",
+    gaugeTitle: "ताजगी तुलना मीटर",
+    longerLife: "अधिक टिकाऊ",
+    riskOfRot: "सड़ने का खतरा",
+    hotspotTag: "पैकेजिंग तकनीक बिंदु",
+    personaModal: {
+      badge: "अपना मोड चुनें",
+      title: "आप जानकारी कैसे देखना चाहते हैं?",
+      farmerTitle: "किसान मित्र (आसान तरीका)",
+      farmerDesc: "कोई कठिन तकनीकी शब्द नहीं। फल, सब्जियां और अनाज लंबे समय तक ताजा कैसे रखें, इसकी सीधी और सरल जानकारी।",
+      scientistTitle: "वैज्ञानिक / विशेषज्ञ मोड",
+      scientistDesc: "पैकेजिंग विशेषज्ञों के लिए वैज्ञानिक ग्राफ, गैस अवरोधक आंकड़े और तकनीकी विवरण।",
+      adminTitle: "सिस्टम व्यवस्थापक",
+      adminDesc: "फसल श्वसन डेटाबेस और पैकेजिंग फिल्मों का प्रबंधन।",
+      confirmBtn: "मोड पक्का करें"
+    },
+    materialsModal: {
+      badge: "पैकिंग बैग की संरचना",
+      title: "थैली की ३ परतें फसल को कैसे बचाती हैं?",
+      subtitle: "प्रत्येक परत भोजन को कैसे सुरक्षित रखती है, इसे आसान भाषा में समझें",
+      score: "गुणवत्ता रेटिंग",
+      layer1Title: "परत १: बाहरी मजबूत सुरक्षा कवच",
+      layer1Role: "परिवहन के दौरान बैग को फटने से, तेज धूप, धूल और बारिश से फसल को बचाता है।",
+      layer2Title: "परत २: हवा और नमी रोकने वाली मध्य परत",
+      layer2Role: "बाहरी नमी और हवा को अंदर नहीं जाने देती, जिससे फसल में फफूंद या सड़न नहीं लगती।",
+      layer3Title: "परत ३: खाद्य-सुरक्षित शुद्ध भीतरी परत",
+      layer3Role: "१००% सुरक्षित और शुद्ध प्लास्टिक जो फसल को छूता है और प्राकृतिक स्वाद बनाए रखता है।",
+      ecoBadge: "प्रकृति के लिए सुरक्षित और पुनर्चक्रण योग्य"
+    },
 
     frames: [
       {
@@ -322,6 +415,37 @@ export const TRANSLATIONS = {
     keptFreshUntil: "ਇਸ ਦਿਨ ਤੱਕ ਬਿਲਕੁਲ ਤਾਜ਼ਾ ਰਹੇਗਾ",
     savingMoney: "ਫ਼ਸਲ ਦੀ ਖਰਾਬੀ ਰੋਕੋ ਅਤੇ ਵੱਧ ਮੁਨਾਫ਼ਾ ਕਮਾਓ",
     downloadSpec: "ਕਿਸਾਨ ਗਾਈਡ ਡਾਊਨਲੋਡ ਕਰੋ (PDF)",
+    close: "ਬੰਦ ਕਰੋ",
+    farmerModeBtn: "🌱 ਕਿਸਾਨ ਸੌਖਾ ਮੋਡ",
+    scientistModeBtn: "🔬 ਤਕਨੀਕੀ ਗ੍ਰਾਫ (ਵਿਗਿਆਨੀ)",
+    gaugeTitle: "ਤਾਜ਼ਗੀ ਤੁਲਨਾ ਮੀਟਰ",
+    longerLife: "ਵੱਧ ਟਿਕਾਊ",
+    riskOfRot: "ਖਰਾਬ ਹੋਣ ਦਾ ਖ਼ਤਰਾ",
+    hotspotTag: "ਪੈਕੇਜਿੰਗ ਤਕਨੀਕ ਬਿੰਦੂ",
+    personaModal: {
+      badge: "ਆਪਣਾ ਮੋਡ ਚੁਣੋ",
+      title: "ਤੁਸੀਂ ਜਾਣਕਾਰੀ ਕਿਵੇਂ ਦੇਖਣਾ ਚਾਹੁੰਦੇ ਹੋ?",
+      farmerTitle: "ਕਿਸਾਨ ਮਿੱਤਰ (ਸੌਖਾ ਤਰੀਕਾ)",
+      farmerDesc: "ਕੋਈ ਔਖੇ ਤਕਨੀਕੀ ਸ਼ਬਦ ਨਹੀਂ। ਫਲ, ਸਬਜ਼ੀਆਂ ਅਤੇ ਅਨਾਜ ਨੂੰ ਲੰਬੇ ਸਮੇਂ ਤੱਕ ਤਾਜ਼ਾ ਕਿਵੇਂ ਰੱਖੀਏ, ਇਸ ਦੀ ਸੌਖੀ ਜਾਣਕਾਰੀ।",
+      scientistTitle: "ਵਿਗਿਆਨੀ / ਮਾਹਰ ਮੋਡ",
+      scientistDesc: "ਪੈਕੇਜਿੰਗ ਮਾਹਿਰਾਂ ਲਈ ਵਿਗਿਆਨਕ ਗ੍ਰਾਫ, ਗੈਸ ਰੋਕਣ ਵਾਲੇ ਅੰਕੜੇ ਅਤੇ ਵੇਰਵੇ।",
+      adminTitle: "ਸਿਸਟਮ ਪ੍ਰਬੰਧਕ",
+      adminDesc: "ਫਸਲ ਸਾਹ ਪ੍ਰਣਾਲੀ ਅਤੇ ਪੈਕੇਜਿੰਗ ਫਿਲਮਾਂ ਦਾ ਡਾਟਾਬੇਸ।",
+      confirmBtn: "ਮੋਡ ਪੱਕਾ ਕਰੋ"
+    },
+    materialsModal: {
+      badge: "ਪੈਕਿੰਗ ਬੈਗ ਦੀ ਬਣਤਰ",
+      title: "ਬੈਗ ਦੀਆਂ 3 ਪਰਤਾਂ ਫਸਲ ਨੂੰ ਕਿਵੇਂ ਬਚਾਉਂਦੀਆਂ ਹਨ?",
+      subtitle: "ਹਰ ਪਰਤ ਭੋਜਨ ਨੂੰ ਕਿਵੇਂ ਸੁਰੱਖਿਅਤ ਰੱਖਦੀ ਹੈ, ਇਸਨੂੰ ਸੌਖੀ ਭਾਸ਼ਾ ਵਿੱਚ ਸਮਝੋ",
+      score: "ਗੁਣਵੱਤਾ ਰੇਟਿੰਗ",
+      layer1Title: "ਪਰਤ 1: ਬਾਹਰੀ ਮਜ਼ਬੂਤ ਸੁਰੱਖਿਆ ਢਾਲ",
+      layer1Role: "ਢੋਆ-ਢੁਆਈ ਦੌਰਾਨ ਬੈਗ ਨੂੰ ਫਟਣ ਤੋਂ, ਧੁੱਪ, ਧੂੜ ਅਤੇ ਮੀਂਹ ਤੋਂ ਬਚਾਉਂਦੀ ਹੈ।",
+      layer2Title: "ਪਰਤ 2: ਹਵਾ ਅਤੇ ਸਿੱਲ੍ਹ ਰੋਕਣ ਵਾਲੀ ਵਿਚਕਾਰਲੀ ਪਰਤ",
+      layer2Role: "ਬਾਹਰੀ ਨਮੀ ਨੂੰ ਅੰਦਰ ਨਹੀਂ ਜਾਣ ਦਿੰਦੀ, ਤਾਂ ਜੋ ਫਸਲ ਨੂੰ ਉੱਲੀ ਜਾਂ ਕੀੜਾ ਨਾ ਲੱਗੇ।",
+      layer3Title: "ਪਰਤ 3: ਭੋਜਨ-ਸੁਰੱਖਿਅਤ ਸ਼ੁੱਧ ਅੰਦਰੂਨੀ ਪਰਤ",
+      layer3Role: "100% ਸੁਰੱਖਿਅਤ ਪਲਾਸਟਿਕ ਜੋ ਫਸਲ ਦੇ ਕੁਦਰਤੀ ਸਵਾਦ ਅਤੇ ਤਾਜ਼ਗੀ ਨੂੰ ਬਰਕਰਾਰ ਰੱਖਦਾ ਹੈ।",
+      ecoBadge: "ਕੁਦਰਤ ਲਈ ਸੁਰੱਖਿਅਤ ਅਤੇ ਰੀਸਾਈਕਲ ਹੋਣ ਯੋਗ"
+    },
 
     frames: [
       {
@@ -413,6 +537,37 @@ export const TRANSLATIONS = {
     keptFreshUntil: "આ દિવસ સુધી બિલકુલ તાજું રહેશે",
     savingMoney: "પાકનું નુકસાન અટકાવો અને વધુ નફો મેળવો",
     downloadSpec: "ખેડૂત માર્ગદર્શિકા ડાઉનલોડ કરો (PDF)",
+    close: "બંધ કરો",
+    farmerModeBtn: "🌱 ખેડૂત સરળ મોડ",
+    scientistModeBtn: "🔬 તકનીકી ગ્રાફ (વૈજ્ઞાનિક)",
+    gaugeTitle: "તાજગી સરખામણી મીટર",
+    longerLife: "વધુ ટકાઉ",
+    riskOfRot: "બગડવાનું જોખમ",
+    hotspotTag: "પેકેજિંગ ટેકનોલોજી પોઇન્ટ",
+    personaModal: {
+      badge: "તમારો મોડ પસંદ કરો",
+      title: "તમે માહિતી કેવી રીતે જોવા માંગો છો?",
+      farmerTitle: "ખેડૂત મિત્ર (સરળ રીત)",
+      farmerDesc: "કોઈ અઘરા તકનીકી શબ્દો નથી. ફળો, શાકભાજી અને અનાજ લાંબા સમય સુધી તાજા કેવી રીતે રાખવા તેની સરળ સમજ.",
+      scientistTitle: "વૈજ્ઞાનિક / નિષ્ણાત મોડ",
+      scientistDesc: "પેકેજિંગ નિષ્ણાતો માટે વિગતવાર ગ્રાફ, ગેસ અવરોધક ડેટા અને તકનીકી માહિતી.",
+      adminTitle: "સિસ્ટમ સંચાલક",
+      adminDesc: "પાક અને પેકેજિંગ ફિલ્મ્સ ડેટાબેઝ વ્યવસ્થાપન.",
+      confirmBtn: "મોડ નક્કી કરો"
+    },
+    materialsModal: {
+      badge: "પેકિંગ બેગની રચના",
+      title: "બેગના ૩ સ્તરો પાકને કેવી રીતે બચાવે છે?",
+      subtitle: "દરેક સ્તર ખોરાકને કેવી રીતે સુરક્ષિત રાખે છે તે સરળ ભાષામાં સમજો",
+      score: "ગુણવત્તા રેટિંગ",
+      layer1Title: "સ્તર ૧: બહારનું મજબૂત રક્ષણાત્મક કવચ",
+      layer1Role: "પરિવહન દરમિયાન બેગ ફાટતી અટકાવે છે, તડકો, ધૂળ અને વરસાદથી પાકને બચાવે છે.",
+      layer2Title: "સ્તર ૨: હવા અને ભેજ રોકતું મધ્યમ સ્તર",
+      layer2Role: "બહારના ભેજને અંદર જવા દેતું નથી, જેથી અનાજમાં ફૂગ કે સડો ન લાગે.",
+      layer3Title: "સ્તર ૩: ખોરાક-સુરક્ષિત શુદ્ધ આંતરિક સ્તર",
+      layer3Role: "૧૦૦% સલામત પ્લાસ્ટિક જે પાકના કુદરતી સ્વાદ અને તાજગીને જાળવી રાખે છે.",
+      ecoBadge: "કુદરત માટે સલામત અને રિસાયકલ કરી શકાય તેવું"
+    },
 
     frames: [
       {

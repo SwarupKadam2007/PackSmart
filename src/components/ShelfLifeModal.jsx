@@ -74,7 +74,7 @@ export default function ShelfLifeModal({ isOpen, onClose, lang, selectedPersona 
                 isFarmerView ? 'bg-amber-400 text-slate-950 shadow-md' : 'text-slate-400 hover:text-white'
               }`}
             >
-              🌱 {lang === 'mr' ? 'शेतकरी सोपी पद्धत' : 'Farmer Simple Mode'}
+              {t.farmerModeBtn || '🌱 Farmer Simple Mode'}
             </button>
             <button
               onClick={() => setIsFarmerView(false)}
@@ -82,7 +82,7 @@ export default function ShelfLifeModal({ isOpen, onClose, lang, selectedPersona 
                 !isFarmerView ? 'bg-amber-400 text-slate-950 shadow-md' : 'text-slate-400 hover:text-white'
               }`}
             >
-              🔬 {lang === 'mr' ? 'तांत्रिक आलेख (Scientist)' : 'Technical Graph'}
+              {t.scientistModeBtn || '🔬 Technical Graph (Scientist)'}
             </button>
           </div>
         </div>
@@ -122,7 +122,7 @@ export default function ShelfLifeModal({ isOpen, onClose, lang, selectedPersona 
                     <AlertTriangle className="w-4 h-4" /> {t.normalBag}
                   </span>
                   <span className="text-[10px] font-mono text-red-300 bg-red-500/20 px-2 py-0.5 rounded">
-                    {lang === 'mr' ? 'खराब होण्याचा धोका' : 'High Risk of Rot'}
+                    {t.riskOfRot || 'High Risk of Rot'}
                   </span>
                 </div>
                 <div className="text-3xl font-extrabold text-white mb-1">
@@ -131,7 +131,9 @@ export default function ShelfLifeModal({ isOpen, onClose, lang, selectedPersona 
                 <p className="text-xs text-slate-300 leading-relaxed">
                   {lang === 'mr' 
                     ? `साध्या पिशवीत ${getCropName(selectedCrop)} फक्त ${selectedCrop.normalDays} दिवसांत सुकतात व सडू लागतात.`
-                    : `In normal sacks, ${getCropName(selectedCrop)} spoils quickly in just ${selectedCrop.normalDays} days due to open moisture.`}
+                    : (lang === 'hi' 
+                        ? `साधारण बोरी में ${getCropName(selectedCrop)} केवल ${selectedCrop.normalDays} दिनों में खराब होने लगता है।`
+                        : `In normal sacks, ${getCropName(selectedCrop)} spoils quickly in just ${selectedCrop.normalDays} days due to open moisture.`)}
                 </p>
               </div>
 
@@ -151,7 +153,9 @@ export default function ShelfLifeModal({ isOpen, onClose, lang, selectedPersona 
                 <p className="text-xs text-emerald-100 leading-relaxed">
                   {lang === 'mr'
                     ? `खास ३ पदरी AI पिशवीत ${getCropName(selectedCrop)} तब्बल ${selectedCrop.aiDays} दिवस ताजे राहतात!`
-                    : `In our special 3-layer AI bag, ${getCropName(selectedCrop)} stays 100% fresh for ${selectedCrop.aiDays} days!`}
+                    : (lang === 'hi'
+                        ? `हमारे विशेष ३-परत वाले AI बैग में ${getCropName(selectedCrop)} पूरे ${selectedCrop.aiDays} दिनों तक सुरक्षित रहता है!`
+                        : `In our special 3-layer AI bag, ${getCropName(selectedCrop)} stays 100% fresh for ${selectedCrop.aiDays} days!`)}
                 </p>
               </div>
             </div>
@@ -159,8 +163,8 @@ export default function ShelfLifeModal({ isOpen, onClose, lang, selectedPersona 
             {/* Visual Freshness Progress Gauge */}
             <div className="bg-slate-950/80 p-5 rounded-2xl border border-white/10">
               <div className="flex items-center justify-between mb-3 text-xs font-bold text-slate-200">
-                <span>📊 {lang === 'mr' ? 'ताजेपणाचे प्रमाण तुलना मीटर' : 'Freshness Retention Gauge Meter'}</span>
-                <span className="text-amber-300">+{Math.round((selectedCrop.aiDays / selectedCrop.normalDays) * 100)}% {lang === 'mr' ? 'जास्त टिकाऊ' : 'Longer Life'}</span>
+                <span>📊 {t.gaugeTitle || 'Freshness Meter Comparison'}</span>
+                <span className="text-amber-300">+{Math.round((selectedCrop.aiDays / selectedCrop.normalDays) * 100)}% {t.longerLife || 'Longer Life'}</span>
               </div>
 
               {/* Progress bar comparison */}
@@ -193,7 +197,13 @@ export default function ShelfLifeModal({ isOpen, onClose, lang, selectedPersona 
                 <Thermometer className="w-6 h-6 text-amber-400 shrink-0" />
                 <div className="text-xs">
                   <div className="font-bold text-amber-300 uppercase">{t.storageTip}</div>
-                  <div className="text-slate-200">{lang === 'mr' ? `माल साठवताना तापमान ${selectedCrop.temp} वर ठेवा.` : `Store bag in cool shade at ${selectedCrop.temp}.`}</div>
+                  <div className="text-slate-200">
+                    {lang === 'mr' 
+                      ? `माल साठवताना तापमान ${selectedCrop.temp} वर ठेवा.` 
+                      : (lang === 'hi' 
+                          ? `भंडारण करते समय तापमान ${selectedCrop.temp} पर रखें।` 
+                          : `Store bag in cool shade at ${selectedCrop.temp}.`)}
+                  </div>
                 </div>
               </div>
               
@@ -230,7 +240,7 @@ export default function ShelfLifeModal({ isOpen, onClose, lang, selectedPersona 
         <div className="flex items-center justify-between border-t border-white/10 pt-4 mt-6 text-xs font-mono text-slate-400">
           <span>{t.savingMoney}</span>
           <button onClick={onClose} className="px-5 py-2 rounded-xl bg-slate-800 text-slate-200 font-bold text-xs hover:bg-slate-700">
-            Close
+            {t.close}
           </button>
         </div>
       </div>
