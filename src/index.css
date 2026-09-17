@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: #030a17;
+    color: #e2e8f0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+}
+
+/* Glassmorphism Pill & Modal Utilities */
+.glass-pill {
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.glass-pill-active {
+  background: rgba(251, 191, 36, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(253, 224, 71, 0.5);
+  color: #0f172a;
+  box-shadow: 0 0 25px rgba(250, 204, 21, 0.4);
+}
+
+.glass-card {
+  background: rgba(10, 20, 38, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Custom Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #030a17;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(250, 204, 21, 0.6);
+}
+
+/* Gradient Overlay for Canvas background */
+.hero-gradient {
+  background: radial-gradient(circle at 50% 30%, rgba(14, 165, 233, 0.15) 0%, rgba(3, 10, 23, 0.85) 70%, #030a17 100%);
+}
+
+.title-glow {
+  text-shadow: 0 0 40px rgba(255, 255, 255, 0.25), 0 0 80px rgba(14, 165, 233, 0.2);
+}
