@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import TopNav from './components/TopNav';
-import BottomDock from './components/BottomDock';
+import { ThemeProvider } from './context/ThemeContext';
+import LandingNav from './components/LandingNav';
+import Footer from './components/Footer';
 
 // Pages
 import Home from './pages/Home';
@@ -17,33 +18,18 @@ import KnowledgeBase from './pages/KnowledgeBase';
 import UserAccount from './pages/UserAccount';
 import AdminPanel from './pages/AdminPanel';
 
-export default function App() {
-  const [currentFrameIndex, setCurrentFrameIndex] = useState(0);
-  const [isAutoFlight, setIsAutoFlight] = useState(false);
-  const [lang, setLang] = useState('mr'); // Default to Marathi (मराठी)
+function AppContent() {
+  const [lang, setLang] = useState('en'); // Default to English
 
   return (
-    <Router>
-      <div className="relative min-h-screen bg-[#030a17] text-white selection:bg-amber-500 selection:text-black font-sans">
-        
-        {/* Top Glass Navigation Bar with Multi-Language Dropdown */}
-        <TopNav
-          isAutoFlight={isAutoFlight}
-          setIsAutoFlight={setIsAutoFlight}
-          lang={lang}
-          setLang={setLang}
-        />
+    <div className="relative min-h-screen bg-brand-bg dark:bg-slate-950 text-slate-800 dark:text-slate-100 selection:bg-amber-500 selection:text-black font-sans transition-colors duration-300 flex flex-col justify-between">
+      {/* Global Header Navigation */}
+      <LandingNav lang={lang} setLang={setLang} />
 
-        {/* Dynamic Route Content */}
+      {/* Main Dynamic Route Content */}
+      <main className="flex-grow">
         <Routes>
-          <Route path="/" element={
-            <Home 
-              lang={lang} 
-              currentFrameIndex={currentFrameIndex} 
-              setCurrentFrameIndex={setCurrentFrameIndex}
-              isAutoFlight={isAutoFlight}
-            />
-          } />
+          <Route path="/" element={<Home lang={lang} setLang={setLang} />} />
           <Route path="/about" element={<About lang={lang} />} />
           <Route path="/recommendation" element={<GetRecommendation lang={lang} />} />
           <Route path="/database" element={<MaterialDatabase lang={lang} />} />
@@ -56,13 +42,20 @@ export default function App() {
           <Route path="/account" element={<UserAccount lang={lang} />} />
           <Route path="/admin" element={<AdminPanel lang={lang} />} />
         </Routes>
+      </main>
 
-        {/* Translucent Futuristic Bottom Dock */}
-        <BottomDock
-          currentFrameIndex={currentFrameIndex}
-          lang={lang}
-        />
-      </div>
-    </Router>
+      {/* Global Footer */}
+      <Footer />
+    </div>
+  );
+}
+
+export default function App() {
+  return (
+    <ThemeProvider>
+      <Router>
+        <AppContent />
+      </Router>
+    </ThemeProvider>
   );
 }

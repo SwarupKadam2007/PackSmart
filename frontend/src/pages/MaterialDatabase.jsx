@@ -50,7 +50,7 @@ export default function MaterialDatabase({ lang }) {
       </div>
 
       {/* Filter & Search Bar */}
-      <div className="bg-slate-900/60 backdrop-blur-xl border border-white/10 p-4 rounded-2xl mb-8 flex flex-col md:flex-row gap-4 items-center justify-between">
+      <div className="bg-white dark:bg-slate-800/80 backdrop-blur-xl border border-slate-200 dark:border-slate-700/60 p-4 rounded-2xl mb-8 flex flex-col md:flex-row gap-4 items-center justify-between shadow-sm">
         <div className="relative w-full md:w-96">
           <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
@@ -58,7 +58,7 @@ export default function MaterialDatabase({ lang }) {
             placeholder="Search polymers (e.g. EVOH, BOPP, PLA, LDPE)..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-slate-950/70 border border-white/10 rounded-xl pl-10 pr-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 transition-all"
+            className="w-full bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-white/10 rounded-xl pl-10 pr-4 py-2 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-amber-400 transition-all"
           />
         </div>
 
@@ -76,8 +76,8 @@ export default function MaterialDatabase({ lang }) {
               onClick={() => setSelectedCategory(cat.id)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
                 selectedCategory === cat.id
-                  ? 'bg-amber-400 text-slate-950 font-bold shadow-[0_0_12px_rgba(251,191,36,0.3)]'
-                  : 'bg-slate-800/60 text-slate-300 hover:bg-slate-800'
+                  ? 'bg-amber-400 text-slate-950 font-bold shadow-sm'
+                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
               }`}
             >
               {cat.label}
@@ -98,7 +98,7 @@ export default function MaterialDatabase({ lang }) {
             <div
               key={mat.material_id}
               onClick={() => setSelectedMaterial(mat)}
-              className="bg-slate-900/50 hover:bg-slate-900/80 border border-white/10 hover:border-amber-400/50 rounded-2xl p-6 transition-all duration-300 flex flex-col justify-between cursor-pointer group hover:shadow-[0_0_25px_rgba(0,0,0,0.5)]"
+              className="bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/80 border border-slate-200 dark:border-slate-700/60 rounded-3xl p-6 transition-all duration-300 flex flex-col justify-between cursor-pointer group shadow-sm hover:shadow-md text-slate-900 dark:text-white"
             >
               <div>
                 <div className="flex items-center justify-between mb-3">

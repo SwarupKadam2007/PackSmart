@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -13,6 +14,13 @@ export default {
         script: ['Italianno', 'Playfair Display', 'cursive'],
       },
       colors: {
+        brand: {
+          green: '#577d58',
+          orange: '#f18320',
+          bg: '#fcfcfc',
+          'feature-bg': '#f5f7f5',
+          text: '#222f3e'
+        },
         gold: {
           400: '#facc15',
           500: '#eab308',

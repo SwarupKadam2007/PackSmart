@@ -63,18 +63,18 @@ function Flashcard({ card }) {
         transition={{ duration: 0.6, type: 'spring', stiffness: 260, damping: 20 }}
       >
         {/* Front */}
-        <div className="absolute w-full h-full bg-slate-900 border border-white/10 rounded-3xl p-6 flex flex-col justify-center items-center text-center shadow-xl" style={{ backfaceVisibility: 'hidden' }}>
-          <span className="text-xs text-slate-500 uppercase tracking-widest mb-2 font-bold">{card.category}</span>
-          <h2 className="text-2xl font-bold text-amber-400">{card.term}</h2>
-          <p className="text-sm text-slate-400 mt-4 opacity-75">(Tap to flip)</p>
+        <div className="absolute w-full h-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/60 rounded-3xl p-6 flex flex-col justify-center items-center text-center shadow-lg" style={{ backfaceVisibility: 'hidden' }}>
+          <span className="text-xs text-brand-orange uppercase tracking-widest mb-2 font-bold">{card.category}</span>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-amber-400">{card.term}</h2>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-4 opacity-75">(Tap to flip)</p>
         </div>
         
         {/* Back */}
-        <div className="absolute w-full h-full bg-slate-800 border border-amber-400/30 rounded-3xl p-6 flex flex-col shadow-xl overflow-y-auto custom-scrollbar" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
-          <p className="text-sm text-slate-200 mb-4">{card.meaning}</p>
-          <div className="bg-slate-900/50 p-3 rounded-xl border border-white/5 mb-4">
-            <span className="block text-[10px] uppercase text-slate-400 font-bold mb-1">Typical Range</span>
-            <span className="text-xs text-amber-300 font-mono">{card.range}</span>
+        <div className="absolute w-full h-full bg-slate-50 dark:bg-slate-800 border border-amber-400/40 rounded-3xl p-6 flex flex-col shadow-xl overflow-y-auto custom-scrollbar" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
+          <p className="text-sm text-slate-800 dark:text-slate-200 mb-4">{card.meaning}</p>
+          <div className="bg-white dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-white/5 mb-4">
+            <span className="block text-[10px] uppercase text-slate-500 dark:text-slate-400 font-bold mb-1">Typical Range</span>
+            <span className="text-xs text-brand-green dark:text-amber-300 font-mono">{card.range}</span>
           </div>
           
           <div className="mt-auto">
