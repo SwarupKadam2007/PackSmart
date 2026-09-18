@@ -271,5 +271,19 @@ export const api = {
       method: 'POST',
       body: JSON.stringify({ name, email, password, role, organization_name })
     });
+  },
+
+  googleLogin: async (token) => {
+    return await fetchJson('/api/auth/google', {
+      method: 'POST',
+      body: JSON.stringify({ token })
+    });
+  },
+
+  submitFeedback: async (payload) => {
+    return await fetchJson('/api/feedback', {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    });
   }
 };

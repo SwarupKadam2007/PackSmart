@@ -40,3 +40,10 @@ def test_signup_existing_email(client):
     }
     signup_res = client.post("/api/auth/signup", json=signup_payload)
     assert signup_res.status_code == 400
+
+def test_google_auth_invalid_token(client):
+    payload = {
+        "token": "invalid_fake_token"
+    }
+    res = client.post("/api/auth/google", json=payload)
+    assert res.status_code == 400

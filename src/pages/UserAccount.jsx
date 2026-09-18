@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { User, KeyRound, Mail, Building, Shield, CheckCircle2, LogOut } from 'lucide-react';
 import { api } from '../api/client';
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '123456789-mock-client-id.apps.googleusercontent.com';
 
 export default function UserAccount({ lang }) {
   const [mode, setMode] = useState('login'); // 'login' or 'signup'
@@ -47,6 +50,26 @@ export default function UserAccount({ lang }) {
     localStorage.removeItem('packsmart_user');
     setCurrentUser(null);
     setFeedback({ type: 'info', message: 'You have been signed out.' });
+  };
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    setLoading(true);
+    setFeedback(null);
+    try {
+      const res = await api.googleLogin(credentialResponse.credential);
+      localStorage.setItem('packsmart_token', res.access_token);
+      localStorage.setItem('packsmart_user', JSON.stringify(res.user));
+      setCurrentUser(res.user);
+      setFeedback({ type: 'success', message: `Welcome, ${res.user.name} (via Google)!` });
+    } catch (err) {
+      setFeedback({ type: 'error', message: err.message || 'Google Authentication failed.' });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleError = () => {
+    setFeedback({ type: 'error', message: 'Google Sign In was unsuccessful. Try again.' });
   };
 
   return (
@@ -222,6 +245,18 @@ export default function UserAccount({ lang }) {
             >
               {loading ? 'Authenticating...' : (mode === 'login' ? 'Sign In to Portal' : 'Register Account')}
             </button>
+            
+            <div className="mt-6 flex flex-col items-center">
+              <div className="text-xs text-slate-500 mb-4 uppercase font-bold tracking-wider">Or continue with</div>
+              <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+                <GoogleLogin
+                  onSuccess={handleGoogleSuccess}
+                  onError={handleGoogleError}
+                  theme="filled_black"
+                  shape="circle"
+                />
+              </GoogleOAuthProvider>
+            </div>
           </form>
         </div>
       )}

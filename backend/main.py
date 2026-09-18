@@ -45,7 +45,7 @@ app = FastAPI(
 )
 
 # Enable CORS for frontend Vite development server & production
-origins = os.getenv("CORS_ORIGINS", "*").split(",")
+origins = os.getenv("CORS_ORIGINS", "https://pack-smart-eight.vercel.app,http://localhost:5173").split(",")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins, # Supports localhost:5173, Vercel deployments, mobile clients

@@ -6,6 +6,14 @@ from backend.schemas.user import UserCreate, UserLogin, UserResponse, TokenRespo
 from backend.models.user import User
 from backend.auth.jwt_handler import create_access_token
 from backend.auth.rbac import get_current_user
+from google.oauth2 import id_token
+from google.auth.transport import requests
+from pydantic import BaseModel
+import os
+
+class GoogleAuthRequest(BaseModel):
+    token: str
+
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -70,3 +78,42 @@ def login(user_in: UserLogin, db: Session = Depends(get_db)):
 @router.get("/me", response_model=UserResponse)
 def read_users_me(current_user: User = Depends(get_current_user)):
     return current_user
+
+@router.post("/google", response_model=TokenResponse)
+def google_auth(request: GoogleAuthRequest, db: Session = Depends(get_db)):
+    try:
+        client_id = os.getenv("GOOGLE_CLIENT_ID")
+        idinfo = id_token.verify_oauth2_token(request.token, requests.Request(), client_id)
+        
+        email = idinfo.get("email")
+        name = idinfo.get("name")
+        
+        user = db.query(User).filter(User.email == email).first()
+        if not user:
+            # Auto-create user
+            user = User(
+                name=name,
+                email=email,
+                auth_provider="google",
+                role="user"
+            )
+            db.add(user)
+            db.commit()
+            db.refresh(user)
+            
+        # If user exists but auth_provider is email, we just let them log in anyway 
+        # (effectively linking the account)
+        
+        access_token = create_access_token(data={"sub": user.email, "role": user.role})
+        return TokenResponse(
+            access_token=access_token,
+            token_type="bearer",
+            user={
+                "name": user.name,
+                "email": user.email,
+                "role": user.role,
+                "auth_provider": user.auth_provider
+            }
+        )
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid Google token")

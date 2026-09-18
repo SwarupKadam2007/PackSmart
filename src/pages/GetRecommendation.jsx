@@ -77,7 +77,8 @@ export default function GetRecommendation({ lang }) {
         confidence_score: topMat?.confidence_score,
         cost_estimate_local: topMat?.cost_estimate_local,
         supplier_channel_note: topMat?.supplier_channel_note,
-        source_reference: topMat?.source_reference
+        source_reference: topMat?.source_reference,
+        recommendation_id: res.recommendation_id
       });
     } catch (error) {
       console.error("Analysis failed:", error);
@@ -351,7 +352,16 @@ export default function GetRecommendation({ lang }) {
                       {[1, 2, 3, 4, 5].map((star) => (
                         <button
                           key={star}
-                          onClick={() => setRating(star)}
+                          onClick={async () => {
+                            setRating(star);
+                            try {
+                              if (results.recommendation_id) {
+                                await api.submitFeedback({ rating: star, recommendation_id: results.recommendation_id, comments: "" });
+                              }
+                            } catch (e) {
+                              console.error("Feedback error", e);
+                            }
+                          }}
                           className={`p-1 transition-all ${
                             rating >= star ? "text-amber-400" : "text-slate-600 hover:text-amber-400/50"
                           }`}
