@@ -36,14 +36,17 @@ PackSmart is a state-of-the-art web application designed for farmers, food suppl
 
 ## 🚀 Flexible Deployment Options
 
-### Option 1: Deploy on Vercel (1-Click)
-1. Push this repo to GitHub.
-2. Go to [Vercel.com](https://vercel.com) -> New Project -> Select `PackSmart`.
-3. Build Settings:
-   - Framework Preset: **Vite**
-   - Build Command: `npm run build`
-   - Output Directory: `dist`
-4. Click **Deploy**.
+### Option 1: Deploy on Vercel (Recommended)
+This repository is configured to build automatically from the root or from `frontend/`:
+1. Push this repo to your GitHub repository.
+2. Import project in [Vercel.com](https://vercel.com).
+3. **Build & Output Settings**:
+   - **Root Directory**: `./` (default) or `frontend`
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `frontend/dist` (or `dist` if root is set to `frontend`)
+4. **Environment Variables** (Optional, for live backend connection):
+   - `VITE_API_URL`: `https://your-backend-service.onrender.com` (leave empty for standalone demo mode)
+5. Click **Deploy**.
 
 ### Option 2: Deploy on Virtual Server / VPS (Docker Compose)
 To run on any Ubuntu/Linux VPS, AWS EC2, or DigitalOcean droplet:
@@ -62,10 +65,8 @@ docker-compose up -d --build
 git clone https://github.com/SwarupKadam2007/PackSmart.git
 cd PackSmart
 
-# Install dependencies
-npm install
-
-# Run local development server
+# Install dependencies and run development server
+npm install --prefix frontend
 npm run dev
 ```
 

@@ -3,10 +3,12 @@ FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-COPY package*.json ./
-RUN npm ci
+# Copy package manifest and install frontend dependencies
+COPY frontend/package*.json ./
+RUN npm install
 
-COPY . .
+# Copy frontend source and build production bundle
+COPY frontend/ ./
 RUN npm run build
 
 # Stage 2: Serve application with Nginx
