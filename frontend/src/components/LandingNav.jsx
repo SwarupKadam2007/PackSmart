@@ -19,7 +19,8 @@ export default function LandingNav({ lang, setLang }) {
     { path: '/recommendation', label: 'Engine' },
     { path: '/database', label: 'Materials' },
     { path: '/shelf-life', label: 'Shelf-Life' },
-    { path: '/knowledge-base', label: 'Learn' },
+    { path: '/launch-checklist', label: 'Checklist' },
+    { path: '/knowledge-base', label: 'Library' },
     { path: '/about', label: 'About' },
   ];
 
@@ -216,6 +217,13 @@ export default function LandingNav({ lang, setLang }) {
             className="text-slate-800 dark:text-slate-200 font-medium py-2 border-b border-slate-100 dark:border-slate-800"
           >
             About
+          </Link>
+          <Link 
+            to="/launch-checklist" 
+            onClick={() => setMobileOpen(false)}
+            className="text-slate-800 dark:text-slate-200 font-medium py-2 border-b border-slate-100 dark:border-slate-800"
+          >
+            Launch Checklist
           </Link>
           <Link 
             to="/database" 

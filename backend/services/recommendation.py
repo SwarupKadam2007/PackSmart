@@ -30,14 +30,39 @@ def run_recommendation_engine(db: Session, payload: RecommendationInput, user_id
     final_ph = payload.ph_level if payload.ph_level is not None else (commodity_query.default_ph if commodity_query else 6.0)
     final_respiration = payload.respiration_rate if payload.respiration_rate is not None else (commodity_query.default_respiration_rate if commodity_query and commodity_query.default_respiration_rate else 15.0)
 
+    # Demo mode handling
+    if getattr(payload, 'demo_mode', False) and not payload.commodity_name and not payload.commodity_id:
+        comm_name = "Fresh Mangoes (Alphonso)"
+        comm_cat = "fresh produce"
+        final_moisture = 83.0
+        final_oil_fat = 0.4
+        final_ph = 4.5
+        final_respiration = 35.0
+
     is_fresh = "produce" in comm_cat or "fresh" in comm_cat or "fruit" in comm_cat or "vegetable" in comm_cat or payload.commodity_name == "freshProduce"
     is_dry = "dry" in comm_cat or "powder" in comm_cat or "grain" in comm_cat or payload.commodity_name == "dryGoods"
     is_snack = "snack" in comm_cat or "fried" in comm_cat or "chip" in comm_cat or payload.commodity_name == "snacks"
     is_meat = "meat" in comm_cat or "seafood" in comm_cat or "poultry" in comm_cat or payload.commodity_name == "meatPoultry"
     is_dairy = "dairy" in comm_cat or "cheese" in comm_cat or payload.commodity_name == "dairy"
+    is_bakery = "bakery" in comm_cat or "bread" in comm_cat or "sourdough" in comm_cat or "pastry" in comm_cat or payload.commodity_name == "bakery"
+    is_rte = "curry" in comm_cat or "ready-to-eat" in comm_cat or "prepared" in comm_cat
 
-    # Target barrier metrics based on commodity science
-    if is_fresh:
+    # Target barrier metrics & packaging formats based on commodity science
+    if is_bakery:
+        # Teaching rationale: For bread (e.g. 35% moisture), fully sealed impermeable plastic causes condensation and rapid mold sporulation!
+        target_otr_num = 8000.0
+        target_wvtr_num = 20.0
+        base_thickness = 35.0
+        sealability = "Breathable Pouch / Heat Seal with Micro-Vents"
+        map_required = "Recommended: Micro-perforated breathable pouch for crusty bread, or 70% CO₂ / 30% N₂ in barrier pouches with oxygen absorber for sandwich bread"
+        eco_alt = "Unbleached Micro-Perforated Kraft Paper with Clear PLA Window"
+        primary_material = "Micro-Perforated BOPP / Breathable Kraft Film"
+        target_otr_str = "6,000 - 10,000"
+        target_wvtr_str = "15 - 25"
+        thickness_str = "30 - 45"
+        rec_format = "Micro-Perforated Produce & Bakery Bag"
+        rec_format_id = "micro-perf-bag"
+    elif is_fresh:
         target_otr_num = 12000.0  # Needs gas exchange to prevent anaerobic fermentation
         target_wvtr_num = 18.0
         base_thickness = 30.0
@@ -48,6 +73,8 @@ def run_recommendation_engine(db: Session, payload: RecommendationInput, user_id
         target_otr_str = "10,000 - 15,000"
         target_wvtr_str = "15 - 20"
         thickness_str = "25 - 40"
+        rec_format = "Micro-Perforated Produce Bag / Clamshell"
+        rec_format_id = "micro-perf-bag"
     elif is_dry:
         target_otr_num = 5.0
         target_wvtr_num = 1.0
@@ -59,6 +86,8 @@ def run_recommendation_engine(db: Session, payload: RecommendationInput, user_id
         target_otr_str = "< 10"
         target_wvtr_str = "< 1.5"
         thickness_str = "50 - 70"
+        rec_format = "Stand-up Pouch (Doypack)"
+        rec_format_id = "stand-up-pouch"
     elif is_snack:
         target_otr_num = 1.0
         target_wvtr_num = 0.5
@@ -70,6 +99,8 @@ def run_recommendation_engine(db: Session, payload: RecommendationInput, user_id
         target_otr_str = "< 1.0"
         target_wvtr_str = "< 0.8"
         thickness_str = "60 - 80"
+        rec_format = "Flow Wrap / Pillow Pouch"
+        rec_format_id = "flow-wrap"
     elif is_meat:
         target_otr_num = 2.0
         target_wvtr_num = 2.0
@@ -81,6 +112,21 @@ def run_recommendation_engine(db: Session, payload: RecommendationInput, user_id
         target_otr_str = "< 3.0"
         target_wvtr_str = "< 3.0"
         thickness_str = "70 - 100"
+        rec_format = "Vacuum Pack / Skin Pack"
+        rec_format_id = "vacuum-pack"
+    elif is_rte:
+        target_otr_num = 0.5
+        target_wvtr_num = 0.5
+        base_thickness = 100.0
+        sealability = "Hermetic Retort Heat Seal (>121°C Autoclave Stable)"
+        map_required = "Hermetic vacuum thermal processing (Retort sterilization)"
+        eco_alt = "High-Barrier Polyolefin Recyclable Retort Pouch"
+        primary_material = "PET / Al-Foil / BOPA / Cast Polypropylene Retort Laminate"
+        target_otr_str = "< 0.5"
+        target_wvtr_str = "< 0.5"
+        thickness_str = "90 - 120"
+        rec_format = "Retort Pouch"
+        rec_format_id = "retort-pouch"
     else: # dairy / default
         target_otr_num = 2.0
         target_wvtr_num = 2.0
@@ -92,6 +138,8 @@ def run_recommendation_engine(db: Session, payload: RecommendationInput, user_id
         target_otr_str = "< 2.0"
         target_wvtr_str = "< 2.0"
         thickness_str = "60 - 90"
+        rec_format = "Tray + Lidding Film"
+        rec_format_id = "tray-lidding"
 
     # Adjust for storage conditions
     if payload.storage_type == "frozen":
@@ -215,6 +263,16 @@ def run_recommendation_engine(db: Session, payload: RecommendationInput, user_id
 
     db.commit()
 
+    short_shelf_life_note = None
+    desired_days = payload.desired_shelf_life or 14
+    if desired_days <= 7 or (is_bakery and payload.storage_type == "ambient"):
+        short_shelf_life_note = (
+            f"Target shelf-life is {desired_days} days. "
+            "For ambient bakery and short-cycle goods, consider exploring natural antimicrobials "
+            "(e.g. cultured dextrose, rosemary extract, potassium sorbate) in the Preservatives & Additives Guide "
+            "to inhibit mold and extend stability safely."
+        )
+
     return {
         "recommendation_id": rec_obj.recommendation_id,
         "commodity": comm_name,
@@ -225,8 +283,11 @@ def run_recommendation_engine(db: Session, payload: RecommendationInput, user_id
         "sealability": sealability,
         "map_required": map_required,
         "eco_alternative": eco_alt,
-        "shelf_life_days": float(payload.desired_shelf_life or 14),
+        "shelf_life_days": float(desired_days),
         "ranked_materials": scored_materials[:5],
         "map_advisory": map_details,
+        "recommended_format": rec_format,
+        "format_id": rec_format_id,
+        "short_shelf_life_note": short_shelf_life_note,
         "created_at": rec_obj.created_at
     }

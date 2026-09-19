@@ -1,22 +1,36 @@
-import React, { useState } from 'react';
-import { BrainCircuit, Droplets, Wind, Thermometer, Box, ArrowRight, ShieldCheck, Leaf } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { 
+  BrainCircuit, 
+  Droplets, 
+  Wind, 
+  Thermometer, 
+  Box, 
+  ArrowRight, 
+  ShieldCheck, 
+  Leaf, 
+  Star, 
+  Layers, 
+  AlertTriangle, 
+  ExternalLink, 
+  Sparkles, 
+  Info 
+} from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ENGINE_TRANSLATIONS } from '../data/engineI18n';
 import { api } from '../api/client';
-import { Star } from 'lucide-react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 
 export default function GetRecommendation({ lang }) {
   const t = ENGINE_TRANSLATIONS[lang] || ENGINE_TRANSLATIONS.en;
   const [searchParams] = useSearchParams();
-  const defaultCommodity = searchParams.get('commodityType') || 'freshProduce';
   
   // Multi-step state
   const [step, setStep] = useState(1);
+  const [demoBanner, setDemoBanner] = useState(null);
 
   // Input States
   const [inputs, setInputs] = useState({
-    commodityType: defaultCommodity,
+    commodityType: searchParams.get('commodityType') || 'freshProduce',
     moistureContent: 'high',
     oilFatContent: 'low',
     pHLevel: 'neutral',
@@ -32,6 +46,56 @@ export default function GetRecommendation({ lang }) {
   const [results, setResults] = useState(null);
   const [rating, setRating] = useState(0);
 
+  // Auto-fill and execute on guided demo preset
+  useEffect(() => {
+    const demo = searchParams.get('demo');
+    const demoMode = searchParams.get('demo_mode') === 'true';
+
+    if (demo === 'mango') {
+      const mangoInputs = {
+        commodityType: 'freshProduce',
+        moistureContent: 'high',
+        oilFatContent: 'low',
+        pHLevel: 'neutral',
+        respirationRate: 'high',
+        desiredShelfLife: 14,
+        storageTemp: 12,
+        relativeHumidity: 85,
+        storageType: 'chilled',
+        transportConditions: 'smooth'
+      };
+      setInputs(mangoInputs);
+      setDemoBanner({
+        title: "Demo Simulation Active: Fresh Alphonso Mango Export (14 Days)",
+        desc: "Demonstrating Equilibrium MAP with Micro-Perforated BOPP to prevent anaerobic fermentation."
+      });
+      if (demoMode) {
+        executeSimulation(mangoInputs);
+      }
+    } else if (demo === 'bread') {
+      const breadInputs = {
+        commodityType: 'bakery',
+        moistureContent: 'high',
+        oilFatContent: 'low',
+        pHLevel: 'neutral',
+        respirationRate: 'low',
+        desiredShelfLife: 7,
+        storageTemp: 22,
+        relativeHumidity: 65,
+        storageType: 'ambient',
+        transportConditions: 'smooth'
+      };
+      setInputs(breadInputs);
+      setDemoBanner({
+        title: "Demo Simulation Active: Artisan Sourdough Bread (Condensation & Mold Control)",
+        desc: "Demonstrating how breathable micro-perforations release bread moisture while halting mold growth."
+      });
+      if (demoMode) {
+        executeSimulation(breadInputs);
+      }
+    }
+  }, [searchParams]);
+
   const handleInputChange = (field, value) => {
     setInputs(prev => ({ ...prev, [field]: value }));
   };
@@ -44,27 +108,25 @@ export default function GetRecommendation({ lang }) {
     if (step > 1) setStep(step - 1);
   };
 
-  const runAnalysis = async () => {
+  const executeSimulation = async (inputData) => {
     setIsAnalyzing(true);
     setStep(4);
     
     try {
-      // Map frontend string inputs to numeric payload expected by backend
       const payload = {
-        commodity_name: inputs.commodityType,
-        storage_type: inputs.storageType,
-        transport_conditions: inputs.transportConditions,
-        desired_shelf_life: parseInt(inputs.desiredShelfLife) || 14,
-        moisture_content: inputs.moistureContent === 'high' ? 85.0 : inputs.moistureContent === 'medium' ? 50.0 : 15.0,
-        oil_fat_content: inputs.oilFatContent === 'high' ? 30.0 : 5.0,
-        ph_level: inputs.pHLevel === 'acidic' ? 4.0 : 7.0,
-        respiration_rate: inputs.respirationRate === 'high' ? 30.0 : 5.0,
+        commodity_name: inputData.commodityType,
+        storage_type: inputData.storageType,
+        transport_conditions: inputData.transportConditions,
+        desired_shelf_life: parseInt(inputData.desiredShelfLife) || 14,
+        moisture_content: inputData.moistureContent === 'high' ? 85.0 : inputData.moistureContent === 'medium' ? 50.0 : 15.0,
+        oil_fat_content: inputData.oilFatContent === 'high' ? 30.0 : 5.0,
+        ph_level: inputData.pHLevel === 'acidic' ? 4.0 : 7.0,
+        respiration_rate: inputData.respirationRate === 'high' ? 30.0 : 5.0,
+        demo_mode: searchParams.get('demo_mode') === 'true'
       };
 
       const res = await api.generateRecommendation(payload);
-      
-      // Extract top material
-      const topMat = res.ranked_materials[0];
+      const topMat = res.ranked_materials?.[0];
       
       setResults({
         otr: res.target_otr,
@@ -78,13 +140,22 @@ export default function GetRecommendation({ lang }) {
         cost_estimate_local: topMat?.cost_estimate_local,
         supplier_channel_note: topMat?.supplier_channel_note,
         source_reference: topMat?.source_reference,
-        recommendation_id: res.recommendation_id
+        recommendation_id: res.recommendation_id,
+        recommended_format: res.recommended_format,
+        format_id: res.format_id,
+        short_shelf_life_note: res.short_shelf_life_note,
+        commodity: res.commodity,
+        is_bakery: inputData.commodityType === 'bakery' || res.commodity?.toLowerCase().includes('bakery')
       });
     } catch (error) {
       console.error("Analysis failed:", error);
     } finally {
       setIsAnalyzing(false);
     }
+  };
+
+  const runAnalysis = () => {
+    executeSimulation(inputs);
   };
 
   const getStepTitle = () => {
@@ -98,14 +169,36 @@ export default function GetRecommendation({ lang }) {
   };
 
   return (
-    <div className="pt-24 pb-32 min-h-screen px-4 md:px-8 max-w-7xl mx-auto flex flex-col">
+    <div className="pt-20 pb-28 min-h-screen px-4 md:px-8 max-w-5xl mx-auto font-sans flex flex-col justify-center">
+      
+      {/* Guided Demo Banner */}
+      {demoBanner && (
+        <div className="mb-6 p-4 rounded-2xl bg-amber-400/10 border border-amber-400/30 text-amber-900 dark:text-amber-200 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <Sparkles className="w-5 h-5 text-amber-500 shrink-0" />
+            <div>
+              <h4 className="font-bold text-xs sm:text-sm text-slate-900 dark:text-amber-300">{demoBanner.title}</h4>
+              <p className="text-xs text-slate-600 dark:text-slate-400">{demoBanner.desc}</p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => setDemoBanner(null)}
+            className="text-xs text-slate-400 hover:text-white underline shrink-0"
+          >
+            Dismiss
+          </button>
+        </div>
+      )}
+
+      {/* Header Area */}
       <div className="mb-8 flex items-center justify-between border-b border-white/10 pb-4">
         <div>
-          <h1 className="text-3xl font-bold text-white font-serif flex items-center gap-3">
+          <h1 className="text-2xl sm:text-3xl font-bold text-white flex items-center gap-3">
             <BrainCircuit className="w-8 h-8 text-amber-400" />
             {t.title}
           </h1>
-          <p className="text-slate-400 mt-2">{t.subtitle}</p>
+          <p className="text-slate-400 text-xs sm:text-sm mt-1">{t.subtitle}</p>
         </div>
         
         {/* Step Indicator */}
@@ -159,6 +252,7 @@ export default function GetRecommendation({ lang }) {
                   className="w-full bg-slate-950/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition-all font-sans"
                 >
                   <option value="freshProduce">{t.inputs.freshProduce}</option>
+                  <option value="bakery">Bakery & Bread (Artisan Loaves, Buns, Cakes)</option>
                   <option value="dryGoods">{t.inputs.dryGoods}</option>
                   <option value="snacks">{t.inputs.snacks}</option>
                   <option value="meatPoultry">{t.inputs.meatPoultry}</option>
@@ -184,21 +278,7 @@ export default function GetRecommendation({ lang }) {
                   <select 
                     value={inputs.moistureContent} 
                     onChange={(e) => handleInputChange('moistureContent', e.target.value)}
-                    className="w-full bg-slate-950/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-400 transition-all"
-                  >
-                    <option value="low">{t.inputs.low}</option>
-                    <option value="medium">{t.inputs.medium}</option>
-                    <option value="high">{t.inputs.high}</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-2">
-                    <Wind className="w-4 h-4 text-emerald-400" /> {t.fields.respirationRate}
-                  </label>
-                  <select 
-                    value={inputs.respirationRate} 
-                    onChange={(e) => handleInputChange('respirationRate', e.target.value)}
-                    className="w-full bg-slate-950/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-400 transition-all"
+                    className="w-full bg-slate-950/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-400 transition-all"
                   >
                     <option value="low">{t.inputs.low}</option>
                     <option value="medium">{t.inputs.medium}</option>
@@ -216,14 +296,32 @@ export default function GetRecommendation({ lang }) {
                     <option value="high">{t.inputs.high}</option>
                   </select>
                 </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{t.fields.desiredShelfLife}</label>
-                  <input 
-                    type="number" 
-                    value={inputs.desiredShelfLife} 
-                    onChange={(e) => handleInputChange('desiredShelfLife', e.target.value)}
+                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{t.fields.pHLevel}</label>
+                  <select 
+                    value={inputs.pHLevel} 
+                    onChange={(e) => handleInputChange('pHLevel', e.target.value)}
                     className="w-full bg-slate-950/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-400 transition-all"
-                  />
+                  >
+                    <option value="neutral">{t.inputs.neutral}</option>
+                    <option value="acidic">{t.inputs.acidic}</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                    <Wind className="w-4 h-4 text-emerald-400" /> {t.fields.respirationRate}
+                  </label>
+                  <select 
+                    value={inputs.respirationRate} 
+                    onChange={(e) => handleInputChange('respirationRate', e.target.value)}
+                    className="w-full bg-slate-950/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-400 transition-all"
+                  >
+                    <option value="low">{t.inputs.low}</option>
+                    <option value="high">{t.inputs.high}</option>
+                  </select>
                 </div>
               </div>
             </motion.div>
@@ -237,6 +335,18 @@ export default function GetRecommendation({ lang }) {
               exit={{ opacity: 0, x: 20 }} 
               className="space-y-6"
             >
+              <div>
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{t.fields.desiredShelfLife}</label>
+                <input 
+                  type="number" 
+                  value={inputs.desiredShelfLife} 
+                  onChange={(e) => handleInputChange('desiredShelfLife', e.target.value)}
+                  className="w-full bg-slate-950/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-400 transition-all font-mono"
+                  min="1" 
+                  max="365"
+                />
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-2">
@@ -281,6 +391,8 @@ export default function GetRecommendation({ lang }) {
                 </div>
               ) : results ? (
                 <div className="space-y-4">
+                  
+                  {/* Primary Material */}
                   <div className="bg-emerald-950/30 border border-emerald-500/20 p-5 rounded-2xl relative overflow-hidden group">
                     <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                       <ShieldCheck className="w-24 h-24 text-emerald-400" />
@@ -288,7 +400,61 @@ export default function GetRecommendation({ lang }) {
                     <h4 className="text-emerald-400 text-xs font-bold tracking-widest uppercase mb-1">{t.primaryMaterial}</h4>
                     <p className="text-xl font-bold text-white relative z-10">{results.material}</p>
                   </div>
+
+                  {/* Recommended Packaging Format Card */}
+                  {results.recommended_format && (
+                    <div className="bg-amber-500/10 border-2 border-amber-400/40 p-5 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                      <div>
+                        <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded">
+                          Recommended Format
+                        </span>
+                        <h4 className="text-base font-bold text-white mt-1">
+                          {results.recommended_format}
+                        </h4>
+                        <p className="text-xs text-slate-300 mt-0.5">
+                          Engineered for optimal headspace gas stability and product protection.
+                        </p>
+                      </div>
+                      <Link
+                        to={`/knowledge-base?tab=library&format=${results.format_id || 'stand-up-pouch'}`}
+                        className="inline-flex items-center gap-1.5 text-xs font-bold bg-amber-400 hover:bg-amber-300 text-slate-950 px-4 py-2 rounded-xl transition-all shadow-md shrink-0"
+                      >
+                        <Layers className="w-3.5 h-3.5" />
+                        <span>View Vector Schematic &rarr;</span>
+                      </Link>
+                    </div>
+                  )}
+
+                  {/* Bakery Intelligence Note */}
+                  {results.is_bakery && (
+                    <div className="bg-blue-950/30 border border-blue-500/20 p-4 rounded-2xl flex items-start gap-3">
+                      <Info className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
+                      <div className="text-xs text-slate-300 leading-relaxed">
+                        <span className="font-bold text-blue-300 block mb-0.5">Bakery Moisture & Condensation Advisory:</span>
+                        High moisture in freshly baked loaves can condense on the interior surface of non-breathable plastic film, pooling water droplets and creating an ideal environment for rapid mold spoilage within 3-4 days. Micro-perforated breathable packaging allows water vapor transmission while safeguarding against airborne contaminants.
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Short Shelf-Life / Preservatives Notice */}
+                  {results.short_shelf_life_note && (
+                    <div className="bg-amber-950/20 border border-amber-500/30 p-4 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <div className="flex items-start gap-2.5">
+                        <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                        <p className="text-xs text-amber-200/90 leading-relaxed">
+                          {results.short_shelf_life_note}
+                        </p>
+                      </div>
+                      <Link
+                        to="/knowledge-base?tab=preservatives"
+                        className="inline-flex items-center gap-1 text-xs font-bold text-amber-400 hover:underline shrink-0"
+                      >
+                        <span>Preservatives Guide</span> &rarr;
+                      </Link>
+                    </div>
+                  )}
                   
+                  {/* Barrier Specifications Grid */}
                   <div className="grid grid-cols-2 gap-4">
                     <div className="bg-slate-950/50 border border-white/5 p-4 rounded-2xl">
                       <h4 className="text-slate-500 text-[10px] font-bold tracking-widest uppercase mb-1">{t.targetOtr}</h4>
@@ -343,6 +509,25 @@ export default function GetRecommendation({ lang }) {
                       <span className="text-slate-400">Source Reference</span>
                       <span className="text-blue-300 text-xs italic text-right max-w-[60%]">{results.source_reference || 'Estimated'}</span>
                     </div>
+                  </div>
+
+                  {/* Launch Readiness Checklist Prompt */}
+                  <div className="bg-teal-950/20 border border-teal-500/30 p-4 rounded-2xl flex items-center justify-between gap-4">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-xl bg-teal-500/20 text-teal-400 flex items-center justify-center font-bold text-xs shrink-0">
+                        ✓
+                      </div>
+                      <div>
+                        <h5 className="text-xs font-bold text-white">Planning Commercial Retail Launch?</h5>
+                        <p className="text-[11px] text-slate-400">Audit your FSSAI registration, 14-digit labeling, and migration tests.</p>
+                      </div>
+                    </div>
+                    <Link
+                      to="/launch-checklist"
+                      className="text-xs font-bold text-teal-400 hover:underline shrink-0"
+                    >
+                      Audit Checklist &rarr;
+                    </Link>
                   </div>
 
                   {/* 1-5 Star User Feedback Rating Block */}

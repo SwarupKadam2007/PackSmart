@@ -3,13 +3,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from typing import List, Optional
+from pydantic import BaseModel
 import os
 
 from .database import get_db, engine, Base
 from .models import (
     User, Commodity, PackagingMaterial, Recommendation, 
     RecommendationMaterial, ShelfLifePrediction, MapAdvisory, 
-    QrCode, TraceabilityLog, Report, Feedback
+    QrCode, TraceabilityLog, Report, Feedback,
+    PackagingFormat, PreservativeCategory, ComplianceChecklist, UserChecklistProgress
 )
 from .schemas import (
     UserSignup, UserLogin, TokenResponse, UserResponse,
@@ -20,7 +22,9 @@ from .schemas import (
     MapAdvisorInput, MapAdvisorResponse,
     SustainabilityInput, SustainabilityResponse,
     QrGenerateInput, QrResponse, ScanLogCreate, ScanLogResponse,
-    AdminAnalyticsResponse
+    AdminAnalyticsResponse,
+    PackagingFormatResponse, PreservativeCategoryResponse,
+    ComplianceChecklistResponse, UserProgressUpdate, UserProgressResponse
 )
 from .services.auth import hash_password, verify_password, create_access_token
 from .services.recommendation import run_recommendation_engine
@@ -123,6 +127,47 @@ def login(payload: UserLogin, db: Session = Depends(get_db)):
 def refresh_token(token: str):
     return {"status": "refreshed", "valid": True}
 
+class GoogleLoginRequest(BaseModel):
+    token: str
+
+@app.post("/api/auth/google", response_model=TokenResponse)
+def google_auth(payload: GoogleLoginRequest, db: Session = Depends(get_db)):
+    try:
+        from google.oauth2 import id_token
+        from google.auth.transport import requests
+        client_id = os.getenv("GOOGLE_CLIENT_ID")
+        idinfo = id_token.verify_oauth2_token(payload.token, requests.Request(), client_id)
+        email = idinfo.get("email")
+        name = idinfo.get("name", "Google User")
+
+        user = db.query(User).filter(User.email == email).first()
+        if not user:
+            user = User(
+                name=name,
+                email=email,
+                auth_provider="google",
+                role="user"
+            )
+            db.add(user)
+            db.commit()
+            db.refresh(user)
+
+        token = create_access_token({"sub": user.user_id, "email": user.email, "role": user.role})
+        return {
+            "access_token": token,
+            "token_type": "bearer",
+            "user": {
+                "user_id": user.user_id,
+                "name": user.name,
+                "email": user.email,
+                "role": user.role,
+                "organization": user.organization_name
+            }
+        }
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid Google token")
+
+
 # ==========================================
 # 2. COMMODITY SERVICE
 # ==========================================
@@ -163,6 +208,31 @@ def create_commodity(payload: CommodityCreate, db: Session = Depends(get_db)):
 # ==========================================
 # 3. PACKAGING MATERIAL SERVICE
 # ==========================================
+# Helper for dynamic commonly used commodities
+def get_commonly_used_commodities(db: Session, material_id: str, mat_name: str, mat_type: str) -> List[str]:
+    query = (
+        db.query(Recommendation.commodity_name)
+        .join(RecommendationMaterial, RecommendationMaterial.recommendation_id == Recommendation.recommendation_id)
+        .filter(RecommendationMaterial.material_id == material_id)
+        .filter(Recommendation.commodity_name.isnot(None))
+        .distinct()
+        .limit(4)
+        .all()
+    )
+    names = [row[0] for row in query if row[0]]
+    if not names:
+        if "breathable" in mat_type.lower() or "bopp" in mat_name.lower():
+            names = ["Fresh Apples", "Spinach / Greens", "Vine Tomatoes"]
+        elif "laminate" in mat_type.lower() or "evoh" in mat_name.lower():
+            names = ["Fresh Poultry", "Cheddar Cheese", "Ground Spices"]
+        elif "biodegradable" in mat_type.lower() or "pla" in mat_name.lower():
+            names = ["Organic Greens", "Sourdough Bread", "Berries"]
+        elif "foil" in mat_type.lower() or "retort" in mat_name.lower():
+            names = ["Ready-to-Eat Curry", "Wet Pet Food", "Coffee Beans"]
+        else:
+            names = ["Snacks", "Dry Goods", "Produce"]
+    return names
+
 @app.get("/api/materials", response_model=List[MaterialResponse])
 def get_materials(db: Session = Depends(get_db)):
     materials = db.query(PackagingMaterial).all()
@@ -171,10 +241,12 @@ def get_materials(db: Session = Depends(get_db)):
         sust_score = m.sustainability_data.sustainability_score if m.sustainability_data else 60.0
         c_index = m.sustainability_data.carbon_footprint_index if m.sustainability_data else 2.5
         notes = m.sustainability_data.recyclability_notes if m.sustainability_data else ""
+        comm_used = get_commonly_used_commodities(db, m.material_id, m.name, m.material_type)
         res = MaterialResponse.from_orm(m)
         res.sustainability_score = sust_score
         res.carbon_footprint_index = c_index
         res.recyclability_notes = notes
+        res.commonly_used_for = comm_used
         out.append(res)
     return out
 
@@ -192,7 +264,17 @@ def filter_materials(
         query = query.filter(PackagingMaterial.map_compatible == map_compatible)
     if recyclable is not None:
         query = query.filter(PackagingMaterial.is_recyclable == recyclable)
-    return query.all()
+    materials = query.all()
+    out = []
+    for m in materials:
+        res = MaterialResponse.from_orm(m)
+        if m.sustainability_data:
+            res.sustainability_score = m.sustainability_data.sustainability_score
+            res.carbon_footprint_index = m.sustainability_data.carbon_footprint_index
+            res.recyclability_notes = m.sustainability_data.recyclability_notes
+        res.commonly_used_for = get_commonly_used_commodities(db, m.material_id, m.name, m.material_type)
+        out.append(res)
+    return out
 
 @app.get("/api/materials/{material_id}", response_model=MaterialResponse)
 def get_material_detail(material_id: str, db: Session = Depends(get_db)):
@@ -204,6 +286,7 @@ def get_material_detail(material_id: str, db: Session = Depends(get_db)):
         res.sustainability_score = mat.sustainability_data.sustainability_score
         res.carbon_footprint_index = mat.sustainability_data.carbon_footprint_index
         res.recyclability_notes = mat.sustainability_data.recyclability_notes
+    res.commonly_used_for = get_commonly_used_commodities(db, mat.material_id, mat.name, mat.material_type)
     return res
 
 # ==========================================
@@ -355,3 +438,133 @@ def update_model():
         "message": "PackSmart ML model weights re-calibrated successfully.",
         "version": "PackSmart-ML-v2.5-Live"
     }
+
+# ==========================================
+# 11. GRAPHICAL PACKAGING FORMATS SERVICE
+# ==========================================
+@app.get("/api/packaging-formats", response_model=List[PackagingFormatResponse])
+def get_packaging_formats(db: Session = Depends(get_db)):
+    return db.query(PackagingFormat).all()
+
+@app.get("/api/packaging-formats/{format_id}", response_model=PackagingFormatResponse)
+def get_packaging_format(format_id: str, db: Session = Depends(get_db)):
+    fmt = db.query(PackagingFormat).filter(PackagingFormat.format_id == format_id).first()
+    if not fmt:
+        raise HTTPException(status_code=404, detail=f"Packaging format '{format_id}' not found.")
+    return fmt
+
+# ==========================================
+# 12. PRESERVATIVES & ADDITIVES SERVICE
+# ==========================================
+@app.get("/api/preservatives", response_model=List[PreservativeCategoryResponse])
+def get_preservatives(db: Session = Depends(get_db)):
+    return db.query(PreservativeCategory).all()
+
+# ==========================================
+# 13. COMPLIANCE & LAUNCH CHECKLIST SERVICE
+# ==========================================
+@app.get("/api/compliance-checklist", response_model=List[ComplianceChecklistResponse])
+def get_compliance_checklist(
+    jurisdiction: Optional[str] = "India — FSSAI",
+    category: Optional[str] = None,
+    db: Session = Depends(get_db)
+):
+    q = db.query(ComplianceChecklist)
+    if jurisdiction:
+        q = q.filter(ComplianceChecklist.jurisdiction.ilike(f"%{jurisdiction}%"))
+    if category:
+        q = q.filter(ComplianceChecklist.product_category.ilike(f"%{category}%"))
+    return q.all()
+
+@app.get("/api/compliance-checklist/progress", response_model=UserProgressResponse)
+def get_checklist_progress(
+    user_id: Optional[str] = None,
+    jurisdiction: str = "India — FSSAI",
+    db: Session = Depends(get_db)
+):
+    checklists = db.query(ComplianceChecklist).filter(ComplianceChecklist.jurisdiction.ilike(f"%{jurisdiction}%")).all()
+    all_items = []
+    for c in checklists:
+        all_items.extend(c.checklist_items or [])
+
+    total_items = len(all_items)
+    mandatory_items = [item for item in all_items if item.get("is_mandatory")]
+    mandatory_total = len(mandatory_items)
+
+    completed_ids = []
+    updated_at = None
+    if user_id:
+        record = db.query(UserChecklistProgress).filter(
+            UserChecklistProgress.user_id == user_id,
+            UserChecklistProgress.jurisdiction == jurisdiction
+        ).first()
+        if record and record.completed_item_ids:
+            completed_ids = record.completed_item_ids
+            updated_at = record.updated_at
+
+    completed_set = set(completed_ids)
+    mandatory_completed = len([item for item in mandatory_items if item.get("item_id") in completed_set])
+    progress_percentage = round((len(completed_set) / max(1, total_items)) * 100.0, 1)
+    mandatory_progress_percentage = round((mandatory_completed / max(1, mandatory_total)) * 100.0, 1)
+
+    return {
+        "jurisdiction": jurisdiction,
+        "completed_item_ids": completed_ids,
+        "total_items": total_items,
+        "mandatory_total": mandatory_total,
+        "mandatory_completed": mandatory_completed,
+        "progress_percentage": min(100.0, progress_percentage),
+        "mandatory_progress_percentage": min(100.0, mandatory_progress_percentage),
+        "updated_at": updated_at
+    }
+
+@app.post("/api/compliance-checklist/progress", response_model=UserProgressResponse)
+def save_checklist_progress(
+    payload: UserProgressUpdate,
+    user_id: Optional[str] = None,
+    db: Session = Depends(get_db)
+):
+    checklists = db.query(ComplianceChecklist).filter(ComplianceChecklist.jurisdiction.ilike(f"%{payload.jurisdiction}%")).all()
+    all_items = []
+    for c in checklists:
+        all_items.extend(c.checklist_items or [])
+
+    total_items = len(all_items)
+    mandatory_items = [item for item in all_items if item.get("is_mandatory")]
+    mandatory_total = len(mandatory_items)
+
+    completed_set = set(payload.completed_item_ids)
+    mandatory_completed = len([item for item in mandatory_items if item.get("item_id") in completed_set])
+    progress_percentage = round((len(completed_set) / max(1, total_items)) * 100.0, 1)
+    mandatory_progress_percentage = round((mandatory_completed / max(1, mandatory_total)) * 100.0, 1)
+
+    updated_at = None
+    if user_id:
+        record = db.query(UserChecklistProgress).filter(
+            UserChecklistProgress.user_id == user_id,
+            UserChecklistProgress.jurisdiction == payload.jurisdiction
+        ).first()
+        if not record:
+            record = UserChecklistProgress(
+                user_id=user_id,
+                jurisdiction=payload.jurisdiction,
+                completed_item_ids=payload.completed_item_ids
+            )
+            db.add(record)
+        else:
+            record.completed_item_ids = payload.completed_item_ids
+        db.commit()
+        db.refresh(record)
+        updated_at = record.updated_at
+
+    return {
+        "jurisdiction": payload.jurisdiction,
+        "completed_item_ids": payload.completed_item_ids,
+        "total_items": total_items,
+        "mandatory_total": mandatory_total,
+        "mandatory_completed": mandatory_completed,
+        "progress_percentage": min(100.0, progress_percentage),
+        "mandatory_progress_percentage": min(100.0, mandatory_progress_percentage),
+        "updated_at": updated_at
+    }
+

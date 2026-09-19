@@ -118,6 +118,17 @@ export default function MaterialDatabase({ lang }) {
                   {mat.gas_permeability_notes || 'High efficiency barrier suitable for food shelf-life extension.'}
                 </p>
 
+                {mat.commonly_used_for && mat.commonly_used_for.length > 0 && (
+                  <div className="mt-3 flex items-center gap-1.5 flex-wrap">
+                    <span className="text-[10px] uppercase font-bold text-slate-400">Top Food Matrix:</span>
+                    {mat.commonly_used_for.map((com, idx) => (
+                      <span key={idx} className="text-[10px] bg-amber-400/10 text-amber-300 px-2 py-0.5 rounded border border-amber-400/20 font-medium">
+                        {com}
+                      </span>
+                    ))}
+                  </div>
+                )}
+
                 {/* Specs Box */}
                 <div className="grid grid-cols-2 gap-2 mt-4 pt-4 border-t border-white/5 text-xs">
                   <div className="bg-slate-950/40 p-2 rounded-lg">

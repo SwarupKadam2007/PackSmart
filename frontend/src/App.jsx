@@ -15,6 +15,7 @@ import SustainabilityAnalyzer from './pages/SustainabilityAnalyzer';
 import QrTraceability from './pages/QrTraceability';
 import ReportsHistory from './pages/ReportsHistory';
 import KnowledgeBase from './pages/KnowledgeBase';
+import LaunchChecklist from './pages/LaunchChecklist';
 import UserAccount from './pages/UserAccount';
 import AdminPanel from './pages/AdminPanel';
 
@@ -39,6 +40,7 @@ function AppContent() {
           <Route path="/qr-traceability" element={<QrTraceability lang={lang} />} />
           <Route path="/history" element={<ReportsHistory lang={lang} />} />
           <Route path="/knowledge-base" element={<KnowledgeBase lang={lang} />} />
+          <Route path="/launch-checklist" element={<LaunchChecklist lang={lang} />} />
           <Route path="/account" element={<UserAccount lang={lang} />} />
           <Route path="/admin" element={<AdminPanel lang={lang} />} />
         </Routes>

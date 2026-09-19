@@ -28,6 +28,7 @@ export default function Footer() {
             <li><Link to="/recommendation" className="hover:text-brand-green transition-colors">Packaging Engine</Link></li>
             <li><Link to="/database" className="hover:text-brand-green transition-colors">Materials Database</Link></li>
             <li><Link to="/shelf-life" className="hover:text-brand-green transition-colors">Shelf-Life Predictor</Link></li>
+            <li><Link to="/launch-checklist" className="hover:text-brand-green transition-colors font-semibold text-emerald-600 dark:text-emerald-400">Launch Regulatory Checklist</Link></li>
             <li><Link to="/sustainability" className="hover:text-brand-green transition-colors">Eco Analyzer</Link></li>
           </ul>
         </div>
@@ -36,10 +37,11 @@ export default function Footer() {
         <div>
           <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-4">Resources</h4>
           <ul className="space-y-2 text-xs">
-            <li><Link to="/knowledge-base" className="hover:text-brand-green transition-colors">Knowledge Base</Link></li>
+            <li><Link to="/knowledge-base?tab=library" className="hover:text-brand-green transition-colors">Packaging Formats Library</Link></li>
+            <li><Link to="/knowledge-base?tab=preservatives" className="hover:text-brand-green transition-colors">Preservatives & Additives Guide</Link></li>
+            <li><Link to="/knowledge-base?tab=flashcards" className="hover:text-brand-green transition-colors">Science Flashcards</Link></li>
             <li><Link to="/qr-traceability" className="hover:text-brand-green transition-colors">QR Traceability</Link></li>
             <li><Link to="/map-advisor" className="hover:text-brand-green transition-colors">Map Advisor</Link></li>
-            <li><Link to="/about" className="hover:text-brand-green transition-colors">About Us</Link></li>
           </ul>
         </div>
 

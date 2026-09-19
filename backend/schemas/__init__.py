@@ -80,6 +80,7 @@ class MaterialResponse(MaterialBase):
     sustainability_score: Optional[float] = None
     carbon_footprint_index: Optional[float] = None
     recyclability_notes: Optional[str] = None
+    commonly_used_for: Optional[List[str]] = []
 
     class Config:
         from_attributes = True
@@ -97,6 +98,7 @@ class RecommendationInput(BaseModel):
     storage_temp: Optional[float] = Field(4.0, ge=-50.0, le=100.0, description="Storage temperature in Celsius")
     relative_humidity: Optional[float] = Field(85.0, ge=0.0, le=100.0, description="Relative humidity percentage (0-100)")
     transport_conditions: Optional[str] = "smooth"
+    demo_mode: Optional[bool] = False
 
 class RankedMaterial(BaseModel):
     material_id: str
@@ -130,6 +132,9 @@ class RecommendationResponse(BaseModel):
     shelf_life_days: float
     ranked_materials: List[RankedMaterial]
     map_advisory: Optional[Dict[str, Any]] = None
+    recommended_format: Optional[str] = None
+    format_id: Optional[str] = None
+    short_shelf_life_note: Optional[str] = None
     created_at: datetime
 
 # --- Shelf Life Schemas ---
@@ -222,3 +227,63 @@ class AdminAnalyticsResponse(BaseModel):
     popular_commodities: List[Dict[str, Any]]
     popular_materials: List[Dict[str, Any]]
     model_status: Dict[str, Any]
+
+# --- New Modules Schemas ---
+class PackagingFormatResponse(BaseModel):
+    format_id: str
+    name: str
+    diagram_svg: Optional[str] = None
+    typical_use_cases: List[str]
+    pros: str
+    cons: str
+    related_material_ids: Optional[List[str]] = []
+    created_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+class PreservativeCategoryResponse(BaseModel):
+    id: int
+    category: str
+    common_examples: List[str]
+    typical_food_use_cases: List[str]
+    natural_vs_synthetic: str
+    regulatory_disclaimer: str
+    official_source_link: str
+    created_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+class ChecklistItem(BaseModel):
+    item_id: str
+    item_title: str
+    description: str
+    official_reference_link: str
+    is_mandatory: bool
+    stage: Optional[str] = "Pre-Launch"
+
+class ComplianceChecklistResponse(BaseModel):
+    id: int
+    jurisdiction: str
+    product_category: str
+    checklist_items: List[Dict[str, Any]]
+    created_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+class UserProgressUpdate(BaseModel):
+    jurisdiction: str = "India — FSSAI"
+    completed_item_ids: List[str]
+
+class UserProgressResponse(BaseModel):
+    jurisdiction: str
+    completed_item_ids: List[str]
+    total_items: int
+    mandatory_total: int
+    mandatory_completed: int
+    progress_percentage: float
+    mandatory_progress_percentage: float
+    updated_at: Optional[datetime] = None
+

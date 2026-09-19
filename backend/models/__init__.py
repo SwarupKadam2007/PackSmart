@@ -190,3 +190,47 @@ class Feedback(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
     recommendation = relationship("Recommendation", back_populates="feedback")
+
+class PackagingFormat(Base):
+    __tablename__ = "packaging_formats"
+
+    format_id = Column(String(50), primary_key=True) # e.g. stand-up-pouch, retort-pouch
+    name = Column(String(100), nullable=False)
+    diagram_svg = Column(Text, nullable=True) # Responsive, original labeled SVG illustration
+    typical_use_cases = Column(JSON, nullable=False) # ["spices", "snacks", "pet food"]
+    pros = Column(Text, nullable=False)
+    cons = Column(Text, nullable=False)
+    related_material_ids = Column(JSON, nullable=True) # ["m1", "m2"]
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+class PreservativeCategory(Base):
+    __tablename__ = "preservative_categories"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    category = Column(String(100), nullable=False) # e.g. Antimicrobial, Antioxidant, Acidity Regulator
+    common_examples = Column(JSON, nullable=False) # ["potassium sorbate", "sodium benzoate", "rosemary extract"]
+    typical_food_use_cases = Column(JSON, nullable=False)
+    natural_vs_synthetic = Column(String(50), nullable=False) # Natural, Synthetic, Both Available
+    regulatory_disclaimer = Column(Text, nullable=False)
+    official_source_link = Column(String(255), nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+class ComplianceChecklist(Base):
+    __tablename__ = "compliance_checklist"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    jurisdiction = Column(String(100), nullable=False, default="India — FSSAI")
+    product_category = Column(String(100), nullable=False, default="General Packaged Food")
+    checklist_items = Column(JSON, nullable=False) # [{"item_id": "...", "item_title": "...", "description": "...", "official_reference_link": "...", "is_mandatory": True, "category": "..."}]
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+class UserChecklistProgress(Base):
+    __tablename__ = "user_checklist_progress"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(String(36), ForeignKey("users.user_id"), nullable=False, index=True)
+    jurisdiction = Column(String(100), nullable=False, default="India — FSSAI")
+    completed_item_ids = Column(JSON, default=list) # ["fssai-lic-1", "fssai-lbl-2"]
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    user = relationship("User")
