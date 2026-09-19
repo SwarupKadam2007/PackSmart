@@ -318,7 +318,7 @@ export default function GetRecommendation({ lang }) {
 
                 <div>
                 <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-2">
-                  <Box className="w-4 h-4 text-amber-400" /> {t.fields.commodityType}
+                  <Box className="w-4 h-4 text-amber-400" /> {t.inputs.commodityType}
                 </label>
                 <select 
                   value={inputs.commodityType} 
@@ -347,7 +347,7 @@ export default function GetRecommendation({ lang }) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-2">
-                    <Droplets className="w-4 h-4 text-blue-400" /> {t.fields.moistureContent}
+                    <Droplets className="w-4 h-4 text-blue-400" /> {t.inputs.moistureContent}
                   </label>
                   <select 
                     value={inputs.moistureContent} 
@@ -360,7 +360,7 @@ export default function GetRecommendation({ lang }) {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{t.fields.oilFatContent}</label>
+                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{t.inputs.oilFatContent}</label>
                   <select 
                     value={inputs.oilFatContent} 
                     onChange={(e) => handleInputChange('oilFatContent', e.target.value)}
@@ -374,7 +374,7 @@ export default function GetRecommendation({ lang }) {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{t.fields.pHLevel}</label>
+                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{t.inputs.pHLevel}</label>
                   <select 
                     value={inputs.pHLevel} 
                     onChange={(e) => handleInputChange('pHLevel', e.target.value)}
@@ -386,7 +386,7 @@ export default function GetRecommendation({ lang }) {
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-2">
-                    <Wind className="w-4 h-4 text-emerald-400" /> {t.fields.respirationRate}
+                    <Wind className="w-4 h-4 text-emerald-400" /> {t.inputs.respirationRate}
                   </label>
                   <select 
                     value={inputs.respirationRate} 
@@ -410,7 +410,7 @@ export default function GetRecommendation({ lang }) {
               className="space-y-6"
             >
               <div>
-                <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{t.fields.desiredShelfLife}</label>
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{t.inputs.desiredShelfLife}</label>
                 <input 
                   type="number" 
                   value={inputs.desiredShelfLife} 
@@ -424,7 +424,7 @@ export default function GetRecommendation({ lang }) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-2">
-                    <Thermometer className="w-4 h-4 text-red-400" /> {t.fields.storageType}
+                    <Thermometer className="w-4 h-4 text-red-400" /> {t.inputs.storageType}
                   </label>
                   <select 
                     value={inputs.storageType} 
@@ -437,7 +437,7 @@ export default function GetRecommendation({ lang }) {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{t.fields.transportConditions}</label>
+                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{t.inputs.transportConditions}</label>
                   <select 
                     value={inputs.transportConditions} 
                     onChange={(e) => handleInputChange('transportConditions', e.target.value)}
@@ -461,7 +461,7 @@ export default function GetRecommendation({ lang }) {
               {isAnalyzing ? (
                 <div className="flex flex-col items-center justify-center h-64">
                   <div className="w-16 h-16 border-4 border-amber-400/20 border-t-amber-400 rounded-full animate-spin"></div>
-                  <p className="mt-4 text-amber-400 font-mono tracking-widest animate-pulse">{t.analyzing}</p>
+                  <p className="mt-4 text-amber-400 font-mono tracking-widest animate-pulse">{t.outputs.calculating}</p>
                 </div>
               ) : results ? (
                 <div className="space-y-4">
@@ -481,7 +481,7 @@ export default function GetRecommendation({ lang }) {
                     <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                       <ShieldCheck className="w-24 h-24 text-emerald-400" />
                     </div>
-                    <h4 className="text-emerald-400 text-xs font-bold tracking-widest uppercase mb-1">{t.primaryMaterial}</h4>
+                    <h4 className="text-emerald-400 text-xs font-bold tracking-widest uppercase mb-1">{t.outputs.material}</h4>
                     <p className="text-xl font-bold text-white relative z-10">{results.material}</p>
                   </div>
 
@@ -556,36 +556,36 @@ export default function GetRecommendation({ lang }) {
                   {/* Barrier Specifications Grid */}
                   <div className="grid grid-cols-2 gap-4">
                     <div className="bg-slate-950/50 border border-white/5 p-4 rounded-2xl">
-                      <h4 className="text-slate-500 text-[10px] font-bold tracking-widest uppercase mb-1">{t.targetOtr}</h4>
+                      <h4 className="text-slate-500 text-[10px] font-bold tracking-widest uppercase mb-1">{t.outputs.otr}</h4>
                       <p className="text-lg font-mono text-blue-300">{results.otr}</p>
                       <p className="text-[10px] text-slate-500 mt-1">cc/m²/day</p>
                     </div>
                     <div className="bg-slate-950/50 border border-white/5 p-4 rounded-2xl">
-                      <h4 className="text-slate-500 text-[10px] font-bold tracking-widest uppercase mb-1">{t.targetWvtr}</h4>
+                      <h4 className="text-slate-500 text-[10px] font-bold tracking-widest uppercase mb-1">{t.outputs.wvtr}</h4>
                       <p className="text-lg font-mono text-blue-300">{results.wvtr}</p>
                       <p className="text-[10px] text-slate-500 mt-1">g/m²/day</p>
                     </div>
                     <div className="bg-slate-950/50 border border-white/5 p-4 rounded-2xl">
-                      <h4 className="text-slate-500 text-[10px] font-bold tracking-widest uppercase mb-1">{t.thickness}</h4>
+                      <h4 className="text-slate-500 text-[10px] font-bold tracking-widest uppercase mb-1">{t.outputs.thickness}</h4>
                       <p className="text-lg font-mono text-amber-300">{results.thickness}</p>
                       <p className="text-[10px] text-slate-500 mt-1">microns (μm)</p>
                     </div>
                     <div className="bg-slate-950/50 border border-white/5 p-4 rounded-2xl">
-                      <h4 className="text-slate-500 text-[10px] font-bold tracking-widest uppercase mb-1">{t.sealability}</h4>
+                      <h4 className="text-slate-500 text-[10px] font-bold tracking-widest uppercase mb-1">{t.outputs.sealability}</h4>
                       <p className="text-sm font-semibold text-white">{results.sealability}</p>
                     </div>
                   </div>
 
                   <div className="bg-indigo-950/30 border border-indigo-500/20 p-5 rounded-2xl">
                     <h4 className="text-indigo-400 text-xs font-bold tracking-widest uppercase mb-1 flex items-center gap-2">
-                      <Wind className="w-4 h-4" /> {t.mapRequired}
+                      <Wind className="w-4 h-4" /> {t.outputs.map}
                     </h4>
                     <p className="text-sm font-medium text-slate-200 mt-1">{results.map}</p>
                   </div>
 
                   <div className="bg-green-950/30 border border-green-500/20 p-5 rounded-2xl">
                     <h4 className="text-green-400 text-xs font-bold tracking-widest uppercase mb-1 flex items-center gap-2">
-                      <Leaf className="w-4 h-4" /> {t.ecoAlternative}
+                      <Leaf className="w-4 h-4" /> {t.outputs.sustainability}
                     </h4>
                     <p className="text-sm font-medium text-slate-200 mt-1">{results.eco}</p>
                   </div>
@@ -686,7 +686,7 @@ export default function GetRecommendation({ lang }) {
                 onClick={runAnalysis}
                 className="px-8 py-3 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 font-bold hover:brightness-110 flex items-center gap-2 transition-all shadow-[0_0_20px_rgba(251,191,36,0.5)]"
               >
-                {t.btnAnalyze} <ArrowRight className="w-4 h-4" />
+                {t.outputs.generateBtn} <ArrowRight className="w-4 h-4" />
               </button>
             ) : (
               <button 
