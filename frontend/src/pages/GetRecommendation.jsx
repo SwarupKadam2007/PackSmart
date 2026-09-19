@@ -93,11 +93,81 @@ export default function GetRecommendation({ lang }) {
       if (demoMode) {
         executeSimulation(breadInputs);
       }
+    } else if (demo === 'paneer') {
+      const paneerInputs = {
+        commodityType: 'dairy',
+        moistureContent: 'medium',
+        oilFatContent: 'high',
+        pHLevel: 'neutral',
+        respirationRate: 'low',
+        desiredShelfLife: 30,
+        storageTemp: 4,
+        relativeHumidity: 85,
+        storageType: 'chilled',
+        transportConditions: 'smooth'
+      };
+      setInputs(paneerInputs);
+      setDemoBanner({
+        title: "Demo Simulation Active: Fresh Paneer (Spoilage Prevention)",
+        desc: "Demonstrating EVOH high-barrier structure combined with CO2-enriched MAP."
+      });
+      if (demoMode) {
+        executeSimulation(paneerInputs);
+      }
+    } else if (demo === 'chips') {
+      const chipsInputs = {
+        commodityType: 'snacks',
+        moistureContent: 'low',
+        oilFatContent: 'high',
+        pHLevel: 'neutral',
+        respirationRate: 'low',
+        desiredShelfLife: 180,
+        storageTemp: 25,
+        relativeHumidity: 50,
+        storageType: 'ambient',
+        transportConditions: 'smooth'
+      };
+      setInputs(chipsInputs);
+      setDemoBanner({
+        title: "Demo Simulation Active: Potato Chips (Oxidation Control)",
+        desc: "Demonstrating metallized film and nitrogen flush to protect against rancidity."
+      });
+      if (demoMode) {
+        executeSimulation(chipsInputs);
+      }
+    } else if (demo === 'pickle') {
+      const pickleInputs = {
+        commodityType: 'dryGoods',
+        moistureContent: 'medium',
+        oilFatContent: 'high',
+        pHLevel: 'acidic',
+        respirationRate: 'low',
+        desiredShelfLife: 365,
+        storageTemp: 25,
+        relativeHumidity: 60,
+        storageType: 'ambient',
+        transportConditions: 'smooth'
+      };
+      setInputs(pickleInputs);
+      setDemoBanner({
+        title: "Demo Simulation Active: Mango Pickle (Acidity Defense)",
+        desc: "Demonstrating Alu-Foil laminate for leak-proof acidic protection."
+      });
+      if (demoMode) {
+        executeSimulation(pickleInputs);
+      }
     }
   }, [searchParams]);
 
   const handleInputChange = (field, value) => {
     setInputs(prev => ({ ...prev, [field]: value }));
+    if (searchParams.get('demo') || searchParams.get('demo_mode')) {
+      const newParams = new URLSearchParams(searchParams);
+      newParams.delete('demo');
+      newParams.delete('demo_mode');
+      window.history.replaceState({}, '', `${window.location.pathname}?${newParams}`);
+      setDemoBanner(null);
+    }
   };
 
   const handleNextStep = () => {
@@ -122,7 +192,8 @@ export default function GetRecommendation({ lang }) {
         oil_fat_content: inputData.oilFatContent === 'high' ? 30.0 : 5.0,
         ph_level: inputData.pHLevel === 'acidic' ? 4.0 : 7.0,
         respiration_rate: inputData.respirationRate === 'high' ? 30.0 : 5.0,
-        demo_mode: searchParams.get('demo_mode') === 'true'
+        demo_mode: searchParams.get('demo_mode') === 'true',
+        demo_commodity: searchParams.get('demo')
       };
 
       const res = await api.generateRecommendation(payload);
@@ -144,6 +215,9 @@ export default function GetRecommendation({ lang }) {
         recommended_format: res.recommended_format,
         format_id: res.format_id,
         short_shelf_life_note: res.short_shelf_life_note,
+        demo_scenario_comparison: res.demo_scenario_comparison,
+        explanation_text: res.explanation_text || topMat?.explanation,
+        is_demo: res.is_demo,
         commodity: res.commodity,
         is_bakery: inputData.commodityType === 'bakery' || res.commodity?.toLowerCase().includes('bakery')
       });
@@ -392,6 +466,16 @@ export default function GetRecommendation({ lang }) {
               ) : results ? (
                 <div className="space-y-4">
                   
+                  {/* Demo Mode Badge */}
+                  {results.is_demo && (
+                    <div className="bg-amber-400/20 border border-amber-400/40 p-3 rounded-xl flex items-center gap-2 mb-4">
+                      <Sparkles className="w-5 h-5 text-amber-500" />
+                      <span className="text-amber-500 font-bold text-sm tracking-wide">
+                        Demo Mode — illustrative example
+                      </span>
+                    </div>
+                  )}
+
                   {/* Primary Material */}
                   <div className="bg-emerald-950/30 border border-emerald-500/20 p-5 rounded-2xl relative overflow-hidden group">
                     <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
@@ -400,6 +484,21 @@ export default function GetRecommendation({ lang }) {
                     <h4 className="text-emerald-400 text-xs font-bold tracking-widest uppercase mb-1">{t.primaryMaterial}</h4>
                     <p className="text-xl font-bold text-white relative z-10">{results.material}</p>
                   </div>
+
+                  {/* Explanation text */}
+                  {results.explanation_text && (
+                    <div className="bg-slate-900/50 border border-white/5 p-4 rounded-2xl text-sm text-slate-300 leading-relaxed italic">
+                      "{results.explanation_text}"
+                    </div>
+                  )}
+
+                  {/* Demo Scenario Comparison */}
+                  {results.demo_scenario_comparison && (
+                    <div className="bg-blue-950/30 border border-blue-500/20 p-4 rounded-2xl text-sm text-blue-200/90 leading-relaxed">
+                      <span className="font-bold text-blue-300 block mb-1">Scenario Comparison:</span>
+                      {results.demo_scenario_comparison}
+                    </div>
+                  )}
 
                   {/* Recommended Packaging Format Card */}
                   {results.recommended_format && (

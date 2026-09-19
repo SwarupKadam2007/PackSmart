@@ -291,7 +291,7 @@ export default function Home({ lang, setLang }) {
               </div>
 
               {/* Presets */}
-              <div className="space-y-4 mb-6">
+              <div className="space-y-4 mb-6 max-h-[60vh] overflow-y-auto custom-scrollbar pr-2">
                 {/* Preset 1: Mango Export */}
                 <div 
                   onClick={() => launchDemoScenario('mango')}
@@ -347,17 +347,90 @@ export default function Home({ lang, setLang }) {
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="text-center">
-                <button
-                  type="button"
-                  onClick={() => launchDemoScenario('mango')}
-                  className="w-full py-3 px-6 rounded-2xl bg-brand-green text-white font-bold text-xs sm:text-sm hover:bg-brand-green/90 transition-all shadow-md flex items-center justify-center gap-2"
+                {/* Preset 3: Paneer */}
+                <div 
+                  onClick={() => launchDemoScenario('paneer')}
+                  className="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-blue-400 dark:hover:border-blue-400 bg-slate-50/60 dark:bg-slate-850/50 hover:bg-blue-50/20 dark:hover:bg-blue-950/20 transition-all cursor-pointer group flex items-start gap-4"
                 >
-                  <span>Launch Live Simulation</span>
-                  <ArrowRight className="w-4 h-4" />
-                </button>
+                  <div className="w-12 h-12 rounded-2xl bg-blue-500/20 text-blue-500 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                    <Box className="w-6 h-6" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-bold text-slate-900 dark:text-white text-sm sm:text-base">
+                        Fresh Paneer — Spoilage Prevention
+                      </h4>
+                      <span className="text-xs font-bold text-blue-500 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                        Run &rarr;
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
+                      High spoilage risk. Demonstrates how EVOH high-barrier structure combined with CO2-enriched MAP extends shelf life.
+                    </p>
+                    <div className="flex flex-wrap gap-2 mt-2.5 text-[10px] font-mono text-slate-500">
+                      <span className="bg-white dark:bg-slate-900 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-800">Category: Dairy</span>
+                      <span className="bg-white dark:bg-slate-900 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-800">Barrier: EVOH</span>
+                      <span className="bg-white dark:bg-slate-900 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-800">Shelf Life: 30 Days</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Preset 4: Chips */}
+                <div 
+                  onClick={() => launchDemoScenario('chips')}
+                  className="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-orange-400 dark:hover:border-orange-400 bg-slate-50/60 dark:bg-slate-850/50 hover:bg-orange-50/20 dark:hover:bg-orange-950/20 transition-all cursor-pointer group flex items-start gap-4"
+                >
+                  <div className="w-12 h-12 rounded-2xl bg-orange-500/20 text-orange-500 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                    <TrendingUp className="w-6 h-6" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-bold text-slate-900 dark:text-white text-sm sm:text-base">
+                        Potato Chips — Oxidation & Rancidity Control
+                      </h4>
+                      <span className="text-xs font-bold text-orange-500 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                        Run &rarr;
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
+                      High fat content. Shows how metallized film and 99.5% nitrogen flush protects against lipid oxidation and staling.
+                    </p>
+                    <div className="flex flex-wrap gap-2 mt-2.5 text-[10px] font-mono text-slate-500">
+                      <span className="bg-white dark:bg-slate-900 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-800">Fat Content: High</span>
+                      <span className="bg-white dark:bg-slate-900 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-800">Format: Flow Wrap</span>
+                      <span className="bg-white dark:bg-slate-900 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-800">MAP: N2 Flush</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Preset 5: Pickle */}
+                <div 
+                  onClick={() => launchDemoScenario('pickle')}
+                  className="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-red-400 dark:hover:border-red-400 bg-slate-50/60 dark:bg-slate-850/50 hover:bg-red-50/20 dark:hover:bg-red-950/20 transition-all cursor-pointer group flex items-start gap-4"
+                >
+                  <div className="w-12 h-12 rounded-2xl bg-red-500/20 text-red-500 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                    <ShieldCheck className="w-6 h-6" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-bold text-slate-900 dark:text-white text-sm sm:text-base">
+                        Mango Pickle — Acidity & Corrosion Defense
+                      </h4>
+                      <span className="text-xs font-bold text-red-500 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                        Run &rarr;
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
+                      Highly acidic (pH &lt; 4). Explores the necessity of Alu-Foil laminate to secure a leak-proof, 1-year ambient shelf life.
+                    </p>
+                    <div className="flex flex-wrap gap-2 mt-2.5 text-[10px] font-mono text-slate-500">
+                      <span className="bg-white dark:bg-slate-900 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-800">pH: Acidic</span>
+                      <span className="bg-white dark:bg-slate-900 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-800">Format: Stand-up Pouch</span>
+                      <span className="bg-white dark:bg-slate-900 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-800">Shelf Life: 365 Days</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </motion.div>
           </div>

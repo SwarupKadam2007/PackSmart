@@ -99,6 +99,7 @@ class RecommendationInput(BaseModel):
     relative_humidity: Optional[float] = Field(85.0, ge=0.0, le=100.0, description="Relative humidity percentage (0-100)")
     transport_conditions: Optional[str] = "smooth"
     demo_mode: Optional[bool] = False
+    demo_commodity: Optional[str] = None
 
 class RankedMaterial(BaseModel):
     material_id: str
@@ -135,6 +136,9 @@ class RecommendationResponse(BaseModel):
     recommended_format: Optional[str] = None
     format_id: Optional[str] = None
     short_shelf_life_note: Optional[str] = None
+    demo_scenario_comparison: Optional[str] = None
+    explanation_text: Optional[str] = None
+    is_demo: Optional[bool] = False
     created_at: datetime
 
 # --- Shelf Life Schemas ---

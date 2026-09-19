@@ -3,7 +3,96 @@ from sqlalchemy.orm import Session
 from ..models import PackagingMaterial, Commodity, Recommendation, RecommendationMaterial, MapAdvisory
 from ..schemas import RecommendationInput
 import uuid
+from datetime import datetime
 
+# NOTE: This registry must be kept in sync with the frontend copy in frontend/src/api/client.js
+DEMO_SIMULATION_REGISTRY = {
+    "mango": {
+        "commodity": "Alphonso Mango",
+        "primary_material": "Micro-Perforated BOPP",
+        "target_otr": "6,000 - 10,000",
+        "target_wvtr": "15 - 20",
+        "thickness": "30 - 45",
+        "sealability": "Hermetic Heat Seal",
+        "map_required": "Equilibrium MAP (3-5% O2, 5-8% CO2)",
+        "eco_alternative": "PLA Micro-Perforated Bio-Film",
+        "shelf_life_days": 14.0,
+        "recommended_format": "Micro-Perforated Produce Pouch",
+        "format_id": "micro-perf-bag",
+        "explanation_text": "Alphonso mangoes are highly respirative and susceptible to chilling injury. Micro-perforated BOPP creates an Equilibrium Modified Atmosphere (EMAP), preventing anaerobic fermentation and extending shelf life.",
+        "demo_scenario_comparison": "Compared to standard airtight bags where mangoes would ferment in 3 days, this format safely supports 14 days export shelf life.",
+        "short_shelf_life_note": "For long-distance sea freight, consider integrating ethylene absorbers.",
+        "is_demo": True
+    },
+    "bread": {
+        "commodity": "Sourdough Bread",
+        "primary_material": "Breathable Kraft Laminate",
+        "target_otr": "8,000 - 12,000",
+        "target_wvtr": "25 - 35",
+        "thickness": "40 - 60",
+        "sealability": "Fin Seal with Micro-Vents",
+        "map_required": "Optional: N2 flush for crust preservation",
+        "eco_alternative": "Unbleached Perforated Kraft Paper",
+        "shelf_life_days": 7.0,
+        "recommended_format": "Flow Wrap / Pillow Pouch",
+        "format_id": "flow-wrap",
+        "explanation_text": "High moisture content in freshly baked bread causes condensation in impermeable plastic, accelerating mold sporulation. Breathable laminates release water vapor while maintaining a hygienic barrier.",
+        "demo_scenario_comparison": "Without breathability, sourdough develops mold within 3 days. With this solution, crust remains crisp and mold is delayed up to 7 days.",
+        "short_shelf_life_note": "Consider natural calcium propionate or cultured dextrose to extend mold-free shelf life. Check the Preservatives Guide.",
+        "is_demo": True
+    },
+    "paneer": {
+        "commodity": "Fresh Paneer",
+        "primary_material": "Co-extruded EVOH / PA / PE",
+        "target_otr": "< 2.0",
+        "target_wvtr": "< 2.0",
+        "thickness": "80 - 100",
+        "sealability": "Critical Vacuum / Skin Pack Seal",
+        "map_required": "Mandatory: 30% CO2 / 70% N2",
+        "eco_alternative": "Recyclable Monomaterial PP High-Barrier",
+        "shelf_life_days": 30.0,
+        "recommended_format": "Vacuum Pack / Skin Pack",
+        "format_id": "vacuum-pack",
+        "explanation_text": "Paneer is highly prone to bacterial spoilage. A high-barrier EVOH structure combined with a CO2-enriched MAP effectively halts aerobic microbial growth and extends shelf life to 30 days.",
+        "demo_scenario_comparison": "In a standard LDPE pouch, paneer spoils in 5 days. With high-barrier MAP, it lasts 30 days under refrigeration.",
+        "short_shelf_life_note": None,
+        "is_demo": True
+    },
+    "chips": {
+        "commodity": "Potato Chips",
+        "primary_material": "BOPP / Metallized CPP",
+        "target_otr": "< 1.0",
+        "target_wvtr": "< 0.5",
+        "thickness": "60 - 80",
+        "sealability": "Gas-Tight Barrier Fin Seal",
+        "map_required": "Mandatory: 99.5% N2 Flush",
+        "eco_alternative": "High-Barrier Cellulose Film",
+        "shelf_life_days": 180.0,
+        "recommended_format": "Flow Wrap / Pillow Pouch",
+        "format_id": "flow-wrap",
+        "explanation_text": "High fat content requires strict protection from light and oxygen to prevent lipid oxidation and rancidity. The metallized layer provides an excellent light and oxygen barrier.",
+        "demo_scenario_comparison": "Without nitrogen flushing, chips go stale and rancid in weeks. This format secures 6 months ambient shelf life.",
+        "short_shelf_life_note": None,
+        "is_demo": True
+    },
+    "pickle": {
+        "commodity": "Mango Pickle",
+        "primary_material": "PET / Alu-Foil / CPP Laminate",
+        "target_otr": "< 0.5",
+        "target_wvtr": "< 0.5",
+        "thickness": "100 - 120",
+        "sealability": "Corrosion-Resistant Heat Seal",
+        "map_required": "Not Required",
+        "eco_alternative": "Glass Jar with Tinplate Lug Cap",
+        "shelf_life_days": 365.0,
+        "recommended_format": "Stand-up Pouch (Doypack)",
+        "format_id": "stand-up-pouch",
+        "explanation_text": "Highly acidic (pH < 4.0) and high oil/salt content makes pickle self-preserving but highly corrosive. An aluminum foil layer is crucial for a 1-year ambient shelf life, protecting against light and acid degradation.",
+        "demo_scenario_comparison": "A standard plastic pouch would degrade and leak oil. The foil laminate ensures a leak-proof, 1-year shelf life.",
+        "short_shelf_life_note": None,
+        "is_demo": True
+    }
+}
 # ML scoring weights for packaging selection
 WEIGHT_BARRIER_OTR = 0.30
 WEIGHT_BARRIER_WVTR = 0.25
@@ -31,13 +120,30 @@ def run_recommendation_engine(db: Session, payload: RecommendationInput, user_id
     final_respiration = payload.respiration_rate if payload.respiration_rate is not None else (commodity_query.default_respiration_rate if commodity_query and commodity_query.default_respiration_rate else 15.0)
 
     # Demo mode handling
-    if getattr(payload, 'demo_mode', False) and not payload.commodity_name and not payload.commodity_id:
-        comm_name = "Fresh Mangoes (Alphonso)"
-        comm_cat = "fresh produce"
-        final_moisture = 83.0
-        final_oil_fat = 0.4
-        final_ph = 4.5
-        final_respiration = 35.0
+    if getattr(payload, 'demo_mode', False) and getattr(payload, 'demo_commodity', None) in DEMO_SIMULATION_REGISTRY:
+        demo_data = dict(DEMO_SIMULATION_REGISTRY[payload.demo_commodity])
+        demo_data["recommendation_id"] = f"demo-{uuid.uuid4().hex[:8]}"
+        demo_data["ranked_materials"] = [{
+            "material_id": "demo-mat-1",
+            "name": demo_data["primary_material"],
+            "material_type": "Demo Material",
+            "rank": 1,
+            "confidence_score": 0.99,
+            "recommended_thickness": demo_data["thickness"],
+            "recommended_otr": demo_data["target_otr"],
+            "recommended_wvtr": demo_data["target_wvtr"],
+            "sealability": demo_data["sealability"],
+            "map_required": demo_data["map_required"],
+            "eco_alternative": demo_data["eco_alternative"],
+            "explanation": demo_data["explanation_text"],
+            "cost_index": 5.0,
+            "sustainability_score": 75.0,
+            "source_reference": "Verified Demo Data",
+            "cost_estimate_local": None,
+            "supplier_channel_note": None
+        }]
+        demo_data["created_at"] = datetime.utcnow()
+        return demo_data
 
     is_fresh = "produce" in comm_cat or "fresh" in comm_cat or "fruit" in comm_cat or "vegetable" in comm_cat or payload.commodity_name == "freshProduce"
     is_dry = "dry" in comm_cat or "powder" in comm_cat or "grain" in comm_cat or payload.commodity_name == "dryGoods"
@@ -289,5 +395,6 @@ def run_recommendation_engine(db: Session, payload: RecommendationInput, user_id
         "recommended_format": rec_format,
         "format_id": rec_format_id,
         "short_shelf_life_note": short_shelf_life_note,
-        "created_at": rec_obj.created_at
+        "created_at": rec_obj.created_at,
+        "is_demo": False
     }
