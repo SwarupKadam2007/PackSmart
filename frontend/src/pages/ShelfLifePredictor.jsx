@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Activity, Thermometer, Droplets, Shield, Play, TrendingUp, AlertTriangle } from 'lucide-react';
 import { api } from '../api/client';
+import { TRANSLATIONS } from '../data/i18n';
 
-export default function ShelfLifePredictor({ lang }) {
+export default function ShelfLifePredictor({ lang = 'en' }) {
+  const t = TRANSLATIONS[lang] || TRANSLATIONS.en;
   const [commodity, setCommodity] = useState('Apples (Fresh)');
   const [material, setMaterial] = useState('Micro-Perforated BOPP');
   const [barrierGrade, setBarrierGrade] = useState('standard');
@@ -35,13 +37,13 @@ export default function ShelfLifePredictor({ lang }) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center mb-12">
         <div>
           <div className="inline-flex items-center gap-2 bg-brand-green/10 dark:bg-brand-green/20 text-brand-green dark:text-emerald-400 px-3 py-1.5 rounded-full text-xs font-bold mb-4 uppercase tracking-wider">
-            <Activity className="w-4 h-4" /> Predictive Analytics
+            <Activity className="w-4 h-4" /> {t.shelfBadge || "Predictive Analytics"}
           </div>
           <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight mb-4">
-            Shelf-Life Kinetic Predictor
+            {t.shelfTitle || "Shelf-Life Kinetic Predictor"}
           </h1>
           <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed">
-            Simulate spoilage kinetics, Q10 Arrhenius temperature shifts, and moisture-barrier shelf-life curves.
+            {t.shelfDesc || "Simulate spoilage kinetics, Q10 Arrhenius temperature shifts, and moisture-barrier shelf-life curves."}
           </p>
         </div>
         <div className="relative flex justify-center">
@@ -54,11 +56,11 @@ export default function ShelfLifePredictor({ lang }) {
         {/* Left Form: Parameters */}
         <div className="lg:col-span-5 bg-slate-900/60 backdrop-blur-xl border border-white/10 p-6 rounded-3xl space-y-6">
           <h2 className="text-lg font-bold text-amber-300 font-mono flex items-center gap-2 border-b border-white/5 pb-3">
-            <Shield className="w-5 h-5 text-amber-400" /> Environmental Parameters
+            <Shield className="w-5 h-5 text-amber-400" /> {t.shelfParams || "Environmental Parameters"}
           </h2>
 
           <div>
-            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Food Commodity</label>
+            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{t.shelfCommodity || "Food Commodity"}</label>
             <select
               value={commodity}
               onChange={(e) => setCommodity(e.target.value)}
@@ -74,7 +76,7 @@ export default function ShelfLifePredictor({ lang }) {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Packaging Material Matrix</label>
+            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{t.shelfMaterial || "Packaging Material Matrix"}</label>
             <select
               value={material}
               onChange={(e) => setMaterial(e.target.value)}
@@ -89,7 +91,7 @@ export default function ShelfLifePredictor({ lang }) {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Barrier Quality Grade</label>
+            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{t.shelfGrade || "Barrier Quality Grade"}</label>
             <div className="grid grid-cols-3 gap-2">
               {['standard', 'high-barrier', 'ultra-high'].map(grade => (
                 <button
@@ -112,7 +114,7 @@ export default function ShelfLifePredictor({ lang }) {
           <div>
             <div className="flex justify-between items-center mb-2">
               <label className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                <Thermometer className="w-4 h-4 text-red-400" /> Storage Temperature
+                <Thermometer className="w-4 h-4 text-red-400" /> {t.shelfTemp || "Storage Temperature"}
               </label>
               <span className="font-mono text-amber-300 text-sm font-bold bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/20">
                 {temp}°C
@@ -171,7 +173,7 @@ export default function ShelfLifePredictor({ lang }) {
               <span className="animate-spin w-5 h-5 border-2 border-slate-950 border-t-transparent rounded-full"></span>
             ) : (
               <>
-                <Play className="w-4 h-4 fill-current" /> Run Kinetic Simulation
+                <Play className="w-4 h-4 fill-current" /> {t.shelfCalcBtn || "Run Kinetic Simulation"}
               </>
             )}
           </button>

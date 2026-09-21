@@ -11,13 +11,13 @@ export default function About({ lang }) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
         <div>
           <div className="inline-flex items-center gap-2 bg-brand-green/10 dark:bg-brand-green/20 text-brand-green dark:text-emerald-400 px-3 py-1.5 rounded-full text-xs font-semibold mb-4 uppercase tracking-wider">
-            <Leaf className="w-4 h-4" /> About PackSmart AI
+            <Leaf className="w-4 h-4" /> {t.aboutBadge || "About PackSmart AI"}
           </div>
           <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight mb-4">
-            Revolutionizing Food Preservation & Supply Chain Logistics
+            {t.aboutTitle || "Revolutionizing Food Preservation & Supply Chain Logistics"}
           </h1>
           <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
-            PackSmart combines material physics, artificial intelligence, and logistics analytics to reduce food spoilage and optimize packaging selection worldwide.
+            {t.aboutDesc || "PackSmart combines material physics, artificial intelligence, and logistics analytics to reduce food spoilage and optimize packaging selection worldwide."}
           </p>
         </div>
         <div className="relative flex justify-center">
@@ -32,9 +32,9 @@ export default function About({ lang }) {
           <div className="bg-brand-green/10 dark:bg-brand-green/20 w-12 h-12 rounded-2xl flex items-center justify-center">
             <Target className="w-6 h-6 text-brand-green dark:text-emerald-400" />
           </div>
-          <h3 className="text-xl font-bold text-slate-900 dark:text-white">Our Mission</h3>
+          <h3 className="text-xl font-bold text-slate-900 dark:text-white">{t.aboutMissionTitle || "Our Mission"}</h3>
           <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-            Eliminate crop waste by giving farmers, suppliers, and entrepreneurs data-backed packaging recommendations.
+            {t.aboutMissionDesc || "Eliminate crop waste by giving farmers, suppliers, and entrepreneurs data-backed packaging recommendations."}
           </p>
         </div>
 
@@ -42,9 +42,9 @@ export default function About({ lang }) {
           <div className="bg-brand-orange/10 dark:bg-brand-orange/20 w-12 h-12 rounded-2xl flex items-center justify-center">
             <ShieldCheck className="w-6 h-6 text-brand-orange" />
           </div>
-          <h3 className="text-xl font-bold text-slate-900 dark:text-white">Physics-Driven AI</h3>
+          <h3 className="text-xl font-bold text-slate-900 dark:text-white">{t.aboutPhysicsTitle || "Physics-Driven AI"}</h3>
           <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-            Engineered with thermodynamic respiration equations, oxygen transmission rates (OTR), and moisture kinetics.
+            {t.aboutPhysicsDesc || "Engineered with thermodynamic respiration equations, oxygen transmission rates (OTR), and moisture kinetics."}
           </p>
         </div>
 
@@ -52,9 +52,9 @@ export default function About({ lang }) {
           <div className="bg-emerald-500/10 dark:bg-emerald-500/20 w-12 h-12 rounded-2xl flex items-center justify-center">
             <Award className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
           </div>
-          <h3 className="text-xl font-bold text-slate-900 dark:text-white">Eco & Recyclable</h3>
+          <h3 className="text-xl font-bold text-slate-900 dark:text-white">{t.aboutEcoTitle || "Eco & Recyclable"}</h3>
           <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-            Promoting eco-friendly polymer films and sustainable multi-layer laminates to reduce environmental footprint.
+            {t.aboutEcoDesc || "Promoting eco-friendly polymer films and sustainable multi-layer laminates to reduce environmental footprint."}
           </p>
         </div>
       </div>

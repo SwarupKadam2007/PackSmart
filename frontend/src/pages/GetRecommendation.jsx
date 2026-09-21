@@ -17,11 +17,13 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ENGINE_TRANSLATIONS } from '../data/engineI18n';
+import { TRANSLATIONS } from '../data/i18n';
 import { api } from '../api/client';
 import { useSearchParams, Link } from 'react-router-dom';
 
-export default function GetRecommendation({ lang }) {
+export default function GetRecommendation({ lang = 'en' }) {
   const t = ENGINE_TRANSLATIONS[lang] || ENGINE_TRANSLATIONS.en;
+  const tGlobal = TRANSLATIONS[lang] || TRANSLATIONS.en;
   const [searchParams] = useSearchParams();
   
   // Multi-step state
@@ -235,10 +237,10 @@ export default function GetRecommendation({ lang }) {
 
   const getStepTitle = () => {
     switch(step) {
-      case 1: return "Step 1: Commodity Selection";
-      case 2: return "Step 2: Input Parameters";
-      case 3: return "Step 3: Storage & Transport";
-      case 4: return "Step 4: Recommendation Results";
+      case 1: return tGlobal.step1Title || "Step 1: Commodity Selection";
+      case 2: return tGlobal.step2Title || "Step 2: Input Parameters";
+      case 3: return tGlobal.step3Title || "Step 3: Storage & Transport";
+      case 4: return tGlobal.step4Title || "Step 4: Recommendation Results";
       default: return "";
     }
   };
@@ -270,13 +272,13 @@ export default function GetRecommendation({ lang }) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center mb-12">
         <div>
           <div className="inline-flex items-center gap-2 bg-brand-green/10 dark:bg-brand-green/20 text-brand-green dark:text-emerald-400 px-3 py-1.5 rounded-full text-xs font-bold mb-4 uppercase tracking-wider">
-            <BrainCircuit className="w-4 h-4" /> AI-Powered
+            <BrainCircuit className="w-4 h-4" /> {tGlobal.engineBadge || "AI-Powered Engine"}
           </div>
           <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight mb-4">
-            Intelligent Packaging Recommendation Engine
+            {tGlobal.engineTitle || t.title}
           </h1>
           <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed">
-            Get the best packaging recommendations based on your product's characteristics, storage needs, and logistics requirements — all powered by AI.
+            {tGlobal.engineDesc || t.subtitle}
           </p>
         </div>
         <div className="relative flex justify-center">
@@ -679,7 +681,7 @@ export default function GetRecommendation({ lang }) {
                 onClick={handlePrevStep}
                 className="px-6 py-2 rounded-xl text-sm font-semibold text-slate-400 hover:text-white transition-colors"
               >
-                Back
+                {lang === 'mr' ? 'मागे' : lang === 'hi' ? 'पीछे' : lang === 'pa' ? 'ਪਿੱਛੇ' : lang === 'gu' ? 'પાછળ' : 'Back'}
               </button>
             ) : <div></div>}
             
@@ -688,7 +690,7 @@ export default function GetRecommendation({ lang }) {
                 onClick={handleNextStep}
                 className="px-8 py-3 rounded-xl bg-amber-400 text-slate-950 font-bold hover:bg-yellow-300 transition-colors shadow-[0_0_15px_rgba(251,191,36,0.3)]"
               >
-                Next Step
+                {lang === 'mr' ? 'पुढील टप्पा' : lang === 'hi' ? 'अगला कदम' : lang === 'pa' ? 'ਅਗਲਾ ਕਦਮ' : lang === 'gu' ? 'આગળનું પગલું' : 'Next Step'}
               </button>
             ) : step === 3 ? (
               <button 
@@ -702,7 +704,7 @@ export default function GetRecommendation({ lang }) {
                 onClick={() => setStep(1)}
                 className="px-6 py-2 rounded-xl border border-amber-400/50 text-amber-400 font-semibold hover:bg-amber-400 hover:text-slate-950 transition-colors"
               >
-                Start Over
+                {tGlobal.engineResetBtn || (lang === 'mr' ? 'पुन्हा सुरू करा' : lang === 'hi' ? 'फिर से शुरू करें' : lang === 'pa' ? 'ਮੁੜ ਸ਼ੁਰੂ ਕਰੋ' : lang === 'gu' ? 'ફરી શરૂ કરો' : 'Start Over')}
               </button>
             )}
           </div>

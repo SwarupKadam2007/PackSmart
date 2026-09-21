@@ -5,9 +5,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { api } from '../api/client';
 
 import { KNOWLEDGE_TRANSLATIONS } from '../data/knowledgeI18n';
+import { TRANSLATIONS } from '../data/i18n';
 
 export default function KnowledgeBase({ lang = 'en' }) {
   const t = KNOWLEDGE_TRANSLATIONS[lang] || KNOWLEDGE_TRANSLATIONS.en;
+  const tGlobal = TRANSLATIONS[lang] || TRANSLATIONS.en;
   const FLASHCARDS = t.flashcards;
   const [searchParams, setSearchParams] = useSearchParams();
   const initialTab = searchParams.get('tab') || 'flashcards'; // 'flashcards' | 'library' | 'preservatives'
@@ -74,13 +76,13 @@ export default function KnowledgeBase({ lang = 'en' }) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center mb-10 pb-8 border-b border-white/10">
         <div>
           <div className="inline-flex items-center gap-2 bg-amber-400/10 text-amber-400 border border-amber-400/20 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
-            <Sparkles className="w-3.5 h-3.5" /> Technical Knowledge Hub
+            <Sparkles className="w-3.5 h-3.5" /> {tGlobal.kbBadge || "Technical Knowledge Hub"}
           </div>
           <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight mb-4">
-            Packaging Science & Regulatory Library
+            {tGlobal.kbTitle || "Packaging Science & Regulatory Library"}
           </h1>
           <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed">
-            Interactive learning modules, vector packaging format schematics, and statutory preservative guidelines for food founders and packaging engineers.
+            {tGlobal.kbDesc || "Interactive learning modules, vector packaging format schematics, and statutory preservative guidelines for food founders and packaging engineers."}
           </p>
         </div>
         <div className="relative flex justify-center">
@@ -101,7 +103,7 @@ export default function KnowledgeBase({ lang = 'en' }) {
           }`}
         >
           <BookOpen className="w-4 h-4" />
-          <span>Flashcards</span>
+          <span>{tGlobal.kbFlashcards || "Flashcards"}</span>
         </button>
 
         <button
@@ -114,7 +116,7 @@ export default function KnowledgeBase({ lang = 'en' }) {
           }`}
         >
           <Layers className="w-4 h-4" />
-          <span>Packaging Library</span>
+          <span>{tGlobal.kbLibrary || "Packaging Library"}</span>
         </button>
 
         <button
@@ -127,7 +129,7 @@ export default function KnowledgeBase({ lang = 'en' }) {
           }`}
         >
           <ShieldAlert className="w-4 h-4" />
-          <span>Preservatives & Shelf-Life</span>
+          <span>{tGlobal.kbPreservatives || "Preservatives & Shelf-Life"}</span>
         </button>
       </div>
 

@@ -100,8 +100,7 @@ export default function Home({ lang, setLang }) {
           <img 
             src="/hero_robot.jpg" 
             alt="Robotic arm packing box on conveyor belt" 
-            className="w-full max-w-sm sm:max-w-lg object-contain drop-shadow-2xl rounded-3xl dark:opacity-90"
-            style={{ mixBlendMode: 'multiply' }}
+            className="w-full max-w-sm sm:max-w-lg object-contain drop-shadow-2xl rounded-3xl"
           />
         </div>
       </section>

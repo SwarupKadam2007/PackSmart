@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Layers, Search, Filter, ShieldCheck, Leaf, DollarSign, Award, ExternalLink } from 'lucide-react';
 import { api } from '../api/client';
+import { TRANSLATIONS } from '../data/i18n';
 
-export default function MaterialDatabase({ lang }) {
+export default function MaterialDatabase({ lang = 'en' }) {
+  const t = TRANSLATIONS[lang] || TRANSLATIONS.en;
   const [materials, setMaterials] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -37,13 +39,13 @@ export default function MaterialDatabase({ lang }) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center mb-8 border-b border-white/10 pb-10">
         <div>
           <div className="inline-flex items-center gap-2 bg-brand-green/10 dark:bg-brand-green/20 text-brand-green dark:text-emerald-400 px-3 py-1.5 rounded-full text-xs font-bold mb-4 uppercase tracking-wider">
-            <Layers className="w-4 h-4" /> Data-Driven
+            <Layers className="w-4 h-4" /> {t.matBadge || "Data-Driven"}
           </div>
           <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight mb-4">
-            Packaging Material Database
+            {t.matTitle || "Packaging Material Database"}
           </h1>
           <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed">
-            Comprehensive scientific polymer registry, barrier specs, and transmission rates.
+            {t.matDesc || "Comprehensive scientific polymer registry, barrier specs, and transmission rates."}
           </p>
         </div>
         <div className="relative flex justify-center">
@@ -57,7 +59,7 @@ export default function MaterialDatabase({ lang }) {
           <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
-            placeholder="Search polymers (e.g. EVOH, BOPP, PLA, LDPE)..."
+            placeholder={t.matSearchPlaceholder || "Search polymers (e.g. EVOH, BOPP, PLA, LDPE)..."}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-white/10 rounded-xl pl-10 pr-4 py-2 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-amber-400 transition-all"
@@ -67,11 +69,11 @@ export default function MaterialDatabase({ lang }) {
         {/* Category Pills */}
         <div className="flex gap-2 overflow-x-auto w-full md:w-auto pb-1 md:pb-0">
           {[
-            { id: 'all', label: 'All Materials' },
-            { id: 'breathable', label: 'Breathable Films' },
-            { id: 'laminate', label: 'Barrier Laminates' },
-            { id: 'biodegradable', label: 'Bio & Compostable' },
-            { id: 'foil', label: 'Foil Composites' }
+            { id: 'all', label: t.matAll || 'All Materials' },
+            { id: 'breathable', label: t.matFlexible || 'Breathable Films' },
+            { id: 'laminate', label: t.matBarrier || 'Barrier Laminates' },
+            { id: 'biodegradable', label: t.matEco || 'Bio & Compostable' },
+            { id: 'foil', label: t.matRigid || 'Foil Composites' }
           ].map(cat => (
             <button
               key={cat.id}
@@ -134,11 +136,11 @@ export default function MaterialDatabase({ lang }) {
                 {/* Specs Box */}
                 <div className="grid grid-cols-2 gap-2 mt-4 pt-4 border-t border-white/5 text-xs">
                   <div className="bg-slate-950/40 p-2 rounded-lg">
-                    <span className="text-[10px] text-slate-500 block uppercase">OTR Barrier</span>
+                    <span className="text-[10px] text-slate-500 block uppercase">{t.matOtr || "OTR Barrier"}</span>
                     <span className="font-mono text-blue-300 font-medium">{mat.otr_range}</span>
                   </div>
                   <div className="bg-slate-950/40 p-2 rounded-lg">
-                    <span className="text-[10px] text-slate-500 block uppercase">WVTR Barrier</span>
+                    <span className="text-[10px] text-slate-500 block uppercase">{t.matWvtr || "WVTR Barrier"}</span>
                     <span className="font-mono text-blue-300 font-medium">{mat.wvtr_range}</span>
                   </div>
                   <div className="bg-slate-950/40 p-2 rounded-lg">
@@ -154,7 +156,7 @@ export default function MaterialDatabase({ lang }) {
 
               <div className="mt-6 flex items-center justify-between pt-3 border-t border-white/5 text-xs text-slate-400">
                 <span className="flex items-center gap-1">
-                  <DollarSign className="w-3.5 h-3.5 text-amber-400" /> Cost Index: {mat.cost_index}/10
+                  <DollarSign className="w-3.5 h-3.5 text-amber-400" /> {t.matCost || "Cost Index"}: {mat.cost_index}/10
                 </span>
                 <span className="text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1 font-semibold">
                   Inspect <ExternalLink className="w-3.5 h-3.5" />

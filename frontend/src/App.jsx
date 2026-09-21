@@ -71,7 +71,7 @@ function AppContent() {
       </main>
 
       {/* Global Footer */}
-      <Footer />
+      <Footer lang={lang} />
     </div>
   );
 }

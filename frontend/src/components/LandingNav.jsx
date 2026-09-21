@@ -3,25 +3,26 @@ import { Link, useLocation } from 'react-router-dom';
 import { Package, Sun, Moon, Menu, X, Globe, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
-import { LANGUAGES } from '../data/i18n';
+import { LANGUAGES, TRANSLATIONS } from '../data/i18n';
 
-export default function LandingNav({ lang, setLang }) {
+export default function LandingNav({ lang = 'en', setLang }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isLangOpen, setIsLangOpen] = useState(false);
   const { theme, toggleTheme, isDark } = useTheme();
   const location = useLocation();
 
+  const t = TRANSLATIONS[lang] || TRANSLATIONS.en;
   const currentLangObj = LANGUAGES.find(l => l.code === lang) || LANGUAGES[0];
   const activePath = location.pathname;
 
   const navLinks = [
-    { path: '/', label: 'Home' },
-    { path: '/recommendation', label: 'Engine' },
-    { path: '/database', label: 'Materials' },
-    { path: '/shelf-life', label: 'Shelf-Life' },
-    { path: '/launch-checklist', label: 'Checklist' },
-    { path: '/knowledge-base', label: 'Library' },
-    { path: '/about', label: 'About' },
+    { path: '/', label: t.navHome || 'Home' },
+    { path: '/recommendation', label: t.navEngine || 'Engine' },
+    { path: '/database', label: t.navMaterials || 'Materials' },
+    { path: '/shelf-life', label: t.navShelfLife || 'Shelf-Life' },
+    { path: '/launch-checklist', label: t.navChecklist || 'Checklist' },
+    { path: '/knowledge-base', label: t.navLibrary || 'Library' },
+    { path: '/about', label: t.navAbout || 'About' },
   ];
 
   return (
@@ -121,12 +122,12 @@ export default function LandingNav({ lang, setLang }) {
           {isDark ? (
             <>
               <Sun className="w-4 h-4 text-amber-400" />
-              <span>Light</span>
+              <span>{t.navLight || "Light"}</span>
             </>
           ) : (
             <>
               <Moon className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
-              <span>Dark</span>
+              <span>{t.navDark || "Dark"}</span>
             </>
           )}
         </button>
@@ -135,7 +136,7 @@ export default function LandingNav({ lang, setLang }) {
           to="/recommendation" 
           className="bg-brand-green text-white px-6 py-2.5 rounded-full font-medium hover:bg-brand-green/90 transition-all flex items-center gap-2 shadow-md shadow-brand-green/20"
         >
-          Get Started <span>&rarr;</span>
+          {t.navGetStarted || "Get Started"} <span>&rarr;</span>
         </Link>
       </div>
 
@@ -212,7 +213,7 @@ export default function LandingNav({ lang, setLang }) {
             onClick={() => setMobileOpen(false)}
             className="bg-brand-green text-white text-center py-3 rounded-xl font-bold mt-2 shadow-lg"
           >
-            Get Started &rarr;
+            {t.navGetStarted || "Get Started"} &rarr;
           </Link>
         </div>
       )}

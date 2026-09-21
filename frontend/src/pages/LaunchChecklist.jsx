@@ -17,8 +17,10 @@ import {
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { api } from '../api/client';
+import { TRANSLATIONS } from '../data/i18n';
 
-export default function LaunchChecklist() {
+export default function LaunchChecklist({ lang = 'en' }) {
+  const t = TRANSLATIONS[lang] || TRANSLATIONS.en;
   const [jurisdiction, setJurisdiction] = useState("India — FSSAI");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [checklists, setChecklists] = useState([]);
@@ -135,13 +137,13 @@ export default function LaunchChecklist() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center mb-8 pb-8 border-b border-white/10">
         <div>
           <div className="inline-flex items-center gap-2 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
-            <FileCheck className="w-3.5 h-3.5" /> Pre-Launch Regulatory Audit
+            <FileCheck className="w-3.5 h-3.5" /> {t.checkBadge || "Pre-Launch Regulatory Audit"}
           </div>
           <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight mb-4">
-            Food Packaging Legal & Launch Checklist
+            {t.checkTitle || "Food Packaging Legal & Launch Checklist"}
           </h1>
           <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed">
-            Statutory compliance requirements covering FSSAI registration, mandatory 14-digit labeling, allergen warnings, veg/non-veg symbols, and food-contact migration certifications.
+            {t.checkDesc || "Statutory compliance requirements covering FSSAI registration, mandatory 14-digit labeling, allergen warnings, veg/non-veg symbols, and food-contact migration certifications."}
           </p>
         </div>
         <div className="relative flex justify-center">
@@ -157,10 +159,10 @@ export default function LaunchChecklist() {
         </div>
         <div className="space-y-1.5">
           <h3 className="font-extrabold text-sm uppercase tracking-wider text-amber-950 dark:text-amber-300">
-            Mandatory Statutory Compliance Notice
+            {t.checkNoticeTitle || "Mandatory Statutory Compliance Notice"}
           </h3>
           <p className="text-xs sm:text-sm text-slate-700 dark:text-amber-100/90 leading-relaxed">
-            This launch audit checklist is designed for operational guidance based on published FSSAI Food Safety and Standards Regulations (Packaging & Labeling). Requirements, statutory licensing categories, and mandatory declarations are subject to gazetted updates.
+            {t.checkNoticeDesc || "This launch audit checklist is designed for operational guidance based on published FSSAI Food Safety and Standards Regulations (Packaging & Labeling). Requirements, statutory licensing categories, and mandatory declarations are subject to gazetted updates."}
           </p>
           <p className="text-xs font-bold text-amber-800 dark:text-amber-300 pt-1">
             Always perform final verification on the official FoSCoS portal (foscos.fssai.gov.in) before printing packaging cylinders or commencing commercial retail distribution.
@@ -174,15 +176,15 @@ export default function LaunchChecklist() {
           <div>
             <div className="flex items-center gap-3">
               <h2 className="text-xl font-bold text-slate-900 dark:text-white">
-                Launch Readiness Score
+                {t.checkScore || "Launch Readiness Score"}
               </h2>
               {isLaunchReady ? (
                 <span className="inline-flex items-center gap-1.5 text-xs font-bold bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 px-3 py-1 rounded-full border border-emerald-500/30">
-                  <ShieldCheck className="w-4 h-4" /> Ready for Retail Launch
+                  <ShieldCheck className="w-4 h-4" /> {t.checkReady || "Ready for Retail Launch"}
                 </span>
               ) : (
                 <span className="inline-flex items-center gap-1.5 text-xs font-bold bg-amber-500/20 text-amber-700 dark:text-amber-400 px-3 py-1 rounded-full border border-amber-500/30">
-                  <AlertTriangle className="w-3.5 h-3.5" /> Mandatory Items Incomplete
+                  <AlertTriangle className="w-3.5 h-3.5" /> {t.checkIncomplete || "Mandatory Items Incomplete"}
                 </span>
               )}
             </div>
@@ -358,11 +360,11 @@ export default function LaunchChecklist() {
 
                         {item.is_mandatory ? (
                           <span className="text-[10px] uppercase font-black tracking-wider bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/30 px-2 py-0.5 rounded">
-                            Mandatory
+                            {t.checkMandatory || "Mandatory"}
                           </span>
                         ) : (
                           <span className="text-[10px] uppercase font-bold tracking-wider bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-2 py-0.5 rounded">
-                            Recommended
+                            {t.checkRecommended || "Recommended"}
                           </span>
                         )}
 
