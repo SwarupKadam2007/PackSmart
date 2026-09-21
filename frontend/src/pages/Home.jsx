@@ -98,7 +98,7 @@ export default function Home({ lang, setLang }) {
         <div className="relative w-full h-[320px] sm:h-[450px] lg:h-[550px] flex justify-center items-center">
           <div className="absolute inset-0 bg-brand-green/10 dark:bg-brand-green/5 rounded-full blur-3xl scale-90 -z-10"></div>
           <img 
-            src="/hero_robot_isometric.jpg" 
+            src="/hero_robot.jpg" 
             alt="Robotic arm packing box on conveyor belt" 
             className="w-full max-w-sm sm:max-w-lg object-contain drop-shadow-2xl rounded-3xl dark:opacity-90"
             style={{ mixBlendMode: 'multiply' }}

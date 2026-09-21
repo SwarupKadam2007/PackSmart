@@ -32,14 +32,22 @@ export default function ShelfLifePredictor({ lang }) {
   return (
     <div className="pt-24 pb-32 min-h-screen px-4 md:px-8 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="mb-8 border-b border-white/10 pb-6">
-        <h1 className="text-3xl font-bold text-white font-serif flex items-center gap-3">
-          <Activity className="w-8 h-8 text-emerald-400" />
-          Shelf-Life Kinetic Predictor
-        </h1>
-        <p className="text-slate-400 mt-1">
-          Simulate spoilage kinetics, Q10 Arrhenius temperature shifts, and moisture-barrier shelf-life curves.
-        </p>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center mb-12">
+        <div>
+          <div className="inline-flex items-center gap-2 bg-brand-green/10 dark:bg-brand-green/20 text-brand-green dark:text-emerald-400 px-3 py-1.5 rounded-full text-xs font-bold mb-4 uppercase tracking-wider">
+            <Activity className="w-4 h-4" /> Predictive Analytics
+          </div>
+          <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight mb-4">
+            Shelf-Life Kinetic Predictor
+          </h1>
+          <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed">
+            Simulate spoilage kinetics, Q10 Arrhenius temperature shifts, and moisture-barrier shelf-life curves.
+          </p>
+        </div>
+        <div className="relative flex justify-center">
+          <div className="absolute inset-0 bg-brand-green/5 rounded-full blur-3xl scale-90 -z-10"></div>
+          <img src="/hero_shelflife.jpg" alt="Shelf Life Predictive Charts" className="w-full max-w-md object-contain rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800" />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">

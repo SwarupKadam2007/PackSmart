@@ -266,22 +266,30 @@ export default function GetRecommendation({ lang }) {
         </div>
       )}
 
-      {/* Header Area */}
-      <div className="mb-8 flex items-center justify-between border-b border-white/10 pb-4">
+      {/* Hero Header Area */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center mb-12">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-white flex items-center gap-3">
-            <BrainCircuit className="w-8 h-8 text-amber-400" />
-            {t.title}
+          <div className="inline-flex items-center gap-2 bg-brand-green/10 dark:bg-brand-green/20 text-brand-green dark:text-emerald-400 px-3 py-1.5 rounded-full text-xs font-bold mb-4 uppercase tracking-wider">
+            <BrainCircuit className="w-4 h-4" /> AI-Powered
+          </div>
+          <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight mb-4">
+            Intelligent Packaging Recommendation Engine
           </h1>
-          <p className="text-slate-400 text-xs sm:text-sm mt-1">{t.subtitle}</p>
+          <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed">
+            Get the best packaging recommendations based on your product's characteristics, storage needs, and logistics requirements — all powered by AI.
+          </p>
         </div>
-        
-        {/* Step Indicator */}
-        <div className="flex gap-2">
-          {[1,2,3,4].map(num => (
-            <div key={num} className={`w-3 h-3 rounded-full transition-all ${step >= num ? 'bg-amber-400 shadow-[0_0_10px_rgba(251,191,36,0.6)]' : 'bg-slate-700'}`}></div>
-          ))}
+        <div className="relative flex justify-center">
+          <div className="absolute inset-0 bg-brand-green/5 rounded-full blur-3xl scale-90 -z-10"></div>
+          <img src="/hero_engine.jpg" alt="Packaging AI Dashboard" className="w-full max-w-md object-contain rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800" />
         </div>
+      </div>
+
+      {/* Step Indicator */}
+      <div className="flex gap-2 justify-center mb-6">
+        {[1,2,3,4].map(num => (
+          <div key={num} className={`w-10 h-1.5 rounded-full transition-all ${step >= num ? 'bg-brand-green' : 'bg-slate-200 dark:bg-slate-800'}`}></div>
+        ))}
       </div>
 
       <motion.div 

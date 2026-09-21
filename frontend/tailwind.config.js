@@ -27,11 +27,11 @@ export default {
           danger: 'var(--color-danger)',
         },
         brand: {
-          green: '#577d58',
-          orange: '#f18320',
-          bg: '#fcfcfc',
-          'feature-bg': '#f5f7f5',
-          text: '#222f3e'
+          green: 'var(--color-brand-green)',
+          orange: 'var(--color-warning)',
+          bg: 'var(--color-bg-primary)',
+          'feature-bg': 'var(--color-bg-surface)',
+          text: 'var(--color-text-primary)'
         },
         gold: {
           400: '#facc15',

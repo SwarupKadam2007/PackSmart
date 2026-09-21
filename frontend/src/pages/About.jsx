@@ -8,17 +8,22 @@ export default function About({ lang }) {
   return (
     <div className="pt-24 pb-16 min-h-screen px-4 sm:px-6 max-w-7xl mx-auto space-y-16">
       {/* Hero Banner */}
-      <div className="text-center max-w-3xl mx-auto space-y-4">
-        <div className="inline-flex items-center gap-2 bg-brand-green/10 dark:bg-brand-green/20 text-brand-green dark:text-emerald-400 px-4 py-1.5 rounded-full text-xs font-semibold">
-          <Leaf className="w-4 h-4" />
-          About PackSmart AI
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+        <div>
+          <div className="inline-flex items-center gap-2 bg-brand-green/10 dark:bg-brand-green/20 text-brand-green dark:text-emerald-400 px-3 py-1.5 rounded-full text-xs font-semibold mb-4 uppercase tracking-wider">
+            <Leaf className="w-4 h-4" /> About PackSmart AI
+          </div>
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight mb-4">
+            Revolutionizing Food Preservation & Supply Chain Logistics
+          </h1>
+          <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
+            PackSmart combines material physics, artificial intelligence, and logistics analytics to reduce food spoilage and optimize packaging selection worldwide.
+          </p>
         </div>
-        <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight">
-          Revolutionizing Food Preservation & Supply Chain Logistics
-        </h1>
-        <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
-          PackSmart combines material physics, artificial intelligence, and logistics analytics to reduce food spoilage and optimize packaging selection worldwide.
-        </p>
+        <div className="relative flex justify-center">
+          <div className="absolute inset-0 bg-brand-green/5 rounded-full blur-3xl scale-90 -z-10"></div>
+          <img src="/hero_about.jpg" alt="About PackSmart AI" className="w-full max-w-md object-contain rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800" />
+        </div>
       </div>
 
       {/* Grid Features */}

@@ -132,16 +132,22 @@ export default function LaunchChecklist() {
   return (
     <div className="pt-20 pb-32 min-h-screen px-4 md:px-8 max-w-5xl mx-auto font-sans">
       {/* Page Header */}
-      <div className="mb-8 text-center max-w-3xl mx-auto">
-        <div className="inline-flex items-center gap-2 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
-          <FileCheck className="w-3.5 h-3.5" /> Pre-Launch Regulatory Audit
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center mb-8 pb-8 border-b border-white/10">
+        <div>
+          <div className="inline-flex items-center gap-2 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
+            <FileCheck className="w-3.5 h-3.5" /> Pre-Launch Regulatory Audit
+          </div>
+          <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight mb-4">
+            Food Packaging Legal & Launch Checklist
+          </h1>
+          <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed">
+            Statutory compliance requirements covering FSSAI registration, mandatory 14-digit labeling, allergen warnings, veg/non-veg symbols, and food-contact migration certifications.
+          </p>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-serif tracking-tight">
-          Food Packaging Legal & Launch Checklist
-        </h1>
-        <p className="text-slate-600 dark:text-slate-400 mt-2.5 text-sm sm:text-base leading-relaxed">
-          Statutory compliance requirements covering FSSAI registration, mandatory 14-digit labeling, allergen warnings, veg/non-veg symbols, and food-contact migration certifications.
-        </p>
+        <div className="relative flex justify-center">
+          <div className="absolute inset-0 bg-brand-green/5 rounded-full blur-3xl scale-90 -z-10"></div>
+          <img src="/hero_checklist.jpg" alt="Compliance Checklist Clipboard" className="w-full max-w-md object-contain rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800" />
+        </div>
       </div>
 
       {/* Top Banner: Statutory Regulatory Disclaimer */}

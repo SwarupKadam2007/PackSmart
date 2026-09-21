@@ -71,16 +71,22 @@ export default function KnowledgeBase({ lang = 'en' }) {
   return (
     <div className="pt-20 pb-32 min-h-screen px-4 md:px-8 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="mb-10 text-center max-w-3xl mx-auto">
-        <div className="inline-flex items-center gap-2 bg-amber-400/10 text-amber-400 border border-amber-400/20 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
-          <Sparkles className="w-3.5 h-3.5" /> Technical Knowledge Hub
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center mb-10 pb-8 border-b border-white/10">
+        <div>
+          <div className="inline-flex items-center gap-2 bg-amber-400/10 text-amber-400 border border-amber-400/20 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
+            <Sparkles className="w-3.5 h-3.5" /> Technical Knowledge Hub
+          </div>
+          <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight mb-4">
+            Packaging Science & Regulatory Library
+          </h1>
+          <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed">
+            Interactive learning modules, vector packaging format schematics, and statutory preservative guidelines for food founders and packaging engineers.
+          </p>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-serif tracking-tight">
-          Packaging Science & Regulatory Library
-        </h1>
-        <p className="text-slate-600 dark:text-slate-400 mt-3 text-sm sm:text-base leading-relaxed">
-          Interactive learning modules, vector packaging format schematics, and statutory preservative guidelines for food founders and packaging engineers.
-        </p>
+        <div className="relative flex justify-center">
+          <div className="absolute inset-0 bg-brand-green/5 rounded-full blur-3xl scale-90 -z-10"></div>
+          <img src="/hero_library.jpg" alt="Knowledge Base & Books" className="w-full max-w-md object-contain rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800" />
+        </div>
       </div>
 
       {/* Module Navigation Tabs */}

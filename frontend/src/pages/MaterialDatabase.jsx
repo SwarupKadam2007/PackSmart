@@ -34,21 +34,23 @@ export default function MaterialDatabase({ lang }) {
   return (
     <div className="pt-24 pb-32 min-h-screen px-4 md:px-8 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="mb-8 border-b border-white/10 pb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center mb-8 border-b border-white/10 pb-10">
         <div>
-          <h1 className="text-3xl font-bold text-white font-serif flex items-center gap-3">
-            <Layers className="w-8 h-8 text-amber-400" />
+          <div className="inline-flex items-center gap-2 bg-brand-green/10 dark:bg-brand-green/20 text-brand-green dark:text-emerald-400 px-3 py-1.5 rounded-full text-xs font-bold mb-4 uppercase tracking-wider">
+            <Layers className="w-4 h-4" /> Data-Driven
+          </div>
+          <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight mb-4">
             Packaging Material Database
           </h1>
-          <p className="text-slate-400 mt-1">Comprehensive scientific polymer registry, barrier specs, and transmission rates.</p>
+          <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed">
+            Comprehensive scientific polymer registry, barrier specs, and transmission rates.
+          </p>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="text-xs px-3 py-1.5 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 font-mono">
-            {filteredMaterials.length} Formulations Active
-          </span>
+        <div className="relative flex justify-center">
+          <div className="absolute inset-0 bg-brand-green/5 rounded-full blur-3xl scale-90 -z-10"></div>
+          <img src="/hero_materials.jpg" alt="Packaging Materials Grid" className="w-full max-w-md object-contain rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800" />
         </div>
       </div>
-
       {/* Filter & Search Bar */}
       <div className="bg-white dark:bg-slate-800/80 backdrop-blur-xl border border-slate-200 dark:border-slate-700/60 p-4 rounded-2xl mb-8 flex flex-col md:flex-row gap-4 items-center justify-between shadow-sm">
         <div className="relative w-full md:w-96">
