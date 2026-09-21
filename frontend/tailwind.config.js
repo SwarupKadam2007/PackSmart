@@ -23,12 +23,12 @@ export default {
           'accent-hover': 'var(--color-accent-hover)',
           border: 'var(--color-border)',
           success: 'var(--color-success)',
-          warning: 'var(--color-warning)',
+          warning: 'rgb(var(--color-warning) / <alpha-value>)',
           danger: 'var(--color-danger)',
         },
         brand: {
-          green: 'var(--color-brand-green)',
-          orange: 'var(--color-warning)',
+          green: 'rgb(var(--color-brand-green) / <alpha-value>)',
+          orange: 'rgb(var(--color-brand-orange) / <alpha-value>)',
           bg: 'var(--color-bg-primary)',
           'feature-bg': 'var(--color-bg-surface)',
           text: 'var(--color-text-primary)'
