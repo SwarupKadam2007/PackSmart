@@ -4,6 +4,39 @@ from ..models import PackagingMaterial, Commodity, Recommendation, Recommendatio
 from ..schemas import RecommendationInput
 import uuid
 from datetime import datetime
+import os
+try:
+    from google import genai
+except ImportError:
+    genai = None
+
+def translate_text(text: str, target_lang: str) -> str:
+    if not text or target_lang == 'en':
+        return text
+    
+    api_key = os.environ.get("GEMINI_API_KEY")
+    if not api_key or not genai:
+        print("Warning: GEMINI_API_KEY not set or google-genai not installed. Skipping translation.")
+        return text
+    
+    try:
+        client = genai.Client(api_key=api_key)
+        prompt = f"""
+Translate the following text into the ISO 639-1 language code '{target_lang}'. 
+Simplify it for a general audience (like farmers or small business owners). 
+Keep all technical terms (like OTR, WVTR, pH, MAP, EVOH, BOPP, etc.) in English Latin script within the translated sentences.
+
+Text to translate:
+{text}
+"""
+        response = client.models.generate_content(
+            model='gemini-2.5-flash',
+            contents=prompt,
+        )
+        return response.text.strip()
+    except Exception as e:
+        print(f"Translation failed: {e}")
+        return text
 
 # NOTE: This registry must be kept in sync with the frontend copy in frontend/src/api/client.js
 DEMO_SIMULATION_REGISTRY = {
@@ -123,6 +156,16 @@ def run_recommendation_engine(db: Session, payload: RecommendationInput, user_id
     if getattr(payload, 'demo_mode', False) and getattr(payload, 'demo_commodity', None) in DEMO_SIMULATION_REGISTRY:
         demo_data = dict(DEMO_SIMULATION_REGISTRY[payload.demo_commodity])
         demo_data["recommendation_id"] = f"demo-{uuid.uuid4().hex[:8]}"
+        
+        lang = getattr(payload, 'lang', 'en')
+        explanation_text = demo_data["explanation_text"]
+        if lang != 'en':
+            demo_data["explanation_text"] = translate_text(demo_data["explanation_text"], lang)
+            demo_data["demo_scenario_comparison"] = translate_text(demo_data["demo_scenario_comparison"], lang)
+            if demo_data.get("short_shelf_life_note"):
+                demo_data["short_shelf_life_note"] = translate_text(demo_data["short_shelf_life_note"], lang)
+            explanation_text = demo_data["explanation_text"]
+
         demo_data["ranked_materials"] = [{
             "material_id": "demo-mat-1",
             "name": demo_data["primary_material"],
@@ -135,7 +178,7 @@ def run_recommendation_engine(db: Session, payload: RecommendationInput, user_id
             "sealability": demo_data["sealability"],
             "map_required": demo_data["map_required"],
             "eco_alternative": demo_data["eco_alternative"],
-            "explanation": demo_data["explanation_text"],
+            "explanation": explanation_text,
             "cost_index": 5.0,
             "sustainability_score": 75.0,
             "source_reference": "Verified Demo Data",
@@ -378,6 +421,16 @@ def run_recommendation_engine(db: Session, payload: RecommendationInput, user_id
             "(e.g. cultured dextrose, rosemary extract, potassium sorbate) in the Preservatives & Additives Guide "
             "to inhibit mold and extend stability safely."
         )
+
+    # Translate dynamically generated text if needed
+    lang = getattr(payload, 'lang', 'en')
+    if lang != 'en':
+        for item in scored_materials:
+            if item.get("explanation"):
+                item["explanation"] = translate_text(item["explanation"], lang)
+        
+        if short_shelf_life_note:
+            short_shelf_life_note = translate_text(short_shelf_life_note, lang)
 
     return {
         "recommendation_id": rec_obj.recommendation_id,

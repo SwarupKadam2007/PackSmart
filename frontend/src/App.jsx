@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import LandingNav from './components/LandingNav';
@@ -22,8 +22,32 @@ import AdminPanel from './pages/AdminPanel';
 function AppContent() {
   const [lang, setLang] = useState('en'); // Default to English
 
+  useEffect(() => {
+    document.documentElement.lang = lang;
+
+    const fontLinks = {
+      mr: 'https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;700;800&display=swap',
+      hi: 'https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;700;800&display=swap',
+      pa: 'https://fonts.googleapis.com/css2?family=Noto+Sans+Gurmukhi:wght@400;500;700;800&display=swap',
+      gu: 'https://fonts.googleapis.com/css2?family=Noto+Sans+Gujarati:wght@400;500;700;800&display=swap'
+    };
+
+    if (fontLinks[lang]) {
+      let link = document.getElementById('dynamic-lang-font');
+      if (!link) {
+        link = document.createElement('link');
+        link.id = 'dynamic-lang-font';
+        link.rel = 'stylesheet';
+        document.head.appendChild(link);
+      }
+      if (link.href !== fontLinks[lang]) {
+        link.href = fontLinks[lang];
+      }
+    }
+  }, [lang]);
+
   return (
-    <div className="relative min-h-screen bg-brand-bg dark:bg-slate-950 text-slate-800 dark:text-slate-100 selection:bg-amber-500 selection:text-black font-sans transition-colors duration-300 flex flex-col justify-between">
+    <div className="relative min-h-screen bg-theme-bg text-theme-text selection:bg-theme-accent selection:text-black font-sans transition-colors duration-300 flex flex-col justify-between">
       {/* Global Header Navigation */}
       <LandingNav lang={lang} setLang={setLang} />
 

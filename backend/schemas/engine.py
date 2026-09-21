@@ -12,6 +12,7 @@ class RecommendRequest(BaseModel):
     target_shelf_life_days: int
     custom_moisture_pct: Optional[float] = None
     custom_lipid_pct: Optional[float] = None
+    lang: Optional[str] = 'en'
 
 class QuickRecommendRequest(BaseModel):
     commodity_id: int

@@ -20,6 +20,7 @@ import {
 import { Link, useNavigate } from 'react-router-dom';
 import { TRANSLATIONS } from '../data/i18n';
 import { motion, AnimatePresence } from 'framer-motion';
+import { EngineIllustration, MaterialsIllustration, ShelfLifeIllustration, ChecklistIllustration } from '../components/Illustrations';
 
 export default function Home({ lang, setLang }) {
   const t = TRANSLATIONS[lang] || TRANSLATIONS.en;
@@ -212,8 +213,8 @@ export default function Home({ lang, setLang }) {
               
               {/* Card 1 */}
               <div className="bg-white dark:bg-slate-800 p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200/80 dark:border-slate-700/60 hover:shadow-md transition-all">
-                <div className="bg-brand-green/10 dark:bg-brand-green/20 w-12 h-12 rounded-2xl flex items-center justify-center mb-6">
-                  <Box className="w-6 h-6 text-brand-green dark:text-emerald-400" />
+                <div className="w-16 h-16 mb-6">
+                  <EngineIllustration className="w-full h-full text-brand-green" />
                 </div>
                 <h4 className="font-bold text-slate-900 dark:text-white mb-2">{t.homeF1Title || "Smart Packing Rules"}</h4>
                 <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
@@ -223,8 +224,8 @@ export default function Home({ lang, setLang }) {
 
               {/* Card 2 */}
               <div className="bg-white dark:bg-slate-800 p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200/80 dark:border-slate-700/60 hover:shadow-md transition-all">
-                <div className="bg-brand-orange/10 dark:bg-brand-orange/20 w-12 h-12 rounded-2xl flex items-center justify-center mb-6">
-                  <Truck className="w-6 h-6 text-brand-orange" />
+                <div className="w-16 h-16 mb-6">
+                  <MaterialsIllustration className="w-full h-full text-brand-orange" />
                 </div>
                 <h4 className="font-bold text-slate-900 dark:text-white mb-2">{t.homeF2Title || "Real-Time Shipment Tracking"}</h4>
                 <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
@@ -234,8 +235,8 @@ export default function Home({ lang, setLang }) {
 
               {/* Card 3 */}
               <div className="bg-white dark:bg-slate-800 p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200/80 dark:border-slate-700/60 hover:shadow-md transition-all">
-                <div className="bg-brand-green/10 dark:bg-brand-green/20 w-12 h-12 rounded-2xl flex items-center justify-center mb-6">
-                  <Leaf className="w-6 h-6 text-brand-green dark:text-emerald-400" />
+                <div className="w-16 h-16 mb-6">
+                  <ShelfLifeIllustration className="w-full h-full text-blue-500" />
                 </div>
                 <h4 className="font-bold text-slate-900 dark:text-white mb-2">{t.homeF3Title || "Inventory & Stock Alerts"}</h4>
                 <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
@@ -245,8 +246,8 @@ export default function Home({ lang, setLang }) {
 
               {/* Card 4 */}
               <div className="bg-white dark:bg-slate-800 p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200/80 dark:border-slate-700/60 hover:shadow-md transition-all">
-                <div className="bg-slate-100 dark:bg-slate-700/50 w-12 h-12 rounded-2xl flex items-center justify-center mb-6">
-                  <TrendingUp className="w-6 h-6 text-slate-700 dark:text-slate-300" />
+                <div className="w-16 h-16 mb-6">
+                  <ChecklistIllustration className="w-full h-full text-teal-500" />
                 </div>
                 <h4 className="font-bold text-slate-900 dark:text-white mb-2">{t.homeF4Title || "Powerful Analytics"}</h4>
                 <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">

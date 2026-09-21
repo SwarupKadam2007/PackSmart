@@ -14,6 +14,18 @@ export default {
         script: ['Italianno', 'Playfair Display', 'cursive'],
       },
       colors: {
+        theme: {
+          bg: 'var(--color-bg-primary)',
+          surface: 'var(--color-bg-surface)',
+          text: 'var(--color-text-primary)',
+          'text-muted': 'var(--color-text-secondary)',
+          accent: 'var(--color-accent)',
+          'accent-hover': 'var(--color-accent-hover)',
+          border: 'var(--color-border)',
+          success: 'var(--color-success)',
+          warning: 'var(--color-warning)',
+          danger: 'var(--color-danger)',
+        },
         brand: {
           green: '#577d58',
           orange: '#f18320',

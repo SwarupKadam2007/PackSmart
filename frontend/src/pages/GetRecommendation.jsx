@@ -193,7 +193,8 @@ export default function GetRecommendation({ lang }) {
         ph_level: inputData.pHLevel === 'acidic' ? 4.0 : 7.0,
         respiration_rate: inputData.respirationRate === 'high' ? 30.0 : 5.0,
         demo_mode: searchParams.get('demo_mode') === 'true',
-        demo_commodity: searchParams.get('demo')
+        demo_commodity: searchParams.get('demo'),
+        lang: lang
       };
 
       const res = await api.generateRecommendation(payload);
